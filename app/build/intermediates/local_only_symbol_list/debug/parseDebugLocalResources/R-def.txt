@@ -22,6 +22,7 @@ drawable button_mom_call
 drawable button_primary
 drawable emergency_card_bg
 drawable ic_launcher_foreground
+drawable ic_launcher_foreground_new
 drawable ic_launcher_legacy
 drawable ic_shield_heart
 drawable logo_safecall_bg

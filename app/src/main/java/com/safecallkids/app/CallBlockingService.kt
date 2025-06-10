@@ -35,7 +35,11 @@ class CallBlockingService : android.app.Service() {
         
         // Registrar receiver para atualizar notificação
         val filter = IntentFilter("com.safecallkids.app.UPDATE_NOTIFICATION")
-        registerReceiver(notificationUpdateReceiver, filter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(notificationUpdateReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(notificationUpdateReceiver, filter)
+        }
     }
     
     override fun onStartCommand(intent: android.content.Intent?, flags: Int, startId: Int): Int {

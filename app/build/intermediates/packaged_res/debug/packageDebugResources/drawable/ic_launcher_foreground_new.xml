@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- SafecallKids Logo como foreground -->
+    <group
+        android:translateX="27"
+        android:translateY="27">
+        
+        <!-- Escudo principal -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:strokeColor="#4CAF50"
+            android:strokeWidth="2"
+            android:pathData="M27,5L9,15V30C9,45 18,58 27,62C36,58 45,45 45,30V15L27,5Z"/>
+        
+        <!-- Letra "S" estilizada -->
+        <path
+            android:fillColor="#87CEEB"
+            android:pathData="M18,20H32C34,20 36,22 36,24C36,26 34,28 32,28H22V32H32C36,32 40,36 40,40C40,44 36,48 32,48H18C16,48 14,46 14,44V22C14,20 16,20 18,20Z"/>
+        
+        <!-- Coração pequeno -->
+        <path
+            android:fillColor="#FFB347"
+            android:pathData="M35,50C34,49 32,47 32,45C32,44 33,43 34,43C34.5,43 35,43.3 35,43.3S35.5,43 36,43C37,43 38,44 38,45C38,47 36,49 35,50Z"/>
+            
+    </group>
+</vector>
