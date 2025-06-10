@@ -1,34 +1,82 @@
 [
     {
-        "merged": "com.safecallkids.app-debug-45:/layout_activity_main.xml.flat",
-        "source": "com.safecallkids.app-main-47:/layout/activity_main.xml"
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\drawable_emergency_card_bg.xml.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\drawable\\emergency_card_bg.xml"
     },
     {
-        "merged": "com.safecallkids.app-debug-45:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.safecallkids.app-main-47:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\drawable_button_mom_call.xml.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\drawable\\button_mom_call.xml"
     },
     {
-        "merged": "com.safecallkids.app-debug-45:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "com.safecallkids.app-main-47:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\drawable\\ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.safecallkids.app-debug-45:/xml_data_extraction_rules.xml.flat",
-        "source": "com.safecallkids.app-main-47:/xml/data_extraction_rules.xml"
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\mipmap-xxxhdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "com.safecallkids.app-debug-45:/xml_backup_rules.xml.flat",
-        "source": "com.safecallkids.app-main-47:/xml/backup_rules.xml"
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\drawable_ic_launcher_legacy.xml.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\drawable\\ic_launcher_legacy.xml"
     },
     {
-        "merged": "com.safecallkids.app-debug-45:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.safecallkids.app-main-47:/drawable/ic_launcher_foreground.xml"
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\layout\\activity_main.xml"
     },
     {
-        "merged": "com.safecallkids.app-debug-45:/drawable_ic_launcher_legacy.xml.flat",
-        "source": "com.safecallkids.app-main-47:/drawable/ic_launcher_legacy.xml"
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\mipmap-xhdpi\\ic_launcher.png"
     },
     {
-        "merged": "com.safecallkids.app-debug-45:/drawable_button_primary.xml.flat",
-        "source": "com.safecallkids.app-main-47:/drawable/button_primary.xml"
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\mipmap-hdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\drawable_logo_safecall_bg.jpg.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\drawable\\logo_safecall_bg.jpg"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\mipmap-xxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\drawable_button_primary.xml.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\drawable\\button_primary.xml"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\mipmap-xhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\drawable_ic_shield_heart.xml.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\drawable\\ic_shield_heart.xml"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\mipmap-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\drawable_ic_launcher_foreground_new.xml.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\drawable\\ic_launcher_foreground_new.xml"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\drawable_logo_safecall_transparent.png.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\drawable\\logo_safecall_transparent.png"
+    },
+    {
+        "merged": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-debug-45:\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\ventu\\.gradle\\daemon\\8.9\\com.safecallkids.app-main-47:\\mipmap-hdpi\\ic_launcher.png"
     }
 ]

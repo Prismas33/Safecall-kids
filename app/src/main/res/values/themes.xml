@@ -1,15 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- SafecallKids Theme - Azul Celeste Header, Fundo Branco, Laranja Suave -->
     <style name="Base.Theme.SafecallKids" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Header: Azul Celeste -->
         <item name="colorPrimary">@color/primary_color</item>
         <item name="colorPrimaryVariant">@color/primary_dark_color</item>
-        <item name="colorOnPrimary">@android:color/white</item>
-        <item name="colorSecondary">@color/accent_color</item>
+        <item name="colorOnPrimary">@color/header_text</item>
+        
+        <!-- Body: Fundo Branco -->
         <item name="android:colorBackground">@color/background_color</item>
+        <item name="colorSurface">@color/card_background</item>
+        
+        <!-- Footer: Laranja Suave -->
+        <item name="colorSecondary">@color/accent_color</item>
+        <item name="colorOnSecondary">@color/header_text</item>
+        
+        <!-- Text -->
         <item name="android:textColorPrimary">@color/text_color</item>
         <item name="android:textColorSecondary">@color/secondary_text_color</item>
+        
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">@color/primary_dark_color</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="Theme.SafecallKids" parent="Base.Theme.SafecallKids" />
+      <!-- Estilo base para SafecallKids -->
+    <style name="SafecallKids" />
+    
+    <!-- Estilo para Header Azul Celeste -->
+    <style name="SafecallKids.Header">
+        <item name="android:background">@color/primary_color</item>
+        <item name="android:textColor">@color/header_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">16dp</item>
+    </style>
+    
+    <!-- Estilo para Cards de Emergência com borda verde -->
+    <style name="SafecallKids.EmergencyCard">
+        <item name="android:background">@drawable/emergency_card_bg</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+    
+    <!-- Estilo para Botão "Ligar para Mamãe" Laranja -->
+    <style name="SafecallKids.MomCallButton">
+        <item name="android:background">@drawable/button_mom_call</item>
+        <item name="android:textColor">@color/header_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:elevation">6dp</item>
+    </style>
 </resources>

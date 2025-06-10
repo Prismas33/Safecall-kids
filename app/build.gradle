@@ -18,12 +18,20 @@ android {
     }
 
     buildTypes {
+        debug {
+            // Nome personalizado para APK debug
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-DEBUG"
+        }
+        
         release {
+            // Nome personalizado para APK release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-      compileOptions {
+
+    compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }

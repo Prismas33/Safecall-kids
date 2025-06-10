@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="accent_color">#FF9800</color>
-    <color name="background_color">#F5F5F5</color>
-    <color name="button_pressed">#1976D2</color>
-    <color name="button_primary">#2196F3</color>
+    <color name="accent_color">#FFB347</color>
+    <color name="background_color">#FFFFFF</color>
+    <color name="button_mom_call">#FFB347</color>
+    <color name="button_mom_call_pressed">#FF9933</color>
+    <color name="button_pressed">#5F9EA0</color>
+    <color name="button_primary">#87CEEB</color>
     <color name="card_background">#FFFFFF</color>
+    <color name="card_border_green">#4CAF50</color>
+    <color name="emergency_card_bg">#FFFFFF</color>
+    <color name="emergency_card_stroke">#4CAF50</color>
     <color name="error_color">#F44336</color>
-    <color name="primary_color">#2196F3</color>
-    <color name="primary_dark_color">#1976D2</color>
+    <color name="header_text">#FFFFFF</color>
+    <color name="primary_color">#87CEEB</color>
+    <color name="primary_dark_color">#5F9EA0</color>
     <color name="secondary_text_color">#757575</color>
     <color name="success_color">#4CAF50</color>
     <color name="text_color">#212121</color>
@@ -26,13 +32,48 @@
     <string name="protection_active">Proteção Ativada</string>
     <string name="protection_inactive">Proteção Desativada</string>
     <style name="Base.Theme.SafecallKids" parent="Theme.Material3.DayNight.NoActionBar">
+        
         <item name="colorPrimary">@color/primary_color</item>
         <item name="colorPrimaryVariant">@color/primary_dark_color</item>
-        <item name="colorOnPrimary">@android:color/white</item>
-        <item name="colorSecondary">@color/accent_color</item>
+        <item name="colorOnPrimary">@color/header_text</item>
+        
+        
         <item name="android:colorBackground">@color/background_color</item>
+        <item name="colorSurface">@color/card_background</item>
+        
+        
+        <item name="colorSecondary">@color/accent_color</item>
+        <item name="colorOnSecondary">@color/header_text</item>
+        
+        
         <item name="android:textColorPrimary">@color/text_color</item>
         <item name="android:textColorSecondary">@color/secondary_text_color</item>
+        
+        
+        <item name="android:statusBarColor">@color/primary_dark_color</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    <style name="SafecallKids"/>
+    <style name="SafecallKids.EmergencyCard">
+        <item name="android:background">@drawable/emergency_card_bg</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+    <style name="SafecallKids.Header">
+        <item name="android:background">@color/primary_color</item>
+        <item name="android:textColor">@color/header_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">16dp</item>
+    </style>
+    <style name="SafecallKids.MomCallButton">
+        <item name="android:background">@drawable/button_mom_call</item>
+        <item name="android:textColor">@color/header_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:elevation">6dp</item>
     </style>
     <style name="Theme.SafecallKids" parent="Base.Theme.SafecallKids"/>
 </resources>

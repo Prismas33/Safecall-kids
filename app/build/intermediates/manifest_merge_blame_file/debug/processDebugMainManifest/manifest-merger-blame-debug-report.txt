@@ -1,8 +1,8 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-3    package="com.safecallkids.app"
+3    package="com.safecallkids.app.debug"
 4    android:versionCode="1"
-5    android:versionName="1.0" >
+5    android:versionName="1.0-DEBUG" >
 6
 7    <uses-sdk
 8        android:minSdkVersion="26"
@@ -45,148 +45,148 @@
 23
 24    <permission
 24-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
-25        android:name="com.safecallkids.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+25        android:name="com.safecallkids.app.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
 25-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
 26        android:protectionLevel="signature" />
 26-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
 27
-28    <uses-permission android:name="com.safecallkids.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+28    <uses-permission android:name="com.safecallkids.app.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 28-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
 28-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
 29
 30    <application
-30-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:14:7-75:19
+30-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:13:85-74:19
 31        android:allowBackup="true"
-31-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:15:9-35
+31-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:14:9-35
 32        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 32-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
 33        android:dataExtractionRules="@xml/data_extraction_rules"
-33-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:16:9-65
+33-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:15:9-65
 34        android:debuggable="true"
 35        android:extractNativeLibs="false"
 36        android:fullBackupContent="@xml/backup_rules"
-36-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:17:9-54
-37        android:icon="@drawable/ic_launcher_legacy"
-37-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:18:9-52
+36-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:16:9-54
+37        android:icon="@mipmap/ic_launcher"
+37-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:17:9-43
 38        android:label="@string/app_name"
-38-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:19:9-41
-39        android:roundIcon="@drawable/ic_launcher_legacy"
-39-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:20:9-57
+38-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:18:9-41
+39        android:roundIcon="@mipmap/ic_launcher_round"
+39-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:19:9-54
 40        android:supportsRtl="true"
-40-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:21:9-35
+40-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:20:9-35
 41        android:theme="@style/Theme.SafecallKids" >
-41-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:22:9-50
+41-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:21:9-50
 42        <activity
-42-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:23:30-30:20
+42-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:22:30-29:20
 43            android:name="com.safecallkids.app.MainActivity"
-43-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:24:13-41
+43-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:23:13-41
 44            android:exported="true" >
-44-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:25:13-36
+44-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:24:13-36
 45            <intent-filter>
-45-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:26:13-29:29
+45-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:25:13-28:29
 46                <action android:name="android.intent.action.MAIN" />
-46-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:27:17-69
-46-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:27:25-66
+46-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:26:17-69
+46-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:26:25-66
 47
 48                <category android:name="android.intent.category.LAUNCHER" />
-48-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:28:17-77
-48-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:28:27-74
+48-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:27:17-77
+48-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:27:27-74
 49            </intent-filter>
 50        </activity> <!-- Serviço moderno para bloquear chamadas (Android 10+) -->
 51        <service
-51-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:31:9-38:19
+51-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:30:9-37:19
 52            android:name="com.safecallkids.app.CallScreeningService"
-52-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:32:13-49
+52-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:31:13-49
 53            android:exported="true"
-53-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:33:13-36
+53-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:32:13-36
 54            android:permission="android.permission.BIND_SCREENING_SERVICE" >
-54-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:34:13-75
+54-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:33:13-75
 55            <intent-filter>
-55-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:35:13-37:29
+55-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:34:13-36:29
 56                <action android:name="android.telecom.CallScreeningService" />
-56-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:36:17-79
-56-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:36:25-76
+56-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:35:17-79
+56-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:35:25-76
 57            </intent-filter>
 58        </service>
 59
 60        <!-- Serviço para monitorar chamadas (compatibilidade) -->
 61        <service
-61-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:40:75-44:57
+61-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:39:75-43:57
 62            android:name="com.safecallkids.app.CallBlockingService"
-62-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:41:13-48
+62-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:40:13-48
 63            android:enabled="true"
-63-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:42:13-35
+63-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:41:13-35
 64            android:exported="false"
-64-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:43:13-37
+64-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:42:13-37
 65            android:foregroundServiceType="phoneCall" />
-65-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:44:13-54
+65-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:43:13-54
 66
 67        <!-- Receiver para detectar chamadas recebidas (compatibilidade) -->
 68        <receiver
-68-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:47:9-54:20
+68-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:46:9-53:20
 69            android:name="com.safecallkids.app.CallReceiver"
-69-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:48:13-41
+69-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:47:13-41
 70            android:enabled="true"
-70-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:49:13-35
+70-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:48:13-35
 71            android:exported="true" >
-71-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:50:13-36
+71-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:49:13-36
 72            <intent-filter android:priority="1000" >
-72-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:51:13-53:29
-72-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:51:28-51
+72-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:50:13-52:29
+72-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:50:28-51
 73                <action android:name="android.intent.action.PHONE_STATE" />
-73-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:52:17-76
-73-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:52:25-73
+73-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:51:17-76
+73-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:51:25-73
 74            </intent-filter>
 75        </receiver>
 76
 77        <!-- Activity para tornar o app elegível como discador padrão -->
 78        <activity
-78-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:57:9-68:20
+78-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:56:9-67:20
 79            android:name="com.safecallkids.app.DialerActivity"
-79-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:57:19-49
+79-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:56:19-49
 80            android:exported="true" >
-80-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:58:13-36
+80-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:57:13-36
 81            <intent-filter>
-81-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:59:13-67:29
+81-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:58:13-66:29
 82                <action android:name="android.intent.action.DIAL" />
-82-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:60:17-69
-82-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:60:25-66
+82-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:59:17-69
+82-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:59:25-66
 83                <action android:name="android.intent.action.VIEW" />
-83-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:61:17-69
-83-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:61:25-66
+83-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:60:17-69
+83-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:60:25-66
 84                <action android:name="android.intent.action.CALL" />
-84-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:62:17-69
-84-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:62:25-66
+84-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:61:17-69
+84-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:61:25-66
 85                <action android:name="android.intent.action.CALL_BUTTON" />
-85-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:63:17-76
-85-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:63:25-73
+85-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:62:17-76
+85-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:62:25-73
 86
 87                <category android:name="android.intent.category.DEFAULT" />
-87-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:64:17-76
-87-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:64:27-73
+87-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:63:17-76
+87-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:63:27-73
 88                <category android:name="android.intent.category.BROWSABLE" />
-88-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:65:17-78
-88-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:65:27-75
+88-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:64:17-78
+88-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:64:27-75
 89
 90                <data android:scheme="tel" />
-90-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:66:17-46
-90-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:66:23-43
+90-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:65:17-46
+90-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:65:23-43
 91            </intent-filter>
 92        </activity>
 93
 94        <!-- Role para discador padrão (Android 10+) -->
 95        <meta-data
-95-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:71:9-73:36
+95-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:70:9-72:36
 96            android:name="android.app.role.DIALER"
-96-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:72:13-51
+96-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:71:13-51
 97            android:value="true" />
-97-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:73:13-33
+97-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:72:13-33
 98
 99        <provider
 99-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:29:9-37:20
 100            android:name="androidx.startup.InitializationProvider"
 100-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:30:13-67
-101            android:authorities="com.safecallkids.app.androidx-startup"
+101            android:authorities="com.safecallkids.app.debug.androidx-startup"
 101-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:31:13-68
 102            android:exported="false" >
 102-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:32:13-37

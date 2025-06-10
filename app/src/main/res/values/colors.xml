@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary Colors -->
-    <color name="primary_color">#2196F3</color>
-    <color name="primary_dark_color">#1976D2</color>
-    <color name="accent_color">#FF9800</color>
+    <!-- SafecallKids Theme Colors -->
+    <!-- Header: Azul Celeste -->
+    <color name="primary_color">#87CEEB</color>
+    <color name="primary_dark_color">#5F9EA0</color>
     
-    <!-- Background Colors -->
-    <color name="background_color">#F5F5F5</color>
+    <!-- Body: Fundo Branco com bordas verdes -->
+    <color name="background_color">#FFFFFF</color>
     <color name="card_background">#FFFFFF</color>
+    <color name="card_border_green">#4CAF50</color>
+    
+    <!-- Footer: Laranja Suave -->
+    <color name="accent_color">#FFB347</color>
+    <color name="button_mom_call">#FFB347</color>
+    <color name="button_mom_call_pressed">#FF9933</color>
     
     <!-- Text Colors -->
     <color name="text_color">#212121</color>
     <color name="secondary_text_color">#757575</color>
+    <color name="header_text">#FFFFFF</color>
     
     <!-- Status Colors -->
     <color name="success_color">#4CAF50</color>
@@ -19,6 +26,10 @@
     <color name="error_color">#F44336</color>
     
     <!-- Button Colors -->
-    <color name="button_primary">#2196F3</color>
-    <color name="button_pressed">#1976D2</color>
+    <color name="button_primary">#87CEEB</color>
+    <color name="button_pressed">#5F9EA0</color>
+    
+    <!-- Emergency Contact Colors -->
+    <color name="emergency_card_bg">#FFFFFF</color>
+    <color name="emergency_card_stroke">#4CAF50</color>
 </resources>

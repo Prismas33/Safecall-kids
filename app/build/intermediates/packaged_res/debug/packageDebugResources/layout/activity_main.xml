@@ -4,18 +4,39 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
-    android:background="@color/background_color">
-
-    <!-- App Title -->
-    <TextView
+    android:background="@color/background_color">    <!-- App Header with Logo and Title -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SafecallKids"
-        android:textSize="28sp"
-        android:textColor="@color/primary_color"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="8dp" />
+        android:background="@color/primary_color"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/logo_safecall_transparent"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="SafecallKids Logo" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SafecallKids"
+            android:textSize="24sp"
+            android:textColor="@color/header_text"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_shield_heart"
+            android:contentDescription="Proteção Ativa" />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -24,7 +45,7 @@
         android:textSize="14sp"
         android:textColor="@color/secondary_text_color"
         android:gravity="center"
-        android:layout_marginBottom="32dp" />    <!-- Status Card -->
+        android:layout_marginBottom="24dp" /><!-- Status Card -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
