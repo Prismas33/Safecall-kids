@@ -1,10 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SafecallKids</string>
-    <string name="permission_required">Permissões necessárias</string>
-    <string name="enable_permissions">Para bloquear chamadas de números desconhecidos, o SafecallKids precisa de algumas permissões.</string>
-    <string name="grant_permissions">Conceder Permissões</string>
-    <string name="protection_enabled">Proteção Ativada</string>
-    <string name="protection_disabled">Proteção Desativada</string>
-    <string name="blocked_calls">Chamadas Bloqueadas</string>
+    <string name="notification_title">SafecallKids Ativo</string>
+    <string name="notification_text">Proteção ativa contra chamadas desconhecidas</string>
+    <string name="permission_denied">Permissões necessárias para funcionar</string>
+    <string name="call_blocked">Chamada bloqueada</string>
+    <string name="protection_active">Proteção Ativada</string>
+    <string name="protection_inactive">Proteção Desativada</string>
     <string name="contacts_loaded">Contatos carregados</string>
+    <string name="calls_blocked">Chamadas bloqueadas</string>
+    <string name="grant_permissions">Conceder Permissões</string>
+    <string name="app_settings">Configurações do App</string>
+    <string name="diagnostic_completed">Diagnóstico concluído</string>
+    <string name="error_occurred">Erro ocorrido</string>
 </resources>

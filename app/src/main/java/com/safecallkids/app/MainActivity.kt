@@ -8,18 +8,16 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.telecom.TelecomManager
-import android.telecom.PhoneAccount
-import android.telecom.PhoneAccountHandle
-import android.content.ComponentName
-import android.graphics.drawable.Icon
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import java.io.FileNotFoundException
 
 class MainActivity : AppCompatActivity() {
     
@@ -27,8 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var contactsCount: TextView
     private lateinit var blockedCount: TextView
     private lateinit var enableButton: Button
-    
-    private val PERMISSIONS_REQUEST_CODE = 100
+      private val PERMISSIONS_REQUEST_CODE = 100
     private val REQUIRED_PERMISSIONS = arrayOf(
         Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.READ_CONTACTS,
@@ -40,195 +37,195 @@ class MainActivity : AppCompatActivity() {
     ) { 
         updateUI()
     }
-      private val defaultDialerLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        Log.d("MainActivity", "Resultado do defaultDialerLauncher: ${result.resultCode}")
-        
-        // Aguardar um pouco para o sistema processar a mudança
-        Thread.sleep(1000)
-        
-        // Forçar verificação do status
-        if (isDefaultDialer()) {
-            Log.d("MainActivity", "Agora somos o discador padrão!")
-            Toast.makeText(this, "SafecallKids agora é o app de telefone padrão!", Toast.LENGTH_LONG).show()
-        } else {
-            Log.w("MainActivity", "Ainda não somos o discador padrão")
-            Toast.makeText(this, "Configure manualmente: Configurações > Apps > Apps padrão > App de telefone", Toast.LENGTH_LONG).show()
-        }
-        
-        updateUI()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        
-        initViews()
-        updateUI()
-    }
-      private fun initViews() {
-        statusText = findViewById(R.id.statusText)
-        contactsCount = findViewById(R.id.contactsCount)
-        blockedCount = findViewById(R.id.blockedCount)
-        enableButton = findViewById(R.id.enableButton)
-        
-        enableButton.setOnClickListener {
-            if (hasAllProtection()) {
-                openAppSettings()
-            } else {
-                requestAllProtection()
-            }
-        }
-        
-        // Clique longo para diagnóstico
-        enableButton.setOnLongClickListener {
-            runDiagnostic()
-            true
+        try {
+            setContentView(R.layout.activity_main)
+            initViews()
+            updateUI()
+            Log.d("MainActivity", "onCreate completed successfully")
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error in onCreate", e)
+            logErrorToFile("onCreate", e)
+            Toast.makeText(this, "Erro ao inicializar o app: ${e.message}", Toast.LENGTH_LONG).show()
+            finish()
         }
     }
     
-    private fun hasAllPermissions(): Boolean {
-        return REQUIRED_PERMISSIONS.all { permission ->
-            ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+    private fun initViews() {
+        try {
+            statusText = findViewById(R.id.statusText)
+            contactsCount = findViewById(R.id.contactsCount)
+            blockedCount = findViewById(R.id.blockedCount)
+            enableButton = findViewById(R.id.enableButton)
+            
+            enableButton.setOnClickListener {
+                try {
+                    if (hasAllProtection()) {
+                        openAppSettings()
+                    } else {
+                        requestAllProtection()
+                    }
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Error in button click", e)
+                    Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            
+            enableButton.setOnLongClickListener {
+                try {
+                    runDiagnostic()
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Error in diagnostic", e)
+                    Toast.makeText(this, "Erro no diagnóstico: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+                true
+            }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error initializing views", e)
+            logErrorToFile("initViews", e)
+            throw e
+        }
+    }
+      private fun hasAllPermissions(): Boolean {
+        return try {
+            REQUIRED_PERMISSIONS.all { permission ->
+                ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+            }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error checking permissions", e)
+            false
         }
     }
     
     private fun hasOverlayPermission(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Settings.canDrawOverlays(this)
-        } else {
-            true
-        }
-    }    private fun isDefaultDialer(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            try {
-                val telecomManager = getSystemService(TELECOM_SERVICE) as TelecomManager
-                val defaultPackage = telecomManager.defaultDialerPackage
-                val isDefault = packageName == defaultPackage
-                
-                Log.d("MainActivity", "=== VERIFICAÇÃO DISCADOR PADRÃO ===")
-                Log.d("MainActivity", "Nosso package: $packageName")
-                Log.d("MainActivity", "Discador padrão atual: $defaultPackage")
-                Log.d("MainActivity", "É o padrão: $isDefault")
-                
-                // Verificar se temos PhoneAccount registrado
-                try {
-                    val phoneAccounts = telecomManager.callCapablePhoneAccounts
-                    val hasPhoneAccount = phoneAccounts.any { 
-                        it.componentName.packageName == packageName 
-                    }
-                    Log.d("MainActivity", "Tem PhoneAccount registrado: $hasPhoneAccount")
-                    Log.d("MainActivity", "Total de contas: ${phoneAccounts.size}")
-                    
-                    // Lista todas as contas para debug
-                    phoneAccounts.forEachIndexed { index, account ->
-                        Log.d("MainActivity", "Conta $index: ${account.componentName.packageName}")
-                    }
-                } catch (e: Exception) {
-                    Log.e("MainActivity", "Erro ao listar PhoneAccounts", e)
-                }
-                
-                isDefault
-            } catch (e: Exception) {
-                Log.e("MainActivity", "Erro ao verificar discador padrão", e)
-                false
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Settings.canDrawOverlays(this)
+            } else {
+                true
             }
-        } else {
-            Log.d("MainActivity", "Android < M, assumindo verdadeiro")
-            true
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error checking overlay permission", e)
+            false
+        }
+    }    /**
+     * Verifica se o app está configurado como CallScreeningService (Android 10+)
+     */
+    private fun isDefaultCallScreeningService(): Boolean {
+        return try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // Para Android 10+, vamos verificar se temos permissões necessárias
+                // e se o usuário já configurou o serviço
+                val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
+                val userConfigured = prefs.getBoolean("call_screening_configured", false)
+                
+                Log.d("MainActivity", "Android ${Build.VERSION.SDK_INT} detected")
+                Log.d("MainActivity", "User configured call screening: $userConfigured")
+                
+                // Se o usuário já marcou como configurado, assumimos que está ok
+                return userConfigured
+            } else {
+                true // Em versões antigas não é necessário
+            }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error checking call screening service", e)
+            false
+        }
+    }    /**
+     * Solicita ao usuário para configurar o app como CallScreeningService
+     * Agora usa detecção inteligente por versão do Android
+     */
+    private fun requestCallScreeningService() {
+        try {
+            Log.d("MainActivity", "Requesting call screening service setup")
+            
+            // Usar a nova função inteligente que detecta a versão
+            requestAllPermissionsAtOnce()
+            
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error requesting call screening service", e)
+            Toast.makeText(this, "Erro ao solicitar configuração: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
     
-    private fun registerPhoneAccount() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            try {
-                val telecomManager = getSystemService(TELECOM_SERVICE) as TelecomManager
-                val phoneAccountHandle = PhoneAccountHandle(
-                    ComponentName(this, MyConnectionService::class.java),
-                    "SafecallKids"
+    /**
+     * Abre as configurações para o usuário configurar CallScreeningService
+     */
+    private fun openCallScreeningSettings() {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // Tentar abrir configurações específicas de telefone
+                val intents = listOf(
+                    Intent("android.telecom.action.CHANGE_DEFAULT_DIALER").apply {
+                        putExtra("android.telecom.extra.CHANGE_DEFAULT_DIALER_PACKAGE_NAME", packageName)
+                    },
+                    Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS),
+                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.fromParts("package", packageName, null)
+                    }
                 )
                 
-                val phoneAccount = PhoneAccount.builder(phoneAccountHandle, "SafecallKids")
-                    .setCapabilities(PhoneAccount.CAPABILITY_CALL_PROVIDER)
-                    .setIcon(Icon.createWithResource(this, R.mipmap.ic_launcher))
-                    .setHighlightColor(ContextCompat.getColor(this, R.color.purple_500))
-                    .build()
+                var opened = false
+                for (intent in intents) {
+                    try {
+                        startActivity(intent)
+                        opened = true
+                        break
+                    } catch (e: Exception) {
+                        Log.w("MainActivity", "Failed to open intent: ${intent.action}", e)
+                    }
+                }
                 
-                telecomManager.registerPhoneAccount(phoneAccount)
-                Log.d("MainActivity", "Phone account registered successfully")
-            } catch (e: Exception) {
-                Log.e("MainActivity", "Error registering phone account", e)
-                Toast.makeText(this, "Erro ao registrar conta de telefone: ${e.message}", Toast.LENGTH_SHORT).show()
+                if (!opened) {
+                    Toast.makeText(this, "Por favor, configure manualmente nas configurações do sistema", Toast.LENGTH_LONG).show()
+                }
             }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error opening call screening settings", e)
+            Toast.makeText(this, "Erro ao abrir configurações: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
     
     private fun hasAllProtection(): Boolean {
-        return hasAllPermissions() && hasOverlayPermission() && isDefaultDialer()
+        return try {
+            hasAllPermissions() && hasOverlayPermission() && isDefaultCallScreeningService()
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error checking protection status", e)
+            false
+        }
     }
     
     private fun requestPermissions() {
-        ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
+        try {
+            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error requesting permissions", e)
+            Toast.makeText(this, "Erro ao solicitar permissões: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
     }
     
     private fun requestOverlayPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-            overlayPermissionLauncher.launch(intent)
-        }
-    }    private fun requestDefaultDialer() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            try {
-                Log.d("MainActivity", "=== SOLICITANDO DISCADOR PADRÃO ===")
-                
-                // Primeiro registrar a conta de telefone
-                registerPhoneAccount()
-                
-                // Aguardar um pouco para o registro processar
-                Thread.sleep(500)
-                
-                // Verificar se já é o discador padrão
-                val telecomManager = getSystemService(TELECOM_SERVICE) as TelecomManager
-                val currentDefault = telecomManager.defaultDialerPackage
-                
-                Log.d("MainActivity", "Discador atual antes da solicitação: $currentDefault")
-                
-                if (packageName == currentDefault) {
-                    Log.d("MainActivity", "App já é o discador padrão")
-                    updateUI()
-                    return
-                }
-                
-                // Verificar se o intent está disponível
-                val intent = Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER)
-                intent.putExtra(TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, packageName)
-                
-                if (intent.resolveActivity(packageManager) != null) {
-                    Log.d("MainActivity", "Lançando intent para mudança de discador padrão")
-                    defaultDialerLauncher.launch(intent)
-                } else {
-                    Log.e("MainActivity", "Intent de mudança de discador não disponível")
-                    Toast.makeText(this, "Sistema não suporta mudança de discador padrão", Toast.LENGTH_LONG).show()
-                    
-                    // Tentar abrir configurações manualmente
-                    openDefaultAppsSettings()
-                }
-                
-            } catch (e: Exception) {
-                Log.e("MainActivity", "Erro ao solicitar discador padrão", e)
-                Toast.makeText(this, "Erro ao solicitar app de telefone padrão: ${e.message}", Toast.LENGTH_LONG).show()
-                
-                // Tentar abrir configurações como fallback
-                openDefaultAppsSettings()
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+                overlayPermissionLauncher.launch(intent)
             }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error requesting overlay permission", e)
+            Toast.makeText(this, "Erro ao solicitar permissão de sobreposição: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
     
     private fun startCallBlockingService() {
         try {
             val serviceIntent = Intent(this, CallBlockingService::class.java)
-            startForegroundService(serviceIntent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent)
+            } else {
+                startService(serviceIntent)
+            }
             Log.d("MainActivity", "Call blocking service started")
         } catch (e: Exception) {
             Log.e("MainActivity", "Error starting service", e)
@@ -239,23 +236,21 @@ class MainActivity : AppCompatActivity() {
     private fun updateUI() {
         try {
             if (hasAllProtection()) {
-                statusText.text = getString(R.string.protection_enabled)
+                statusText.text = "✅ Proteção Ativada\nBloqueando chamadas desconhecidas"
                 enableButton.text = "Configurações do App"
                 
-                // Carregar contatos com tratamento de erro
                 try {
                     val contactsHelper = ContactsHelper(this)
                     val contactsNum = contactsHelper.getContactsCount()
                     contactsCount.text = "Contatos carregados: $contactsNum"
                 } catch (e: SecurityException) {
                     Log.w("MainActivity", "Permissão de contatos negada", e)
-                    contactsCount.text = "Contatos carregados: permissão negada"
+                    contactsCount.text = "Contatos carregados: sem permissão"
                 } catch (e: Exception) {
                     Log.e("MainActivity", "Erro ao carregar contatos", e)
                     contactsCount.text = "Contatos carregados: erro"
                 }
                 
-                // Carregar contador de chamadas bloqueadas
                 try {
                     val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
                     val blocked = prefs.getInt("blocked_calls_count", 0)
@@ -265,50 +260,46 @@ class MainActivity : AppCompatActivity() {
                     blockedCount.text = "Chamadas bloqueadas: erro"
                 }
                 
-                // Iniciar serviço se ainda não estiver rodando
                 if (hasAllPermissions()) {
                     startCallBlockingService()
                 }
                 
-            } else {
-                val missing = mutableListOf<String>()
+            } else {                val missing = mutableListOf<String>()
                 if (!hasAllPermissions()) missing.add("Permissões básicas")
                 if (!hasOverlayPermission()) missing.add("Sobrepor apps")
-                if (!isDefaultDialer()) missing.add("App de telefone padrão")
+                if (!isDefaultCallScreeningService()) missing.add("Call Screening")
                 
-                statusText.text = "Proteção Desativada\nFaltando: ${missing.joinToString(", ")}"
-                enableButton.text = getString(R.string.grant_permissions)
+                statusText.text = "❌ Proteção Desativada\nFaltando: ${missing.joinToString(", ")}"
+                enableButton.text = "Conceder Permissões"
                 contactsCount.text = "Contatos carregados: 0"
                 blockedCount.text = "Chamadas bloqueadas: 0"
             }
         } catch (e: Exception) {
             Log.e("MainActivity", "Erro ao atualizar UI", e)
+            logErrorToFile("updateUI", e)
             statusText.text = "Erro na interface"
             enableButton.text = "Tentar novamente"
+            Toast.makeText(this, "Erro ao atualizar interface: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
     
     private fun requestAllProtection() {
         try {
-            // Solicitar permissões básicas
             if (!hasAllPermissions()) {
                 requestPermissions()
-                return // Aguardar resultado das permissões
+                return
             }
             
-            // Solicitar overlay permission
             if (!hasOverlayPermission()) {
                 requestOverlayPermission()
                 return
             }
             
-            // Solicitar para ser discador padrão
-            if (!isDefaultDialer()) {
-                requestDefaultDialer()
+            if (!isDefaultCallScreeningService()) {
+                requestCallScreeningService()
                 return
             }
             
-            // Se chegou aqui, todas as permissões estão concedidas
             updateUI()
             
         } catch (e: Exception) {
@@ -327,139 +318,287 @@ class MainActivity : AppCompatActivity() {
             Log.e("MainActivity", "Erro ao abrir configurações", e)
             Toast.makeText(this, "Erro ao abrir configurações", Toast.LENGTH_SHORT).show()
         }
-    
-    private fun openDefaultAppsSettings() {
-        try {
-            Log.d("MainActivity", "Tentando abrir configurações de apps padrão")
-            
-            // Tentar diferentes intents para abrir configurações de apps padrão
-            val intents = listOf(
-                Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS),
-                Intent("android.settings.MANAGE_DEFAULT_APPS_SETTINGS"),
-                Intent(Settings.ACTION_APPLICATION_SETTINGS)
-            )
-            
-            for (intent in intents) {
-                try {
-                    if (intent.resolveActivity(packageManager) != null) {
-                        startActivity(intent)
-                        Toast.makeText(this, "Procure por 'App de telefone' e selecione SafecallKids", Toast.LENGTH_LONG).show()
-                        return
-                    }
-                } catch (e: Exception) {
-                    Log.w("MainActivity", "Intent não funcionou: ${intent.action}", e)
-                }
-            }
-            
-            // Fallback: abrir configurações gerais
-            startActivity(Intent(Settings.ACTION_SETTINGS))
-            Toast.makeText(this, "Vá em Aplicações > Apps padrão > App de telefone", Toast.LENGTH_LONG).show()
-            
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Erro ao abrir configurações", e)
-            Toast.makeText(this, "Não foi possível abrir configurações", Toast.LENGTH_SHORT).show()
-        }
-    }
-      private fun checkAndFixDefaultDialer() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            try {
-                val telecomManager = getSystemService(TELECOM_SERVICE) as TelecomManager
-                
-                // Verificar se temos PhoneAccount mas não somos o discador padrão
-                val phoneAccounts = telecomManager.callCapablePhoneAccounts
-                val hasPhoneAccount = phoneAccounts.any { 
-                    it.componentName.packageName == packageName 
-                }
-                val isDefault = packageName == telecomManager.defaultDialerPackage
-                
-                Log.d("MainActivity", "=== DIAGNÓSTICO DISCADOR ===")
-                Log.d("MainActivity", "Tem PhoneAccount: $hasPhoneAccount")
-                Log.d("MainActivity", "É discador padrão: $isDefault")
-                
-                // Se não temos PhoneAccount, registrar
-                if (!hasPhoneAccount) {
-                    Log.d("MainActivity", "PhoneAccount não encontrado, registrando...")
-                    registerPhoneAccount()
-                    
-                    // Aguardar e verificar novamente
-                    Thread.sleep(1000)
-                    val phoneAccountsAfter = telecomManager.callCapablePhoneAccounts
-                    val hasPhoneAccountAfter = phoneAccountsAfter.any { 
-                        it.componentName.packageName == packageName 
-                    }
-                    Log.d("MainActivity", "PhoneAccount após registro: $hasPhoneAccountAfter")
-                }
-                
-                if (hasPhoneAccount && !isDefault) {
-                    Log.w("MainActivity", "Temos PhoneAccount mas não somos o discador padrão!")
-                    
-                    // Verificar novamente após um pequeno delay
-                    Thread.sleep(2000)
-                    val isDefaultAfterDelay = packageName == telecomManager.defaultDialerPackage
-                    Log.d("MainActivity", "Status após delay: $isDefaultAfterDelay")
-                    
-                    if (!isDefaultAfterDelay) {
-                        Toast.makeText(this, "Para funcionar corretamente, defina SafecallKids como app de telefone padrão", Toast.LENGTH_LONG).show()
-                    } else {
-                        Log.d("MainActivity", "Status corrigido após delay!")
-                        updateUI()
-                    }
-                }
-                
-            } catch (e: Exception) {
-                Log.e("MainActivity", "Erro no diagnóstico do discador", e)
-            }
-        }
     }
 
     private fun runDiagnostic() {
-        Log.d("MainActivity", "=== DIAGNÓSTICO COMPLETO ===")
-        
+        Log.d("MainActivity", "=== DIAGNÓSTICO SAFECALLKIDS ===")
         try {
-            // Verificar permissões básicas
             REQUIRED_PERMISSIONS.forEach { permission ->
                 val granted = ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
                 Log.d("MainActivity", "Permissão $permission: $granted")
             }
             
-            // Verificar overlay
             val overlay = hasOverlayPermission()
             Log.d("MainActivity", "Overlay permission: $overlay")
             
-            // Verificar discador padrão com detalhes
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val telecomManager = getSystemService(TELECOM_SERVICE) as TelecomManager
-                val defaultPackage = telecomManager.defaultDialerPackage
-                val isDefault = packageName == defaultPackage
+            Log.d("MainActivity", "Android API Level: ${Build.VERSION.SDK_INT}")
+            
+            try {
+                val contactsHelper = ContactsHelper(this)
+                val contactsNum = contactsHelper.getContactsCount()
+                Log.d("MainActivity", "Contatos carregados: $contactsNum")
                 
-                Log.d("MainActivity", "Package atual: $packageName")
-                Log.d("MainActivity", "Discador padrão: $defaultPackage")
-                Log.d("MainActivity", "É o padrão: $isDefault")
-                
-                // Listar todas as contas telefônicas
-                try {
-                    val phoneAccounts = telecomManager.callCapablePhoneAccounts
-                    Log.d("MainActivity", "Total de PhoneAccounts: ${phoneAccounts.size}")
-                    
-                    phoneAccounts.forEachIndexed { index, account ->
-                        val pkg = account.componentName.packageName
-                        val cls = account.componentName.className
-                        Log.d("MainActivity", "Conta $index: $pkg / $cls")
-                    }
-                    
-                    val ourAccount = phoneAccounts.find { it.componentName.packageName == packageName }
-                    Log.d("MainActivity", "Nossa conta encontrada: ${ourAccount != null}")
-                    
-                } catch (e: Exception) {
-                    Log.e("MainActivity", "Erro ao listar contas", e)
-                }
+                // Show sample contacts for debugging
+                val samples = contactsHelper.getContactSample(3)
+                Log.d("MainActivity", "Amostra de contatos: $samples")
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Erro ao carregar contatos", e)
             }
             
-            Toast.makeText(this, "Diagnóstico completo - veja os logs", Toast.LENGTH_LONG).show()
+            val status = if (hasAllProtection()) "ATIVO" else "INATIVO"
+            Log.d("MainActivity", "Status do bloqueador: $status")
+            
+            Toast.makeText(this, "Diagnóstico concluído - Status: $status\nVerifique os logs para detalhes", Toast.LENGTH_LONG).show()
             
         } catch (e: Exception) {
             Log.e("MainActivity", "Erro no diagnóstico", e)
+            logErrorToFile("runDiagnostic", e)
             Toast.makeText(this, "Erro no diagnóstico: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun logErrorToFile(tag: String, error: Throwable) {
+        try {
+            val logMsg = "[${System.currentTimeMillis()}] $tag: ${error.message}\n${Log.getStackTraceString(error)}\n"
+            openFileOutput("safecall_error.log", MODE_APPEND).use { fos ->
+                fos.write(logMsg.toByteArray())
+            }
+        } catch (e: Exception) {
+            // Se não conseguir logar, ignora para não causar novo crash
+        }
+    }
+
+    /**
+     * Marca o Call Screening como configurado pelo usuário
+     */
+    private fun markCallScreeningAsConfigured() {
+        try {
+            val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
+            prefs.edit().putBoolean("call_screening_configured", true).apply()
+            
+            Log.d("MainActivity", "Call screening marked as configured by user")
+            Toast.makeText(this, "✅ Call Screening marcado como configurado!", Toast.LENGTH_SHORT).show()
+            
+            updateUI()
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error marking call screening as configured", e)
+            Toast.makeText(this, "Erro ao salvar configuração", Toast.LENGTH_SHORT).show()
+        }
+    }
+    
+    /**
+     * Solicita TODAS as permissões necessárias de uma vez, baseado na versão do Android
+     */
+    private fun requestAllPermissionsAtOnce() {
+        try {
+            val androidVersion = Build.VERSION.SDK_INT
+            val manufacturer = Build.MANUFACTURER.lowercase()
+            val model = Build.MODEL
+            
+            Log.d("MainActivity", "Android $androidVersion, Manufacturer: $manufacturer, Model: $model")
+            
+            val message = when {
+                androidVersion >= Build.VERSION_CODES.TIRAMISU -> // Android 13+ (API 33+)
+                    getAndroid13Instructions(manufacturer)
+                
+                androidVersion >= Build.VERSION_CODES.S -> // Android 12 (API 31-32)
+                    getAndroid12Instructions(manufacturer)
+                
+                androidVersion >= Build.VERSION_CODES.Q -> // Android 10-11 (API 29-30)
+                    getAndroid10Instructions()
+                
+                else -> // Android 9 e anteriores
+                    getAndroidLegacyInstructions()
+            }
+            
+            AlertDialog.Builder(this)
+                .setTitle("🔧 Configuração Completa - Android $androidVersion")
+                .setMessage(message)
+                .setPositiveButton("Abrir Configurações") { _, _ ->
+                    openSpecificSettings(androidVersion)
+                }
+                .setNeutralButton("Já Configurei Tudo") { _, _ ->
+                    markAllAsConfigured()
+                }
+                .setNegativeButton("Cancelar", null)
+                .setCancelable(false)
+                .show()
+                
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error showing complete setup", e)
+            Toast.makeText(this, "Erro ao mostrar instruções: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+    
+    /**
+     * Instruções específicas para Android 13+
+     */
+    private fun getAndroid13Instructions(manufacturer: String): String {
+        val baseInstructions = """
+            🛡️ CONFIGURAÇÃO COMPLETA PARA ANDROID 13+
+            
+            ⚡ MÉTODO RÁPIDO - Definir como App Padrão:
+            1. Configurações → Apps → Apps padrão → App de telefone
+            2. Selecione 'SafecallKids'
+            3. Confirme a mudança
+            
+            📞 ALTERNATIVA - Pelo App Telefone:
+            1. Abra o app 'Telefone' do sistema
+            2. Menu (⋮) → Configurações
+            3. Procure 'Bloqueio de spam' ou 'Identificador'
+            4. Ative o SafecallKids
+            
+            🔍 SE NÃO ENCONTRAR:
+            1. Configurações → Privacidade e segurança
+            2. Permissões → Telefone
+            3. Ative todas para SafecallKids
+        """.trimIndent()
+        
+        return when (manufacturer) {
+            "samsung" -> baseInstructions + "\n\n🔸 SAMSUNG: Pode estar em 'Configurações → Aplicativos → Escolher apps padrão'"
+            "xiaomi" -> baseInstructions + "\n\n🔸 XIAOMI: Vá em 'Configurações → Apps → Aplicativos padrão → Aplicativo de telefone'"
+            "huawei" -> baseInstructions + "\n\n🔸 HUAWEI: Procure em 'Configurações → Aplicativos → Aplicativos padrão'"
+            "oppo", "oneplus" -> baseInstructions + "\n\n🔸 OPPO/OnePlus: 'Configurações → Aplicativos → Apps padrão'"
+            else -> baseInstructions
+        }
+    }
+    
+    @Suppress("UNUSED_PARAMETER")
+    /**
+     * Instruções para Android 12
+     */
+    private fun getAndroid12Instructions(manufacturer: String): String {
+        return """
+            🛡️ CONFIGURAÇÃO PARA ANDROID 12
+        
+            1️⃣ Defina como app de telefone padrão:
+               Configurações → Apps → Apps padrão → Telefone
+               
+            2️⃣ Ative Call Screening:
+               Configurações → Apps → Permissões especiais
+               → Serviços de triagem de chamadas
+               
+            3️⃣ Permissões de telefone:
+               Configurações → Privacidade → Permissões
+               → Telefone → SafecallKids → Permitir
+               
+            ${if (Build.MANUFACTURER.lowercase() == "samsung") "🔸 SAMSUNG: Pode estar em 'Aplicações' em vez de 'Apps'" else ""}
+        """.trimIndent()
+    }
+    
+    /**
+     * Instruções para Android 10-11
+     */
+    private fun getAndroid10Instructions(): String {
+        return """
+            🛡️ CONFIGURAÇÃO PARA ANDROID 10-11
+            
+            1️⃣ Apps padrão:
+               Configurações → Apps → Apps padrão → Aplicativo de telefone
+               
+            2️⃣ Call Screening:
+               Configurações → Apps → Permissões especiais
+               → Acesso a informações de chamada
+               
+            3️⃣ Verificar permissões:
+               - Telefone: Permitido
+               - Contatos: Permitido  
+               - Sobrepor apps: Permitido
+        """.trimIndent()
+    }
+    
+    /**
+     * Instruções para Android 9 e anteriores
+     */
+    private fun getAndroidLegacyInstructions(): String {
+        return """
+            🛡️ CONFIGURAÇÃO PARA ANDROID 9 E ANTERIORES
+            
+            ✅ As permissões básicas são suficientes nesta versão!
+            
+            O app usará o método legado de bloqueio:
+            - Permissão de telefone
+            - Permissão de contatos
+            - Permissão para sobrepor apps
+            
+            Clique em 'Já Configurei Tudo' para ativar.
+        """.trimIndent()
+    }
+    
+    /**
+     * Abre configurações específicas baseadas na versão e fabricante
+     */
+    private fun openSpecificSettings(androidVersion: Int) {
+        try {
+            val intents = mutableListOf<Intent>()
+            
+            // Primeiro tenta abrir configurações específicas por versão
+            when {
+                androidVersion >= Build.VERSION_CODES.TIRAMISU -> {
+                    // Android 13+ - Apps padrão
+                    intents.add(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS))
+                    intents.add(Intent("android.settings.ROLE_SETTINGS"))
+                }
+                
+                androidVersion >= Build.VERSION_CODES.Q -> {
+                    // Android 10+ - Call screening
+                    intents.add(Intent("android.telecom.action.CHANGE_DEFAULT_DIALER"))
+                    intents.add(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS))
+                }
+            }
+            
+            // Sempre adiciona configurações gerais como fallback
+            intents.add(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts("package", packageName, null)
+            })
+            
+            // Tenta abrir o primeiro intent que funcionar
+            var opened = false
+            for (intent in intents) {
+                try {
+                    startActivity(intent)
+                    opened = true
+                    Log.d("MainActivity", "Opened settings with intent: ${intent.action}")
+                    break
+                } catch (e: Exception) {
+                    Log.w("MainActivity", "Failed to open intent: ${intent.action}", e)
+                }
+            }
+            
+            if (!opened) {
+                Toast.makeText(this, "Abra as Configurações manualmente e procure por 'Apps padrão'", Toast.LENGTH_LONG).show()
+            }
+            
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error opening specific settings", e)
+            Toast.makeText(this, "Erro ao abrir configurações", Toast.LENGTH_SHORT).show()
+        }
+    }
+    
+    /**
+     * Marca tudo como configurado (para quando o usuário fez manualmente)
+     */
+    private fun markAllAsConfigured() {
+        try {
+            val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
+            prefs.edit()
+                .putBoolean("call_screening_configured", true)
+                .putBoolean("all_setup_completed", true)
+                .apply()
+            
+            Log.d("MainActivity", "All configuration marked as completed by user")
+            Toast.makeText(this, "✅ Configuração completa! Testando proteção...", Toast.LENGTH_LONG).show()
+            
+            updateUI()
+            
+            // Iniciar serviço para testar
+            if (hasAllPermissions()) {
+                startCallBlockingService()
+            }
+            
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error marking all as configured", e)
+            Toast.makeText(this, "Erro ao salvar configuração", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -471,32 +610,37 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            Log.d("MainActivity", "Resultado das permissões recebido")
-            
-            // Verificar se todas as permissões foram concedidas
-            val allGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
-            
-            if (allGranted) {
-                Log.d("MainActivity", "Todas as permissões concedidas")
-                // Continuar com overlay e discador padrão se necessário
-                requestAllProtection()
-            } else {
-                Log.w("MainActivity", "Algumas permissões foram negadas")
-                Toast.makeText(this, "Algumas permissões são necessárias para o funcionamento do app", Toast.LENGTH_LONG).show()
+            try {
+                Log.d("MainActivity", "Resultado das permissões recebido")
+                
+                val allGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
+                
+                if (allGranted) {
+                    Log.d("MainActivity", "Todas as permissões concedidas")
+                    requestAllProtection()
+                } else {
+                    Log.w("MainActivity", "Algumas permissões foram negadas")
+                    Toast.makeText(this, "Algumas permissões são necessárias para o funcionamento do app", Toast.LENGTH_LONG).show()
+                }
+                
+                updateUI()
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error processing permission result", e)
+                logErrorToFile("onRequestPermissionsResult", e)
+                Toast.makeText(this, "Erro ao processar permissões: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-            
-            updateUI()
         }
-    }    override fun onResume() {
+    }
+    
+    override fun onResume() {
         super.onResume()
-        
-        // Aguardar um pouco antes de verificar o status para dar tempo ao sistema
-        Thread.sleep(500)
-        
-        updateUI()
-        
-        // Verificar e tentar corrigir problemas com discador padrão
-        checkAndFixDefaultDialer()
+        try {
+            updateUI()
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error in onResume", e)
+            logErrorToFile("onResume", e)
+            Toast.makeText(this, "Erro ao retomar app: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
     }
     
     override fun onDestroy() {

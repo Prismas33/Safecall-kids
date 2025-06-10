@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
-    <!-- Exclude the shared preferences file that contains settings -->
-    <exclude domain="sharedpref" path="safecall_prefs.xml" />
+    <include path="." />
 </full-backup-content>

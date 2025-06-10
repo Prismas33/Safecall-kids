@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.safecallkids.app-mergeDebugResources-29:/values-v18/values-v18.xml",
+            "outputFile": "com.safecallkids.app-mergeDebugResources-43:/values-v18/values-v18.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ventu\\.gradle\\caches\\8.9\\transforms\\cce7db1588b7ea9e76946c3a0ad7ebac\\transformed\\appcompat-1.6.1\\res\\values-v18\\values-v18.xml",
+                    "source": "C:\\Users\\ventu\\.gradle\\caches\\8.9\\transforms\\4d2cc824db3996d997199428b96d31f2\\transformed\\appcompat-1.7.0\\res\\values-v18\\values-v18.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

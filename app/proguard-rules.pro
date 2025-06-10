@@ -19,3 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep ContactsHelper methods
+-keep class com.safecallkids.app.ContactsHelper { *; }
+
+# Keep broadcast receiver
+-keep class com.safecallkids.app.CallReceiver { *; }
+
+# Keep service
+-keep class com.safecallkids.app.CallBlockingService { *; }

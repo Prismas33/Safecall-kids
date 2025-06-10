@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.safecallkids.app-mergeDebugResources-29:/values-w320dp-land-v13/values-w320dp-land-v13.xml",
+            "outputFile": "com.safecallkids.app-mergeDebugResources-43:/values-w320dp-land-v13/values-w320dp-land-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ventu\\.gradle\\caches\\8.9\\transforms\\bb31b1399de9f411a2bd0a66dae8bf7a\\transformed\\material-1.11.0\\res\\values-w320dp-land-v13\\values-w320dp-land-v13.xml",
+                    "source": "C:\\Users\\ventu\\.gradle\\caches\\8.9\\transforms\\ba4c121a39e753dbc788c6f8c4df413f\\transformed\\material-1.12.0\\res\\values-w320dp-land-v13\\values-w320dp-land-v13.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
