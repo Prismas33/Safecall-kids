@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SafecallKids</string>
+    <string name="app_settings">Definições da App</string>
+    <string name="call_blocked">Chamada bloqueada</string>
+    <string name="calls_blocked">Chamadas bloqueadas</string>
+    <string name="check_permissions">Verificar permissões</string>
+    <string name="contacts_loaded">Contactos carregados</string>
+    <string name="diagnostic_completed">Diagnóstico concluído</string>
+    <string name="error_occurred">Ocorreu um erro</string>
+    <string name="grant_permissions">Conceder permissões</string>
+    <string name="info_text">• Bloqueia chamadas de números desconhecidos\n• Permite apenas contactos guardados\n• Funciona em segundo plano\n• Mantenha pressionado o botão para diagnóstico</string>
+    <string name="notification_text">Proteção ativa contra chamadas desconhecidas</string>
+    <string name="notification_title">SafecallKids Ativo</string>
+    <string name="permission_denied">Permissões necessárias para funcionar</string>
+    <string name="protection_active">Proteção Ativada</string>
+    <string name="protection_inactive">Proteção Desativada</string>
+</resources>

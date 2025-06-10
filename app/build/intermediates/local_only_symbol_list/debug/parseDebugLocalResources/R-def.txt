@@ -20,7 +20,10 @@ color text_color
 color warning_color
 drawable button_mom_call
 drawable button_primary
+drawable button_secondary
 drawable emergency_card_bg
+drawable ic_flag_en
+drawable ic_flag_pt
 drawable ic_launcher_foreground
 drawable ic_launcher_foreground_new
 drawable ic_launcher_legacy
@@ -28,10 +31,15 @@ drawable ic_shield_heart
 drawable logo_safecall_bg
 drawable logo_safecall_transparent
 id blockedCount
+id btn_already_configured
+id btn_cancel
+id btn_settings
 id contactsCount
+id dialog_message
 id enableButton
 id statusText
 layout activity_main
+layout dialog_configuration
 mipmap ic_launcher
 mipmap ic_launcher_round
 string app_name

@@ -3030,6 +3030,7 @@ drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
 drawable button_mom_call
 drawable button_primary
+drawable button_secondary
 drawable design_fab_background
 drawable design_ic_visibility
 drawable design_ic_visibility_off
@@ -3045,6 +3046,8 @@ drawable ic_call_decline
 drawable ic_call_decline_low
 drawable ic_clear_black_24
 drawable ic_clock_black_24dp
+drawable ic_flag_en
+drawable ic_flag_pt
 drawable ic_keyboard_black_24dp
 drawable ic_launcher_foreground
 drawable ic_launcher_foreground_new
@@ -3238,6 +3241,9 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id btn_already_configured
+id btn_cancel
+id btn_settings
 id buttonPanel
 id cache_measures
 id callMeasure
@@ -3291,6 +3297,7 @@ id design_menu_item_action_area_stub
 id design_menu_item_text
 id design_navigation_view
 id dialog_button
+id dialog_message
 id dimensions
 id direct
 id disableHome
@@ -3776,6 +3783,7 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout dialog_configuration
 layout ime_base_split_test_activity
 layout ime_secondary_split_test_activity
 layout m3_alert_dialog
