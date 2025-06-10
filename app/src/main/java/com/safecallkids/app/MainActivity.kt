@@ -1,8 +1,10 @@
 package com.safecallkids.app
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -10,8 +12,10 @@ import android.provider.Settings
 import android.telecom.TelecomManager
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import java.util.Locale
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -20,19 +24,19 @@ import androidx.core.content.ContextCompat
 import java.io.FileNotFoundException
 
 class MainActivity : AppCompatActivity() {
-    
-    private lateinit var statusText: TextView
+      private lateinit var statusText: TextView
     private lateinit var contactsCount: TextView
     private lateinit var blockedCount: TextView
     private lateinit var enableButton: Button
+    private lateinit var btnLangPt: ImageButton
+    private lateinit var btnLangEn: ImageButton
       private val PERMISSIONS_REQUEST_CODE = 100
     private val REQUIRED_PERMISSIONS = arrayOf(
         Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.READ_CONTACTS,
         Manifest.permission.ANSWER_PHONE_CALLS
     )
-    
-    private val overlayPermissionLauncher = registerForActivityResult(
+      private val overlayPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { 
         updateUI()
@@ -41,6 +45,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
+            // Load saved language preference first
+            loadLocale()
+            
             setContentView(R.layout.activity_main)
             initViews()
             updateUI()
@@ -52,13 +59,14 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
-    
-    private fun initViews() {
+      private fun initViews() {
         try {
             statusText = findViewById(R.id.statusText)
             contactsCount = findViewById(R.id.contactsCount)
             blockedCount = findViewById(R.id.blockedCount)
             enableButton = findViewById(R.id.enableButton)
+            btnLangPt = findViewById(R.id.btn_lang_pt)
+            btnLangEn = findViewById(R.id.btn_lang_en)
             
             enableButton.setOnClickListener {
                 try {
@@ -82,6 +90,16 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
+            
+            // Setup language switch buttons
+            btnLangPt.setOnClickListener {
+                setLocale("pt")
+            }
+            
+            btnLangEn.setOnClickListener {
+                setLocale("en")
+            }
+            
         } catch (e: Exception) {
             Log.e("MainActivity", "Error initializing views", e)
             logErrorToFile("initViews", e)
@@ -654,9 +672,71 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Erro ao retomar app: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
-    
-    override fun onDestroy() {
+      override fun onDestroy() {
         super.onDestroy()
         Log.d("MainActivity", "MainActivity destruída")
+    }
+    
+    /**
+     * Set the locale for the app and recreate activity
+     */
+    private fun setLocale(languageCode: String) {
+        try {
+            Log.d("MainActivity", "Setting locale to: $languageCode")
+            
+            // Save preference
+            val prefs = getSharedPreferences("safecall_prefs", Context.MODE_PRIVATE)
+            prefs.edit().putString("language", languageCode).apply()
+            
+            // Create new locale
+            val locale = Locale(languageCode)
+            Locale.setDefault(locale)
+            
+            // Update configuration
+            val config = Configuration()
+            config.setLocale(locale)
+            
+            // Update app context
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                createConfigurationContext(config)
+            }
+            
+            // Update resources
+            resources.updateConfiguration(config, resources.displayMetrics)
+            
+            // Recreate activity to apply changes
+            recreate()
+            
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error setting locale", e)
+            Toast.makeText(this, "Erro ao alterar idioma: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+    
+    /**
+     * Load saved locale preference
+     */
+    private fun loadLocale() {
+        try {
+            val prefs = getSharedPreferences("safecall_prefs", Context.MODE_PRIVATE)
+            val language = prefs.getString("language", "pt") ?: "pt" // Default to Portuguese
+            
+            Log.d("MainActivity", "Loading saved locale: $language")
+            
+            val locale = Locale(language)
+            Locale.setDefault(locale)
+            
+            val config = Configuration()
+            config.setLocale(locale)
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                createConfigurationContext(config)
+            }
+            
+            resources.updateConfiguration(config, resources.displayMetrics)
+            
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error loading locale", e)
+        }
     }
 }

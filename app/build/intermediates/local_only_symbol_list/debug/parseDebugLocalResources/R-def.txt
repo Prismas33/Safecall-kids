@@ -33,6 +33,8 @@ drawable logo_safecall_transparent
 id blockedCount
 id btn_already_configured
 id btn_cancel
+id btn_lang_en
+id btn_lang_pt
 id btn_settings
 id contactsCount
 id dialog_message

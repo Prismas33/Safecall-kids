@@ -3243,6 +3243,8 @@ id bounceEnd
 id bounceStart
 id btn_already_configured
 id btn_cancel
+id btn_lang_en
+id btn_lang_pt
 id btn_settings
 id buttonPanel
 id cache_measures
