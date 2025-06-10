@@ -1,0 +1,22 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.debug.settings.onBuildFailureProceed": true,
+    "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+    "java.saveActions.organizeImports": true,
+    "kotlin.languageServer.enabled": true,
+    "kotlin.compiler.jvm.target": "1.8",
+    "files.exclude": {
+        "**/build": true,
+        "**/.gradle": true
+    },
+    "search.exclude": {
+        "**/build": true,
+        "**/.gradle": true,
+        "**/node_modules": true
+    },
+    "files.watcherExclude": {
+        "**/build/**": true,
+        "**/.gradle/**": true
+    }
+}

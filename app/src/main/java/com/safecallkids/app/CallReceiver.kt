@@ -14,15 +14,19 @@ class CallReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
             val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
+            // EXTRA_INCOMING_NUMBER está depreciado, mas ainda é necessário para interceptar chamadas em versões antigas.
+            // Em Android 10+ e como discador padrão, use APIs modernas.
+            @Suppress("DEPRECATION") // Necessário para compatibilidade com versões antigas do Android
             val phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
-            
+            if (phoneNumber == null) {
+                Log.w(TAG, "Número da chamada não disponível (pode ser restrição do Android)")
+                return
+            }
             Log.d(TAG, "Phone state changed: $state, Number: $phoneNumber")
             
             when (state) {
                 TelephonyManager.EXTRA_STATE_RINGING -> {
-                    phoneNumber?.let { number ->
-                        handleIncomingCall(context, number)
-                    }
+                    handleIncomingCall(context, phoneNumber)
                 }
                 TelephonyManager.EXTRA_STATE_IDLE -> {
                     Log.d(TAG, "Call ended or idle")
@@ -62,8 +66,18 @@ class CallReceiver : BroadcastReceiver() {
             // Método 1: Tentar usar TelecomManager (Android 9+)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
                 val telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as android.telecom.TelecomManager
-                telecomManager.endCall()
-                true
+                if (androidx.core.content.ContextCompat.checkSelfPermission(
+                        context,
+                        android.Manifest.permission.ANSWER_PHONE_CALLS
+                    ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                ) {
+                    @Suppress("DEPRECATION")
+                    telecomManager.endCall()
+                    true
+                } else {
+                    Log.w(TAG, "Missing ANSWER_PHONE_CALLS permission, cannot block call")
+                    false
+                }
             } else {
                 // Método 2: Usar reflexão para acessar ITelephony (Android mais antigo)
                 blockCallUsingReflection()
