@@ -12,7 +12,20 @@
     <string name="grant_permissions">Grant Permissions</string>
     <string name="app_settings">App Settings</string>
     <string name="diagnostic_completed">Diagnostic completed</string>
-    <string name="error_occurred">An error occurred</string>
-    <string name="check_permissions">Check permissions</string>
+    <string name="error_occurred">An error occurred</string>    <string name="check_permissions">Check permissions</string>
+    <string name="language_label">Language:</string>
+    <string name="protection_description">Protection against unknown calls</string>
+    <string name="protection_enabled_text">✅ Protection Enabled\nBlocking unknown calls</string>
+    <string name="protection_disabled_text">❌ Protection Disabled\nMissing: %1$s</string>
+    <string name="basic_permissions">Basic permissions</string>
+    <string name="overlay_apps">Overlay apps</string>
+    <string name="call_screening">Call Screening</string>
+    <string name="contacts_loaded_format">Contacts loaded: %1$d</string>
+    <string name="contacts_loaded_no_permission">Contacts loaded: no permission</string>
+    <string name="contacts_loaded_error">Contacts loaded: error</string>
+    <string name="calls_blocked_format">Calls blocked: %1$d</string>
+    <string name="calls_blocked_error">Calls blocked: error</string>
+    <string name="interface_error">Interface error</string>
+    <string name="try_again">Try again</string>
     <string name="info_text">• Blocks calls from unknown numbers\n• Allows only saved contacts\n• Runs in the background\n• Long press the button for diagnostics</string>
 </resources>

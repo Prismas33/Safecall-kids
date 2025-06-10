@@ -12,6 +12,7 @@
     
     <!-- Permissões para CallScreeningService (Android 10+) -->
     <uses-permission android:name="android.permission.BIND_SCREENING_SERVICE" />    <application
+        android:name=".SafecallApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"

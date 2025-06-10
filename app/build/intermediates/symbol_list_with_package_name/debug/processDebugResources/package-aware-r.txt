@@ -3883,6 +3883,7 @@ string androidx_startup
 string app_name
 string app_settings
 string appbar_scrolling_view_behavior
+string basic_permissions
 string bottom_sheet_behavior
 string bottomsheet_action_collapse
 string bottomsheet_action_expand
@@ -3897,12 +3898,18 @@ string call_notification_hang_up_action
 string call_notification_incoming_text
 string call_notification_ongoing_text
 string call_notification_screening_text
+string call_screening
 string calls_blocked
+string calls_blocked_error
+string calls_blocked_format
 string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
 string clear_text_end_icon_content_description
 string contacts_loaded
+string contacts_loaded_error
+string contacts_loaded_format
+string contacts_loaded_no_permission
 string diagnostic_completed
 string error_a11y_label
 string error_icon_content_description
@@ -3913,7 +3920,9 @@ string fab_transformation_sheet_behavior
 string grant_permissions
 string hide_bottom_view_on_scroll_behavior
 string icon_content_description
+string interface_error
 string item_view_role_description
+string language_label
 string m3_exceed_max_badge_text_suffix
 string m3_ref_typeface_brand_medium
 string m3_ref_typeface_brand_regular
@@ -4016,6 +4025,7 @@ string mtrl_timepicker_cancel
 string mtrl_timepicker_confirm
 string notification_text
 string notification_title
+string overlay_apps
 string password_toggle_content_description
 string path_password_eye
 string path_password_eye_mask_strike_through
@@ -4023,6 +4033,9 @@ string path_password_eye_mask_visible
 string path_password_strike_through
 string permission_denied
 string protection_active
+string protection_description
+string protection_disabled_text
+string protection_enabled_text
 string protection_inactive
 string search_menu_title
 string searchbar_scrolling_view_behavior
@@ -4031,6 +4044,7 @@ string searchview_navigation_content_description
 string side_sheet_accessibility_pane_title
 string side_sheet_behavior
 string status_bar_notification_info_overflow
+string try_again
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog

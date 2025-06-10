@@ -251,52 +251,52 @@ class MainActivity : AppCompatActivity() {
         }
     }
     
-    private fun updateUI() {
-        try {
+    private fun updateUI() {        try {
             if (hasAllProtection()) {
-                statusText.text = "✅ Proteção Ativada\nBloqueando chamadas desconhecidas"
-                enableButton.text = "Configurações do App"
+                statusText.text = getString(R.string.protection_enabled_text)
+                enableButton.text = getString(R.string.app_settings)
                 
                 try {
                     val contactsHelper = ContactsHelper(this)
                     val contactsNum = contactsHelper.getContactsCount()
-                    contactsCount.text = "Contatos carregados: $contactsNum"
+                    contactsCount.text = getString(R.string.contacts_loaded_format, contactsNum)
                 } catch (e: SecurityException) {
                     Log.w("MainActivity", "Permissão de contatos negada", e)
-                    contactsCount.text = "Contatos carregados: sem permissão"
+                    contactsCount.text = getString(R.string.contacts_loaded_no_permission)
                 } catch (e: Exception) {
                     Log.e("MainActivity", "Erro ao carregar contatos", e)
-                    contactsCount.text = "Contatos carregados: erro"
+                    contactsCount.text = getString(R.string.contacts_loaded_error)
                 }
                 
                 try {
                     val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
                     val blocked = prefs.getInt("blocked_calls_count", 0)
-                    blockedCount.text = "Chamadas bloqueadas: $blocked"
+                    blockedCount.text = getString(R.string.calls_blocked_format, blocked)
                 } catch (e: Exception) {
                     Log.e("MainActivity", "Erro ao acessar preferências", e)
-                    blockedCount.text = "Chamadas bloqueadas: erro"
+                    blockedCount.text = getString(R.string.calls_blocked_error)
                 }
                 
                 if (hasAllPermissions()) {
                     startCallBlockingService()
                 }
                 
-            } else {                val missing = mutableListOf<String>()
-                if (!hasAllPermissions()) missing.add("Permissões básicas")
-                if (!hasOverlayPermission()) missing.add("Sobrepor apps")
-                if (!isDefaultCallScreeningService()) missing.add("Call Screening")
+            } else {
+                val missing = mutableListOf<String>()
+                if (!hasAllPermissions()) missing.add(getString(R.string.basic_permissions))
+                if (!hasOverlayPermission()) missing.add(getString(R.string.overlay_apps))
+                if (!isDefaultCallScreeningService()) missing.add(getString(R.string.call_screening))
                 
-                statusText.text = "❌ Proteção Desativada\nFaltando: ${missing.joinToString(", ")}"
-                enableButton.text = "Conceder Permissões"
-                contactsCount.text = "Contatos carregados: 0"
-                blockedCount.text = "Chamadas bloqueadas: 0"
+                statusText.text = getString(R.string.protection_disabled_text, missing.joinToString(", "))
+                enableButton.text = getString(R.string.grant_permissions)
+                contactsCount.text = getString(R.string.contacts_loaded_format, 0)
+                blockedCount.text = getString(R.string.calls_blocked_format, 0)
             }
         } catch (e: Exception) {
             Log.e("MainActivity", "Erro ao atualizar UI", e)
             logErrorToFile("updateUI", e)
-            statusText.text = "Erro na interface"
-            enableButton.text = "Tentar novamente"
+            statusText.text = getString(R.string.interface_error)
+            enableButton.text = getString(R.string.try_again)
             Toast.makeText(this, "Erro ao atualizar interface: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -435,10 +435,9 @@ class MainActivity : AppCompatActivity() {
             val alreadyConfiguredButton = dialogView.findViewById<Button>(R.id.btn_already_configured)
             
             messageTextView.text = message
-            
-            val dialog = AlertDialog.Builder(this)
+              val dialog = AlertDialog.Builder(this)
                 .setTitle("🔧 Configuração Completa - Android $androidVersion")
-                .setView(dialogView)
+                .setView(dialogView as android.view.View)
                 .setCancelable(false)
                 .create()
             
@@ -675,9 +674,7 @@ class MainActivity : AppCompatActivity() {
       override fun onDestroy() {
         super.onDestroy()
         Log.d("MainActivity", "MainActivity destruída")
-    }
-    
-    /**
+    }    /**
      * Set the locale for the app and recreate activity
      */
     private fun setLocale(languageCode: String) {
@@ -688,23 +685,21 @@ class MainActivity : AppCompatActivity() {
             val prefs = getSharedPreferences("safecall_prefs", Context.MODE_PRIVATE)
             prefs.edit().putString("language", languageCode).apply()
             
-            // Create new locale
+            // Apply locale immediately to current context
             val locale = Locale(languageCode)
             Locale.setDefault(locale)
             
-            // Update configuration
-            val config = Configuration()
+            val config = Configuration(resources.configuration)
             config.setLocale(locale)
             
-            // Update app context
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 createConfigurationContext(config)
             }
             
-            // Update resources
+            @Suppress("DEPRECATION")
             resources.updateConfiguration(config, resources.displayMetrics)
             
-            // Recreate activity to apply changes
+            // Recreate activity to apply the new language completely
             recreate()
             
         } catch (e: Exception) {
@@ -712,11 +707,10 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Erro ao alterar idioma: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
-    
+      
     /**
      * Load saved locale preference
-     */
-    private fun loadLocale() {
+     */private fun loadLocale() {
         try {
             val prefs = getSharedPreferences("safecall_prefs", Context.MODE_PRIVATE)
             val language = prefs.getString("language", "pt") ?: "pt" // Default to Portuguese
@@ -726,14 +720,17 @@ class MainActivity : AppCompatActivity() {
             val locale = Locale(language)
             Locale.setDefault(locale)
             
-            val config = Configuration()
+            val config = Configuration(resources.configuration)
             config.setLocale(locale)
             
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                createConfigurationContext(config)
+                val context = createConfigurationContext(config)
+                resources.updateConfiguration(config, context.resources.displayMetrics)
+            } else {
+                // For older versions, use the deprecated method
+                @Suppress("DEPRECATION")
+                resources.updateConfiguration(config, resources.displayMetrics)
             }
-            
-            resources.updateConfiguration(config, resources.displayMetrics)
             
         } catch (e: Exception) {
             Log.e("MainActivity", "Error loading locale", e)

@@ -10,7 +10,20 @@
     <string name="contacts_loaded">Contatos carregados</string>
     <string name="calls_blocked">Chamadas bloqueadas</string>
     <string name="grant_permissions">Conceder Permissões</string>
-    <string name="app_settings">Configurações do App</string>
-    <string name="diagnostic_completed">Diagnóstico concluído</string>
+    <string name="app_settings">Configurações do App</string>    <string name="diagnostic_completed">Diagnóstico concluído</string>
     <string name="error_occurred">Erro ocorrido</string>
+    <string name="language_label">Idioma:</string>
+    <string name="protection_description">Proteção contra chamadas desconhecidas</string>
+    <string name="protection_enabled_text">✅ Proteção Ativada\nBloqueando chamadas desconhecidas</string>
+    <string name="protection_disabled_text">❌ Proteção Desativada\nFaltando: %1$s</string>
+    <string name="basic_permissions">Permissões básicas</string>
+    <string name="overlay_apps">Sobrepor apps</string>
+    <string name="call_screening">Call Screening</string>
+    <string name="contacts_loaded_format">Contatos carregados: %1$d</string>
+    <string name="contacts_loaded_no_permission">Contatos carregados: sem permissão</string>
+    <string name="contacts_loaded_error">Contatos carregados: erro</string>
+    <string name="calls_blocked_format">Chamadas bloqueadas: %1$d</string>
+    <string name="calls_blocked_error">Chamadas bloqueadas: erro</string>
+    <string name="interface_error">Erro na interface</string>
+    <string name="try_again">Tentar novamente</string>
 </resources>
