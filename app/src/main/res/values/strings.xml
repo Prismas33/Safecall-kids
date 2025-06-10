@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SafecallKids</string>
+    <string name="permission_required">Permissões necessárias</string>
+    <string name="enable_permissions">Para bloquear chamadas de números desconhecidos, o SafecallKids precisa de algumas permissões.</string>
+    <string name="grant_permissions">Conceder Permissões</string>
+    <string name="protection_enabled">Proteção Ativada</string>
+    <string name="protection_disabled">Proteção Desativada</string>
+    <string name="blocked_calls">Chamadas Bloqueadas</string>
+    <string name="contacts_loaded">Contatos carregados</string>
+</resources>
