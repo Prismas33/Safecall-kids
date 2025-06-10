@@ -409,20 +409,32 @@ class MainActivity : AppCompatActivity() {
                 
                 else -> // Android 9 e anteriores
                     getAndroidLegacyInstructions()
+            }            // Criar layout personalizado
+            val dialogView = layoutInflater.inflate(R.layout.dialog_configuration, null)
+            val messageTextView = dialogView.findViewById<TextView>(R.id.dialog_message)
+            val cancelButton = dialogView.findViewById<Button>(R.id.btn_cancel)
+            val settingsButton = dialogView.findViewById<Button>(R.id.btn_settings)
+            val alreadyConfiguredButton = dialogView.findViewById<Button>(R.id.btn_already_configured)
+            
+            messageTextView.text = message
+            
+            val dialog = AlertDialog.Builder(this)
+                .setTitle("🔧 Configuração Completa - Android $androidVersion")
+                .setView(dialogView)
+                .setCancelable(false)
+                .create()
+            
+            cancelButton.setOnClickListener { dialog.dismiss() }
+            settingsButton.setOnClickListener { 
+                dialog.dismiss()
+                openSpecificSettings(androidVersion)
+            }
+            alreadyConfiguredButton.setOnClickListener { 
+                dialog.dismiss()
+                markAllAsConfigured()
             }
             
-            AlertDialog.Builder(this)
-                .setTitle("🔧 Configuração Completa - Android $androidVersion")
-                .setMessage(message)
-                .setPositiveButton("Abrir Configurações") { _, _ ->
-                    openSpecificSettings(androidVersion)
-                }
-                .setNeutralButton("Já Configurei Tudo") { _, _ ->
-                    markAllAsConfigured()
-                }
-                .setNegativeButton("Cancelar", null)
-                .setCancelable(false)
-                .show()
+            dialog.show()
                 
         } catch (e: Exception) {
             Log.e("MainActivity", "Error showing complete setup", e)
