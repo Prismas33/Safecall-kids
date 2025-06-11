@@ -435,8 +435,9 @@ class MainActivity : AppCompatActivity() {
             val alreadyConfiguredButton = dialogView.findViewById<Button>(R.id.btn_already_configured)
             
             messageTextView.text = message
-              val dialog = AlertDialog.Builder(this)
-                .setTitle("🔧 Configuração Completa - Android $androidVersion")
+            
+            val dialog = AlertDialog.Builder(this)
+                .setTitle(getString(R.string.dialog_configuration_title, androidVersion))
                 .setView(dialogView as android.view.View)
                 .setCancelable(false)
                 .create()
@@ -458,100 +459,45 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Erro ao mostrar instruções: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
-    
-    /**
+      /**
      * Instruções específicas para Android 13+
      */
     private fun getAndroid13Instructions(manufacturer: String): String {
-        val baseInstructions = """
-            🛡️ CONFIGURAÇÃO COMPLETA PARA ANDROID 13+
-            
-            ⚡ MÉTODO RÁPIDO - Definir como App Padrão:
-            1. Configurações → Apps → Apps padrão → App de telefone
-            2. Selecione 'SafecallKids'
-            3. Confirme a mudança
-            
-            📞 ALTERNATIVA - Pelo App Telefone:
-            1. Abra o app 'Telefone' do sistema
-            2. Menu (⋮) → Configurações
-            3. Procure 'Bloqueio de spam' ou 'Identificador'
-            4. Ative o SafecallKids
-            
-            🔍 SE NÃO ENCONTRAR:
-            1. Configurações → Privacidade e segurança
-            2. Permissões → Telefone
-            3. Ative todas para SafecallKids
-        """.trimIndent()
+        val baseInstructions = getString(R.string.android_13_instructions)
         
         return when (manufacturer) {
-            "samsung" -> baseInstructions + "\n\n🔸 SAMSUNG: Pode estar em 'Configurações → Aplicativos → Escolher apps padrão'"
-            "xiaomi" -> baseInstructions + "\n\n🔸 XIAOMI: Vá em 'Configurações → Apps → Aplicativos padrão → Aplicativo de telefone'"
-            "huawei" -> baseInstructions + "\n\n🔸 HUAWEI: Procure em 'Configurações → Aplicativos → Aplicativos padrão'"
-            "oppo", "oneplus" -> baseInstructions + "\n\n🔸 OPPO/OnePlus: 'Configurações → Aplicativos → Apps padrão'"
+            "samsung" -> baseInstructions + "\n\n" + getString(R.string.samsung_note)
+            "xiaomi" -> baseInstructions + "\n\n" + getString(R.string.xiaomi_note)
+            "huawei" -> baseInstructions + "\n\n" + getString(R.string.huawei_note)
+            "oppo", "oneplus" -> baseInstructions + "\n\n" + getString(R.string.oppo_note)
             else -> baseInstructions
         }
     }
-    
-    @Suppress("UNUSED_PARAMETER")
+      @Suppress("UNUSED_PARAMETER")
     /**
      * Instruções para Android 12
      */
     private fun getAndroid12Instructions(manufacturer: String): String {
-        return """
-            🛡️ CONFIGURAÇÃO PARA ANDROID 12
+        val baseInstructions = getString(R.string.android_12_instructions)
         
-            1️⃣ Defina como app de telefone padrão:
-               Configurações → Apps → Apps padrão → Telefone
-               
-            2️⃣ Ative Call Screening:
-               Configurações → Apps → Permissões especiais
-               → Serviços de triagem de chamadas
-               
-            3️⃣ Permissões de telefone:
-               Configurações → Privacidade → Permissões
-               → Telefone → SafecallKids → Permitir
-               
-            ${if (Build.MANUFACTURER.lowercase() == "samsung") "🔸 SAMSUNG: Pode estar em 'Aplicações' em vez de 'Apps'" else ""}
-        """.trimIndent()
+        return if (Build.MANUFACTURER.lowercase() == "samsung") {
+            baseInstructions + "\n\n" + getString(R.string.samsung_note_android12)
+        } else {
+            baseInstructions
+        }
     }
-    
-    /**
+      /**
      * Instruções para Android 10-11
      */
     private fun getAndroid10Instructions(): String {
-        return """
-            🛡️ CONFIGURAÇÃO PARA ANDROID 10-11
-            
-            1️⃣ Apps padrão:
-               Configurações → Apps → Apps padrão → Aplicativo de telefone
-               
-            2️⃣ Call Screening:
-               Configurações → Apps → Permissões especiais
-               → Acesso a informações de chamada
-               
-            3️⃣ Verificar permissões:
-               - Telefone: Permitido
-               - Contatos: Permitido  
-               - Sobrepor apps: Permitido
-        """.trimIndent()
+        return getString(R.string.android_10_instructions)
     }
     
     /**
      * Instruções para Android 9 e anteriores
      */
     private fun getAndroidLegacyInstructions(): String {
-        return """
-            🛡️ CONFIGURAÇÃO PARA ANDROID 9 E ANTERIORES
-            
-            ✅ As permissões básicas são suficientes nesta versão!
-            
-            O app usará o método legado de bloqueio:
-            - Permissão de telefone
-            - Permissão de contatos
-            - Permissão para sobrepor apps
-            
-            Clique em 'Já Configurei Tudo' para ativar.
-        """.trimIndent()
+        return getString(R.string.android_legacy_instructions)
     }
     
     /**

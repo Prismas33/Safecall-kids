@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
-    android:paddingTop="72dp"
-    android:background="@color/background_color">
+    android:paddingTop="24dp"
+    android:fitsSystemWindows="true"
+    android:background="@color/background_color">    <!-- Spacer for Status Bar -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
-    <!-- App Header with Logo and Title -->    <LinearLayout
+    <!-- App Header with Logo and Title --><LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/primary_color"
@@ -116,13 +121,11 @@
             android:background="@android:color/white"
             android:elevation="2dp"
             android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
+            android:padding="16dp">            <TextView
                 android:id="@+id/contactsCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Contatos: 0"
+                android:text="@string/contacts_loaded"
                 android:textSize="14sp"
                 android:textColor="@color/text_color"
                 android:gravity="center" />
@@ -137,13 +140,11 @@
             android:background="@android:color/white"
             android:elevation="2dp"
             android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
+            android:padding="16dp">            <TextView
                 android:id="@+id/blockedCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bloqueadas: 0"
+                android:text="@string/calls_blocked"
                 android:textSize="14sp"
                 android:textColor="@color/text_color"
                 android:gravity="center" />
@@ -152,22 +153,19 @@
 
     </LinearLayout>
 
-    <!-- Main Action Button -->
-    <Button
+    <!-- Main Action Button -->    <Button
         android:id="@+id/enableButton"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="Conceder Permissões"
+        android:text="@string/grant_permissions"
         android:textSize="16sp"
         android:textColor="@android:color/white"
         android:background="@drawable/button_primary"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Info Text -->
+        android:layout_marginBottom="16dp" />    <!-- Info Text -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="• Bloqueia chamadas de números desconhecidos\n• Permite apenas contatos salvos\n• Funciona em segundo plano\n• Mantenha pressionado o botão para diagnóstico"
+        android:text="@string/info_text"
         android:textSize="12sp"
         android:textColor="@color/secondary_text_color"
         android:lineSpacingMultiplier="1.4"
@@ -177,13 +175,11 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <!-- Footer -->
+        android:layout_weight="1" />    <!-- Footer -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SafecallKids v1.0 - Proteção para crianças"
+        android:text="@string/footer_text"
         android:textSize="10sp"
         android:textColor="@color/secondary_text_color"
         android:gravity="center"

@@ -22,8 +22,33 @@
     <string name="contacts_loaded_format">Contatos carregados: %1$d</string>
     <string name="contacts_loaded_no_permission">Contatos carregados: sem permissão</string>
     <string name="contacts_loaded_error">Contatos carregados: erro</string>
-    <string name="calls_blocked_format">Chamadas bloqueadas: %1$d</string>
-    <string name="calls_blocked_error">Chamadas bloqueadas: erro</string>
+    <string name="calls_blocked_format">Chamadas bloqueadas: %1$d</string>    <string name="calls_blocked_error">Chamadas bloqueadas: erro</string>
     <string name="interface_error">Erro na interface</string>
     <string name="try_again">Tentar novamente</string>
+    <string name="footer_text">SafecallKids v1.0 - Proteção para crianças</string>
+    <string name="open_settings">Abrir Config</string>
+    <string name="cancel">Cancelar</string>    <string name="already_configured">Já configurei tudo</string>
+    <string name="dialog_placeholder">Mensagem do dialog</string>    <string name="info_text">• Bloqueia chamadas de números desconhecidos\n• Permite apenas contatos salvos\n• Funciona em segundo plano\n• Mantenha pressionado o botão para diagnóstico</string>
+    
+    <!-- Dialog Configuration Title -->
+    <string name="dialog_configuration_title">🔧 Configuração Completa - Android %1$d</string>
+    
+    <!-- Android 13+ Instructions -->
+    <string name="android_13_instructions">🛡️ CONFIGURAÇÃO COMPLETA PARA ANDROID 13+\n\n⚡ MÉTODO RÁPIDO - Definir como App Padrão:\n1. Configurações → Apps → Apps padrão → App de telefone\n2. Selecione \'SafecallKids\'\n3. Confirme a mudança\n\n📞 ALTERNATIVA - Pelo App Telefone:\n1. Abra o app \'Telefone\' do sistema\n2. Menu (⋮) → Configurações\n3. Procure \'Bloqueio de spam\' ou \'Identificador\'\n4. Ative o SafecallKids\n\n🔍 SE NÃO ENCONTRAR:\n1. Configurações → Privacidade e segurança\n2. Permissões → Telefone\n3. Ative todas para SafecallKids</string>
+    
+    <!-- Android 12 Instructions -->
+    <string name="android_12_instructions">🛡️ CONFIGURAÇÃO PARA ANDROID 12\n\n1️⃣ Defina como app de telefone padrão:\n   Configurações → Apps → Apps padrão → Telefone\n\n2️⃣ Ative Call Screening:\n   Configurações → Apps → Permissões especiais\n   → Serviços de triagem de chamadas\n\n3️⃣ Permissões de telefone:\n   Configurações → Privacidade → Permissões\n   → Telefone → SafecallKids → Permitir</string>
+    
+    <!-- Android 10-11 Instructions -->
+    <string name="android_10_instructions">🛡️ CONFIGURAÇÃO PARA ANDROID 10-11\n\n1️⃣ Apps padrão:\n   Configurações → Apps → Apps padrão → Aplicativo de telefone\n\n2️⃣ Call Screening:\n   Configurações → Apps → Permissões especiais\n   → Acesso a informações de chamada\n\n3️⃣ Verificar permissões:\n   - Telefone: Permitido\n   - Contatos: Permitido\n   - Sobrepor apps: Permitido</string>
+    
+    <!-- Android Legacy Instructions -->
+    <string name="android_legacy_instructions">🛡️ CONFIGURAÇÃO PARA ANDROID 9 E ANTERIORES\n\n✅ As permissões básicas são suficientes nesta versão!\n\nO app usará o método legado de bloqueio:\n- Permissão de telefone\n- Permissão de contatos\n- Permissão para sobrepor apps\n\nClique em \'Já configurei tudo\' para ativar.</string>
+    
+    <!-- Manufacturer specific notes -->
+    <string name="samsung_note">🔸 SAMSUNG: Pode estar em \'Configurações → Aplicações → Escolher apps padrão\'</string>
+    <string name="xiaomi_note">🔸 XIAOMI: Vá em \'Configurações → Apps → Aplicativos padrão → Aplicativo de telefone\'</string>
+    <string name="huawei_note">🔸 HUAWEI: Procure em \'Configurações → Aplicativos → Aplicativos padrão\'</string>
+    <string name="oppo_note">🔸 OPPO/OnePlus: \'Configurações → Aplicativos → Apps padrão\'</string>
+    <string name="samsung_note_android12">🔸 SAMSUNG: Pode estar em \'Aplicações\' em vez de \'Apps\'</string>
 </resources>

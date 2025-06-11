@@ -25,7 +25,32 @@
     <string name="contacts_loaded_error">Contacts loaded: error</string>
     <string name="calls_blocked_format">Calls blocked: %1$d</string>
     <string name="calls_blocked_error">Calls blocked: error</string>
-    <string name="interface_error">Interface error</string>
-    <string name="try_again">Try again</string>
-    <string name="info_text">• Blocks calls from unknown numbers\n• Allows only saved contacts\n• Runs in the background\n• Long press the button for diagnostics</string>
+    <string name="interface_error">Interface error</string>    <string name="try_again">Try again</string>
+    <string name="footer_text">SafecallKids v1.0 - Child protection</string>
+    <string name="open_settings">Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="already_configured">Already configured</string>
+    <string name="dialog_placeholder">Dialog message</string>    <string name="info_text">• Blocks calls from unknown numbers\n• Allows only saved contacts\n• Runs in the background\n• Long press the button for diagnostics</string>
+    
+    <!-- Dialog Configuration Title -->
+    <string name="dialog_configuration_title">🔧 Complete Setup - Android %1$d</string>
+    
+    <!-- Android 13+ Instructions -->
+    <string name="android_13_instructions">🛡️ COMPLETE SETUP FOR ANDROID 13+\n\n⚡ QUICK METHOD - Set as Default App:\n1. Settings → Apps → Default apps → Phone app\n2. Select \'SafecallKids\'\n3. Confirm the change\n\n📞 ALTERNATIVE - Through Phone App:\n1. Open system \'Phone\' app\n2. Menu (⋮) → Settings\n3. Look for \'Spam blocking\' or \'Caller ID\'\n4. Enable SafecallKids\n\n🔍 IF NOT FOUND:\n1. Settings → Privacy and security\n2. Permissions → Phone\n3. Enable all for SafecallKids</string>
+    
+    <!-- Android 12 Instructions -->
+    <string name="android_12_instructions">🛡️ SETUP FOR ANDROID 12\n\n1️⃣ Set as default phone app:\n   Settings → Apps → Default apps → Phone\n\n2️⃣ Enable Call Screening:\n   Settings → Apps → Special permissions\n   → Call screening services\n\n3️⃣ Phone permissions:\n   Settings → Privacy → Permissions\n   → Phone → SafecallKids → Allow</string>
+    
+    <!-- Android 10-11 Instructions -->
+    <string name="android_10_instructions">🛡️ SETUP FOR ANDROID 10-11\n\n1️⃣ Default apps:\n   Settings → Apps → Default apps → Phone app\n\n2️⃣ Call Screening:\n   Settings → Apps → Special permissions\n   → Call information access\n\n3️⃣ Check permissions:\n   - Phone: Allowed\n   - Contacts: Allowed\n   - Display over other apps: Allowed</string>
+    
+    <!-- Android Legacy Instructions -->
+    <string name="android_legacy_instructions">🛡️ SETUP FOR ANDROID 9 AND EARLIER\n\n✅ Basic permissions are sufficient for this version!\n\nThe app will use legacy blocking method:\n- Phone permission\n- Contacts permission\n- Display over other apps permission\n\nClick \'Already configured\' to activate.</string>
+    
+    <!-- Manufacturer specific notes -->
+    <string name="samsung_note">🔸 SAMSUNG: May be in \'Settings → Applications → Choose default apps\'</string>
+    <string name="xiaomi_note">🔸 XIAOMI: Go to \'Settings → Apps → Default apps → Phone app\'</string>
+    <string name="huawei_note">🔸 HUAWEI: Look in \'Settings → Apps → Default apps\'</string>
+    <string name="oppo_note">🔸 OPPO/OnePlus: \'Settings → Apps → Default apps\'</string>
+    <string name="samsung_note_android12">🔸 SAMSUNG: May be in \'Applications\' instead of \'Apps\'</string>
 </resources>
