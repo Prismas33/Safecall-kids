@@ -3879,6 +3879,11 @@ string abc_searchview_description_voice
 string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
+string already_configured
+string android_10_instructions
+string android_12_instructions
+string android_13_instructions
+string android_legacy_instructions
 string androidx_startup
 string app_name
 string app_settings
@@ -3902,6 +3907,7 @@ string call_screening
 string calls_blocked
 string calls_blocked_error
 string calls_blocked_format
+string cancel
 string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
@@ -3911,15 +3917,20 @@ string contacts_loaded_error
 string contacts_loaded_format
 string contacts_loaded_no_permission
 string diagnostic_completed
+string dialog_configuration_title
+string dialog_placeholder
 string error_a11y_label
 string error_icon_content_description
 string error_occurred
 string exposed_dropdown_menu_content_description
 string fab_transformation_scrim_behavior
 string fab_transformation_sheet_behavior
+string footer_text
 string grant_permissions
 string hide_bottom_view_on_scroll_behavior
+string huawei_note
 string icon_content_description
+string info_text
 string interface_error
 string item_view_role_description
 string language_label
@@ -4025,6 +4036,8 @@ string mtrl_timepicker_cancel
 string mtrl_timepicker_confirm
 string notification_text
 string notification_title
+string open_settings
+string oppo_note
 string overlay_apps
 string password_toggle_content_description
 string path_password_eye
@@ -4037,6 +4050,8 @@ string protection_description
 string protection_disabled_text
 string protection_enabled_text
 string protection_inactive
+string samsung_note
+string samsung_note_android12
 string search_menu_title
 string searchbar_scrolling_view_behavior
 string searchview_clear_text_content_description
@@ -4045,6 +4060,7 @@ string side_sheet_accessibility_pane_title
 string side_sheet_behavior
 string status_bar_notification_info_overflow
 string try_again
+string xiaomi_note
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog
