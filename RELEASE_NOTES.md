@@ -1,8 +1,44 @@
-# SafeCall Kids - Notas de Lançamento v1.0
+# SafeCall Kids - Notas de Lançamento v2.0
 
 ## 🇧🇷 Português (Brasil)
 
-### SafeCall Kids v1.0 - Primeira Versão
+### SafeCall Kids v2.0 - Verificação de Permissões
+
+**Novas funcionalidades adicionadas:**
+
+- **Botão "Verificar Permissões"**: Adicionado novo botão que permite verificar se todas as permissões necessárias foram realmente concedidas
+- **Verificação Completa**: Verifica todas as permissões antes de ativar a proteção
+- **Feedback Visual**: Mostra mensagens de sucesso ou falha detalhadas ao usuário
+- **Ativação Segura**: Só ativa a proteção quando todas as permissões estão corretamente configuradas
+
+#### 🔄 Melhorias:
+- Interface do usuário aprimorada com feedback mais claro
+- Processo de configuração mais seguro e intuitivo
+- Prevenção de problemas causados por permissões incompletas
+- Feedback visual ao usuário sobre o status da configuração
+
+## 🇺🇸 English
+
+### SafeCall Kids v2.0 - Permission Verification
+
+**New features added:**
+
+- **"Check Permissions" Button**: Added new button that verifies if all required permissions are actually granted
+- **Complete Verification**: Checks all permissions before activating protection
+- **Visual Feedback**: Shows detailed success or failure messages to the user
+- **Safe Activation**: Only activates protection when all permissions are properly set up
+
+#### 🔄 Improvements:
+- Enhanced user interface with clearer feedback
+- More secure and intuitive configuration process
+- Prevention of issues caused by incomplete permissions
+- Visual feedback to users about configuration status
+
+---
+
+## 🇧🇷 Português (Brasil)
+
+### SafeCall Kids v1.0 - Versão Anterior
 
 **Proteja seus filhos de chamadas indesejadas!**
 
@@ -14,7 +50,7 @@ O SafeCall Kids é um aplicativo de proteção desenvolvido especialmente para c
 - **Proteção em Segundo Plano**: Funciona continuamente para manter a criança protegida
 - **Contador de Chamadas**: Acompanhe quantas chamadas foram bloqueadas
 - **Suporte Multilíngue**: Disponível em Português e Inglês
-- **Compatibilidade Ampla**: Funciona do Android 7.0 até as versões mais recentes
+- **Compatibilidade Ampla**: Funciona do Android 8.0 até as versões mais recentes
 
 #### 🛡️ Recursos de Segurança:
 - Bloqueio inteligente que preserva chamadas de emergência
@@ -44,7 +80,7 @@ Pais e responsáveis que desejam proteger seus filhos de:
 
 ## 🇺🇸 English
 
-### SafeCall Kids v1.0 - First Release
+### SafeCall Kids v1.0 - Previous Version
 
 **Protect your children from unwanted calls!**
 
@@ -56,7 +92,7 @@ SafeCall Kids is a protection app designed specifically for children that automa
 - **Background Protection**: Works continuously to keep children protected
 - **Call Counter**: Track how many calls have been blocked
 - **Multi-language Support**: Available in Portuguese and English
-- **Wide Compatibility**: Works from Android 7.0 to the latest versions
+- **Wide Compatibility**: Works from Android 8.0 to the latest versions
 
 #### 🛡️ Security Features:
 - Smart blocking that preserves emergency calls
@@ -87,8 +123,8 @@ Parents and guardians who want to protect their children from:
 ## 📝 Technical Notes
 
 ### Version Information:
-- **Version Code**: 1
-- **Version Name**: 1.0
+- **Version Code**: 2
+- **Version Name**: 2.0
 - **Target SDK**: 35 (Android 14)
 - **Minimum SDK**: 26 (Android 8.0)
 

@@ -21,14 +21,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SafecallKids"
-        tools:targetApi="31"><activity
+        tools:targetApi="31">        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>        <!-- Serviço moderno para bloquear chamadas (Android 10+) -->
+            
+            <!-- App Links para associar ao site www.prismas33.eu -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />                <!-- App Links para o site -->
+                <data 
+                    android:scheme="https" 
+                    android:host="www.prismas33.eu" 
+                    android:pathPrefix="/safecallkids.html" />
+            </intent-filter>
+        </activity><!-- Serviço moderno para bloquear chamadas (Android 10+) -->
         <service
             android:name=".CallScreeningService"
             android:exported="true"

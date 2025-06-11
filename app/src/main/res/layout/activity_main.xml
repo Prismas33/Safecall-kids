@@ -161,7 +161,17 @@
         android:textSize="16sp"
         android:textColor="@android:color/white"
         android:background="@drawable/button_primary"
-        android:layout_marginBottom="16dp" />    <!-- Info Text -->
+        android:layout_marginBottom="16dp" />    <!-- Verify Permissions Button -->
+    <Button
+        android:id="@+id/verifyButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/verify_permissions"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:background="#2196F3"
+        android:layout_marginBottom="16dp" /><!-- Info Text -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -10,6 +10,9 @@
     <string name="contacts_loaded">Contatos carregados</string>
     <string name="calls_blocked">Chamadas bloqueadas</string>
     <string name="grant_permissions">Conceder Permissões</string>
+    <string name="verify_permissions">Verificar Permissões</string>
+    <string name="verification_success">✅ Configuração verificada! Proteção ativada.</string>
+    <string name="verification_failed">❌ Ainda faltam configurações:\\n%1$s\\n\\nUse \'Conceder Permissões\' para configurar.</string>
     <string name="app_settings">Configurações do App</string>
     <string name="check_permissions">Verificar permissões</string>
     <string name="diagnostic_completed">Diagnóstico concluído</string>
@@ -27,7 +30,7 @@
     <string name="calls_blocked_format">Chamadas bloqueadas: %1$d</string>    <string name="calls_blocked_error">Chamadas bloqueadas: erro</string>
     <string name="interface_error">Erro na interface</string>
     <string name="try_again">Tentar novamente</string>
-    <string name="footer_text">SafecallKids v1.0 - Proteção para crianças</string>
+    <string name="footer_text">SafecallKids v2.0 - Proteção para crianças</string>
     <string name="open_settings">Abrir Config</string>
     <string name="cancel">Cancelar</string>    <string name="already_configured">Já configurei tudo</string>
     <string name="dialog_placeholder">Mensagem do dialog</string>    <string name="info_text">• Bloqueia chamadas de números desconhecidos\n• Permite apenas contatos salvos\n• Funciona em segundo plano\n• Mantenha pressionado o botão para diagnóstico</string>

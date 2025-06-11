@@ -27,7 +27,7 @@
     <string name="calls_blocked_format">Chamadas bloqueadas: %1$d</string>
     <string name="calls_blocked_error">Chamadas bloqueadas: erro</string>
     <string name="interface_error">Erro na interface</string>    <string name="try_again">Tentar novamente</string>
-    <string name="footer_text">SafecallKids v1.0 - Proteção para crianças</string>
+    <string name="footer_text">SafecallKids v2.0 - Proteção para crianças</string>
     <string name="open_settings">Configurações</string>
     <string name="cancel">Cancelar</string>
     <string name="already_configured">Já configurei tudo</string>

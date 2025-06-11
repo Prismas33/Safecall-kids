@@ -24,10 +24,11 @@ import androidx.core.content.ContextCompat
 import java.io.FileNotFoundException
 
 class MainActivity : AppCompatActivity() {
-      private lateinit var statusText: TextView
+    private lateinit var statusText: TextView
     private lateinit var contactsCount: TextView
     private lateinit var blockedCount: TextView
     private lateinit var enableButton: Button
+    private lateinit var verifyButton: Button
     private lateinit var btnLangPt: ImageButton
     private lateinit var btnLangEn: ImageButton
       private val PERMISSIONS_REQUEST_CODE = 100
@@ -58,15 +59,21 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Erro ao inicializar o app: ${e.message}", Toast.LENGTH_LONG).show()
             finish()
         }
-    }
-      private fun initViews() {
+    }    private fun initViews() {
         try {
             statusText = findViewById(R.id.statusText)
             contactsCount = findViewById(R.id.contactsCount)
             blockedCount = findViewById(R.id.blockedCount)
             enableButton = findViewById(R.id.enableButton)
+            verifyButton = findViewById(R.id.verifyButton)
             btnLangPt = findViewById(R.id.btn_lang_pt)
             btnLangEn = findViewById(R.id.btn_lang_en)
+              // Definir texto explicitamente para garantir que aparece
+            verifyButton.text = getString(R.string.verify_permissions)
+            Log.d("MainActivity", "Verify button text set to: ${verifyButton.text}")
+            
+            // Force visibility
+            verifyButton.visibility = android.view.View.VISIBLE
             
             enableButton.setOnClickListener {
                 try {
@@ -77,6 +84,15 @@ class MainActivity : AppCompatActivity() {
                     }
                 } catch (e: Exception) {
                     Log.e("MainActivity", "Error in button click", e)
+                    Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+              // Configure verify button to check permissions and activate if all are correct
+            verifyButton.setOnClickListener {
+                try {
+                    verifyAndActivateProtection()
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Error in verify button click", e)
                     Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -251,10 +267,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
     
-    private fun updateUI() {        try {
-            if (hasAllProtection()) {
+    private fun updateUI() {        try {            if (hasAllProtection()) {
                 statusText.text = getString(R.string.protection_enabled_text)
                 enableButton.text = getString(R.string.app_settings)
+                verifyButton.visibility = android.view.View.GONE
                 
                 try {
                     val contactsHelper = ContactsHelper(this)
@@ -286,17 +302,17 @@ class MainActivity : AppCompatActivity() {
                 if (!hasAllPermissions()) missing.add(getString(R.string.basic_permissions))
                 if (!hasOverlayPermission()) missing.add(getString(R.string.overlay_apps))
                 if (!isDefaultCallScreeningService()) missing.add(getString(R.string.call_screening))
-                
-                statusText.text = getString(R.string.protection_disabled_text, missing.joinToString(", "))
+                  statusText.text = getString(R.string.protection_disabled_text, missing.joinToString(", "))
                 enableButton.text = getString(R.string.grant_permissions)
+                verifyButton.visibility = android.view.View.VISIBLE
                 contactsCount.text = getString(R.string.contacts_loaded_format, 0)
                 blockedCount.text = getString(R.string.calls_blocked_format, 0)
             }
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Erro ao atualizar UI", e)
+        } catch (e: Exception) {            Log.e("MainActivity", "Erro ao atualizar UI", e)
             logErrorToFile("updateUI", e)
             statusText.text = getString(R.string.interface_error)
             enableButton.text = getString(R.string.try_again)
+            verifyButton.visibility = android.view.View.VISIBLE
             Toast.makeText(this, "Erro ao atualizar interface: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -680,6 +696,62 @@ class MainActivity : AppCompatActivity() {
             
         } catch (e: Exception) {
             Log.e("MainActivity", "Error loading locale", e)
+        }
+    }
+
+    /**
+     * Verifica se todas as permissões estão realmente ativas e só então ativa a proteção
+     */
+    private fun verifyAndActivateProtection() {
+        try {
+            Log.d("MainActivity", "=== VERIFICANDO PERMISSÕES ===")
+            
+            val hasBasicPerms = hasAllPermissions()
+            val hasOverlay = hasOverlayPermission()
+            val hasCallScreening = isDefaultCallScreeningService()
+            
+            Log.d("MainActivity", "Permissões básicas: $hasBasicPerms")
+            Log.d("MainActivity", "Overlay permission: $hasOverlay")
+            Log.d("MainActivity", "Call screening: $hasCallScreening")
+            
+            if (hasBasicPerms && hasOverlay && hasCallScreening) {
+                // Todas as permissões estão corretas - ativar proteção
+                Log.d("MainActivity", "✅ Todas as permissões verificadas - Ativando proteção")
+                
+                val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
+                prefs.edit()
+                    .putBoolean("call_screening_configured", true)
+                    .putBoolean("all_setup_completed", true)
+                    .apply()
+                
+                Toast.makeText(this, getString(R.string.verification_success), Toast.LENGTH_LONG).show()
+                
+                updateUI()
+                
+                // Iniciar serviço se tudo estiver ok
+                if (hasAllPermissions()) {
+                    startCallBlockingService()
+                }
+                
+            } else {
+                // Algumas permissões ainda estão faltando
+                val missing = mutableListOf<String>()
+                if (!hasBasicPerms) missing.add(getString(R.string.basic_permissions))
+                if (!hasOverlay) missing.add(getString(R.string.overlay_apps))
+                if (!hasCallScreening) missing.add(getString(R.string.call_screening))
+                
+                val missingText = missing.joinToString(", ")
+                Log.w("MainActivity", "❌ Permissões faltando: $missingText")
+                  Toast.makeText(
+                    this, 
+                    getString(R.string.verification_failed, missingText), 
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Erro ao verificar permissões", e)
+            Toast.makeText(this, "Erro ao verificar: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 }
