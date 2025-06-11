@@ -1,0 +1,451 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.safecallkids.app"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="35" /> <!-- Permissões necessárias para bloquear chamadas e acessar contatos -->
+10    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+10-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:4:5-75
+10-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:4:22-72
+11    <uses-permission android:name="android.permission.READ_CONTACTS" />
+11-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:5:5-72
+11-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:5:22-69
+12    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+12-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:6:5-77
+12-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:6:22-74
+13    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+13-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:7:5-78
+13-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:7:22-75
+14    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+14-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:8:5-77
+14-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:8:22-74
+15    <uses-permission android:name="android.permission.CALL_PHONE" />
+15-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:9:5-69
+15-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:9:22-66
+16    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
+16-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:10:5-75
+16-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:10:22-72
+17    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+17-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:11:5-88
+17-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:11:22-85
+18
+19    <!-- Permissões para CallScreeningService (Android 10+) -->
+20    <uses-permission android:name="android.permission.BIND_SCREENING_SERVICE" />
+20-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:14:5-81
+20-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:14:22-78
+21    <uses-permission android:name="android.permission.WAKE_LOCK" />
+21-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:23:5-68
+21-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:23:22-65
+22    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+22-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:24:5-79
+22-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:24:22-76
+23    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+23-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:25:5-81
+23-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:25:22-78
+24
+25    <permission
+25-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
+26        android:name="com.safecallkids.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+26-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
+27        android:protectionLevel="signature" />
+27-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
+28
+29    <uses-permission android:name="com.safecallkids.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+29-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
+29-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
+30
+31    <application
+31-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:14:85-76:19
+32        android:name="com.safecallkids.app.SafecallApplication"
+32-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:15:9-44
+33        android:allowBackup="true"
+33-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:16:9-35
+34        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+34-->[androidx.core:core:1.15.0] C:\Users\ventu\.gradle\caches\8.9\transforms\48e07214b4d5a66975b9e21950858df0\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
+35        android:dataExtractionRules="@xml/data_extraction_rules"
+35-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:17:9-65
+36        android:extractNativeLibs="false"
+37        android:fullBackupContent="@xml/backup_rules"
+37-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:18:9-54
+38        android:icon="@mipmap/ic_launcher"
+38-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:19:9-43
+39        android:label="@string/app_name"
+39-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:20:9-41
+40        android:roundIcon="@mipmap/ic_launcher_round"
+40-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:21:9-54
+41        android:supportsRtl="true"
+41-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:22:9-35
+42        android:theme="@style/Theme.SafecallKids" >
+42-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:23:9-50
+43        <activity
+43-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:24:30-31:20
+44            android:name="com.safecallkids.app.MainActivity"
+44-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:25:13-41
+45            android:exported="true" >
+45-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:26:13-36
+46            <intent-filter>
+46-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:27:13-30:29
+47                <action android:name="android.intent.action.MAIN" />
+47-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:28:17-69
+47-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:28:25-66
+48
+49                <category android:name="android.intent.category.LAUNCHER" />
+49-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:29:17-77
+49-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:29:27-74
+50            </intent-filter>
+51        </activity> <!-- Serviço moderno para bloquear chamadas (Android 10+) -->
+52        <service
+52-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:32:9-39:19
+53            android:name="com.safecallkids.app.CallScreeningService"
+53-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:33:13-49
+54            android:exported="true"
+54-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:34:13-36
+55            android:permission="android.permission.BIND_SCREENING_SERVICE" >
+55-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:35:13-75
+56            <intent-filter>
+56-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:36:13-38:29
+57                <action android:name="android.telecom.CallScreeningService" />
+57-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:37:17-79
+57-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:37:25-76
+58            </intent-filter>
+59        </service>
+60
+61        <!-- Serviço para monitorar chamadas (compatibilidade) -->
+62        <service
+62-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:41:75-45:57
+63            android:name="com.safecallkids.app.CallBlockingService"
+63-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:42:13-48
+64            android:enabled="true"
+64-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:43:13-35
+65            android:exported="false"
+65-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:44:13-37
+66            android:foregroundServiceType="phoneCall" />
+66-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:45:13-54
+67
+68        <!-- Receiver para detectar chamadas recebidas (compatibilidade) -->
+69        <receiver
+69-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:48:9-55:20
+70            android:name="com.safecallkids.app.CallReceiver"
+70-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:49:13-41
+71            android:enabled="true"
+71-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:50:13-35
+72            android:exported="true" >
+72-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:51:13-36
+73            <intent-filter android:priority="1000" >
+73-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:52:13-54:29
+73-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:52:28-51
+74                <action android:name="android.intent.action.PHONE_STATE" />
+74-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:53:17-76
+74-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:53:25-73
+75            </intent-filter>
+76        </receiver>
+77
+78        <!-- Activity para tornar o app elegível como discador padrão -->
+79        <activity
+79-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:58:9-69:20
+80            android:name="com.safecallkids.app.DialerActivity"
+80-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:58:19-49
+81            android:exported="true" >
+81-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:59:13-36
+82            <intent-filter>
+82-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:60:13-68:29
+83                <action android:name="android.intent.action.DIAL" />
+83-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:61:17-69
+83-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:61:25-66
+84                <action android:name="android.intent.action.VIEW" />
+84-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:62:17-69
+84-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:62:25-66
+85                <action android:name="android.intent.action.CALL" />
+85-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:63:17-69
+85-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:63:25-66
+86                <action android:name="android.intent.action.CALL_BUTTON" />
+86-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:64:17-76
+86-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:64:25-73
+87
+88                <category android:name="android.intent.category.DEFAULT" />
+88-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:65:17-76
+88-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:65:27-73
+89                <category android:name="android.intent.category.BROWSABLE" />
+89-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:66:17-78
+89-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:66:27-75
+90
+91                <data android:scheme="tel" />
+91-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:67:17-46
+91-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:67:23-43
+92            </intent-filter>
+93        </activity>
+94
+95        <!-- Role para discador padrão (Android 10+) -->
+96        <meta-data
+96-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:72:9-74:36
+97            android:name="android.app.role.DIALER"
+97-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:73:13-51
+98            android:value="true" />
+98-->E:\projetos-vs\Safecall-kids\app\src\main\AndroidManifest.xml:74:13-33
+99
+100        <provider
+100-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:29:9-37:20
+101            android:name="androidx.startup.InitializationProvider"
+101-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:30:13-67
+102            android:authorities="com.safecallkids.app.androidx-startup"
+102-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:31:13-68
+103            android:exported="false" >
+103-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:32:13-37
+104            <meta-data
+104-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:34:13-36:52
+105                android:name="androidx.work.WorkManagerInitializer"
+105-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:35:17-68
+106                android:value="androidx.startup" />
+106-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:36:17-49
+107            <meta-data
+107-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ventu\.gradle\caches\8.9\transforms\0eccd49e432bbf8a4be0a9c35a96b491\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+108                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+108-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ventu\.gradle\caches\8.9\transforms\0eccd49e432bbf8a4be0a9c35a96b491\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+109                android:value="androidx.startup" />
+109-->[androidx.emoji2:emoji2:1.3.0] C:\Users\ventu\.gradle\caches\8.9\transforms\0eccd49e432bbf8a4be0a9c35a96b491\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+110            <meta-data
+110-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\ventu\.gradle\caches\8.9\transforms\d144cd4495f51227eb947da3a6d2754d\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:29:13-31:52
+111                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+111-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\ventu\.gradle\caches\8.9\transforms\d144cd4495f51227eb947da3a6d2754d\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:30:17-78
+112                android:value="androidx.startup" />
+112-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\ventu\.gradle\caches\8.9\transforms\d144cd4495f51227eb947da3a6d2754d\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:31:17-49
+113            <meta-data
+113-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+114                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+114-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+115                android:value="androidx.startup" />
+115-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+116        </provider>
+117
+118        <service
+118-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:39:9-45:35
+119            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+119-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:40:13-88
+120            android:directBootAware="false"
+120-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:41:13-44
+121            android:enabled="@bool/enable_system_alarm_service_default"
+121-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:42:13-72
+122            android:exported="false" />
+122-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:43:13-37
+123        <service
+123-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:46:9-52:35
+124            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+124-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:47:13-84
+125            android:directBootAware="false"
+125-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:48:13-44
+126            android:enabled="@bool/enable_system_job_service_default"
+126-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:49:13-70
+127            android:exported="true"
+127-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:50:13-36
+128            android:permission="android.permission.BIND_JOB_SERVICE" />
+128-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:51:13-69
+129        <service
+129-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:53:9-59:35
+130            android:name="androidx.work.impl.foreground.SystemForegroundService"
+130-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:54:13-81
+131            android:directBootAware="false"
+131-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:55:13-44
+132            android:enabled="@bool/enable_system_foreground_service_default"
+132-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:56:13-77
+133            android:exported="false" />
+133-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:57:13-37
+134
+135        <receiver
+135-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:61:9-66:35
+136            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+136-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:62:13-88
+137            android:directBootAware="false"
+137-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:63:13-44
+138            android:enabled="true"
+138-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:64:13-35
+139            android:exported="false" />
+139-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:65:13-37
+140        <receiver
+140-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:67:9-77:20
+141            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+141-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:68:13-106
+142            android:directBootAware="false"
+142-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:69:13-44
+143            android:enabled="false"
+143-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:70:13-36
+144            android:exported="false" >
+144-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:71:13-37
+145            <intent-filter>
+145-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:73:13-76:29
+146                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+146-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:74:17-87
+146-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:74:25-84
+147                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+147-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:75:17-90
+147-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:75:25-87
+148            </intent-filter>
+149        </receiver>
+150        <receiver
+150-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:78:9-88:20
+151            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+151-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:79:13-104
+152            android:directBootAware="false"
+152-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:80:13-44
+153            android:enabled="false"
+153-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:81:13-36
+154            android:exported="false" >
+154-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:82:13-37
+155            <intent-filter>
+155-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:84:13-87:29
+156                <action android:name="android.intent.action.BATTERY_OKAY" />
+156-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:85:17-77
+156-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:85:25-74
+157                <action android:name="android.intent.action.BATTERY_LOW" />
+157-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:86:17-76
+157-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:86:25-73
+158            </intent-filter>
+159        </receiver>
+160        <receiver
+160-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:89:9-99:20
+161            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+161-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:90:13-104
+162            android:directBootAware="false"
+162-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:91:13-44
+163            android:enabled="false"
+163-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:92:13-36
+164            android:exported="false" >
+164-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:93:13-37
+165            <intent-filter>
+165-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:95:13-98:29
+166                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+166-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:96:17-83
+166-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:96:25-80
+167                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+167-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:97:17-82
+167-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:97:25-79
+168            </intent-filter>
+169        </receiver>
+170        <receiver
+170-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:100:9-109:20
+171            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+171-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:101:13-103
+172            android:directBootAware="false"
+172-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:102:13-44
+173            android:enabled="false"
+173-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:103:13-36
+174            android:exported="false" >
+174-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:104:13-37
+175            <intent-filter>
+175-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:106:13-108:29
+176                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+176-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:107:17-79
+176-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:107:25-76
+177            </intent-filter>
+178        </receiver>
+179        <receiver
+179-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:110:9-121:20
+180            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+180-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:111:13-88
+181            android:directBootAware="false"
+181-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:112:13-44
+182            android:enabled="false"
+182-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:113:13-36
+183            android:exported="false" >
+183-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:114:13-37
+184            <intent-filter>
+184-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:116:13-120:29
+185                <action android:name="android.intent.action.BOOT_COMPLETED" />
+185-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:117:17-79
+185-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:117:25-76
+186                <action android:name="android.intent.action.TIME_SET" />
+186-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:118:17-73
+186-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:118:25-70
+187                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+187-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:119:17-81
+187-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:119:25-78
+188            </intent-filter>
+189        </receiver>
+190        <receiver
+190-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:122:9-131:20
+191            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+191-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:123:13-99
+192            android:directBootAware="false"
+192-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:124:13-44
+193            android:enabled="@bool/enable_system_alarm_service_default"
+193-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:125:13-72
+194            android:exported="false" >
+194-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:126:13-37
+195            <intent-filter>
+195-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:128:13-130:29
+196                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+196-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:129:17-98
+196-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:129:25-95
+197            </intent-filter>
+198        </receiver>
+199        <receiver
+199-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:132:9-142:20
+200            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+200-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:133:13-78
+201            android:directBootAware="false"
+201-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:134:13-44
+202            android:enabled="true"
+202-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:135:13-35
+203            android:exported="true"
+203-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:136:13-36
+204            android:permission="android.permission.DUMP" >
+204-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:137:13-57
+205            <intent-filter>
+205-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:139:13-141:29
+206                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+206-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:140:17-88
+206-->[androidx.work:work-runtime:2.10.0] C:\Users\ventu\.gradle\caches\8.9\transforms\a3409b95a630e8c8fa04a9ffcf74344e\transformed\work-runtime-2.10.0\AndroidManifest.xml:140:25-85
+207            </intent-filter>
+208        </receiver>
+209
+210        <service
+210-->[androidx.room:room-runtime:2.6.1] C:\Users\ventu\.gradle\caches\8.9\transforms\e2cdd8b231091126a05ebfeebc7e28d2\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
+211            android:name="androidx.room.MultiInstanceInvalidationService"
+211-->[androidx.room:room-runtime:2.6.1] C:\Users\ventu\.gradle\caches\8.9\transforms\e2cdd8b231091126a05ebfeebc7e28d2\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
+212            android:directBootAware="true"
+212-->[androidx.room:room-runtime:2.6.1] C:\Users\ventu\.gradle\caches\8.9\transforms\e2cdd8b231091126a05ebfeebc7e28d2\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
+213            android:exported="false" />
+213-->[androidx.room:room-runtime:2.6.1] C:\Users\ventu\.gradle\caches\8.9\transforms\e2cdd8b231091126a05ebfeebc7e28d2\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
+214
+215        <receiver
+215-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+216            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+216-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+217            android:directBootAware="false"
+217-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+218            android:enabled="true"
+218-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+219            android:exported="true"
+219-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+220            android:permission="android.permission.DUMP" >
+220-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+221            <intent-filter>
+221-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+222                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+222-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+222-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+223            </intent-filter>
+224            <intent-filter>
+224-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+225                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+225-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+225-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+226            </intent-filter>
+227            <intent-filter>
+227-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+228                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+228-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+228-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+229            </intent-filter>
+230            <intent-filter>
+230-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+231                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+231-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+231-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\ventu\.gradle\caches\8.9\transforms\647c28539afc588b94e64613d4884f61\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92
+232            </intent-filter>
+233        </receiver>
+234    </application>
+235
+236</manifest>

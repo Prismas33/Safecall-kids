@@ -12,7 +12,8 @@
     <string name="grant_permissions">Conceder permissões</string>
     <string name="app_settings">Definições da App</string>
     <string name="diagnostic_completed">Diagnóstico concluído</string>
-    <string name="error_occurred">Ocorreu um erro</string>    <string name="check_permissions">Verificar permissões</string>
+    <string name="error_occurred">Ocorreu um erro</string>
+    <string name="check_permissions">Verificar permissões</string>
     <string name="language_label">Idioma:</string>
     <string name="protection_description">Proteção contra chamadas desconhecidas</string>
     <string name="protection_enabled_text">✅ Proteção Ativada\nBloqueando chamadas desconhecidas</string>

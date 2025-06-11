@@ -10,7 +10,9 @@
     <string name="contacts_loaded">Contatos carregados</string>
     <string name="calls_blocked">Chamadas bloqueadas</string>
     <string name="grant_permissions">Conceder Permissões</string>
-    <string name="app_settings">Configurações do App</string>    <string name="diagnostic_completed">Diagnóstico concluído</string>
+    <string name="app_settings">Configurações do App</string>
+    <string name="check_permissions">Verificar permissões</string>
+    <string name="diagnostic_completed">Diagnóstico concluído</string>
     <string name="error_occurred">Erro ocorrido</string>
     <string name="language_label">Idioma:</string>
     <string name="protection_description">Proteção contra chamadas desconhecidas</string>

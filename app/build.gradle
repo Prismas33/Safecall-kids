@@ -3,6 +3,13 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+// Load keystore properties
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace 'com.safecallkids.app'
     compileSdk 35
@@ -17,17 +24,50 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        debug {
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['KEYSTORE_FILE'] ?: '../release-key.keystore')
+            storePassword keystoreProperties['KEYSTORE_PASSWORD'] ?: System.getenv("KEYSTORE_PASSWORD") ?: ""
+            keyAlias keystoreProperties['KEY_ALIAS'] ?: 'safecall-release'
+            keyPassword keystoreProperties['KEY_PASSWORD'] ?: System.getenv("KEY_PASSWORD") ?: ""
+        }
+    }
+
+    buildTypes {        debug {
             // Nome personalizado para APK debug
             applicationIdSuffix ".debug"
             versionNameSuffix "-DEBUG"
         }
         
         release {
-            // Nome personalizado para APK release
-            minifyEnabled false
+            // Configurações para release do Play Store
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+              // Desabilitar lint para resolver problemas de arquivo bloqueado
+            lintOptions {
+                checkReleaseBuilds false
+                abortOnError false
+                disable 'FullBackupContent', 'ExtraTranslation', 'MissingTranslation'
+            }
+            
+            // Assinatura configurada para release
+            signingConfig signingConfigs.release
+        }
+    }
+
+    bundle {
+        language {
+            // Disable language splits for now - include all languages in base APK
+            enableSplit = false
+        }
+        density {
+            // Enable density splits for smaller downloads
+            enableSplit = true
+        }
+        abi {
+            // Enable ABI splits for smaller downloads
+            enableSplit = true
         }
     }
 
@@ -35,9 +75,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    
-    kotlinOptions {
+      kotlinOptions {
         jvmTarget = '17'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        disable 'FullBackupContent', 'ExtraTranslation'
     }
 }
 

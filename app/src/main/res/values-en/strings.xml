@@ -12,7 +12,8 @@
     <string name="grant_permissions">Grant Permissions</string>
     <string name="app_settings">App Settings</string>
     <string name="diagnostic_completed">Diagnostic completed</string>
-    <string name="error_occurred">An error occurred</string>    <string name="check_permissions">Check permissions</string>
+    <string name="error_occurred">An error occurred</string>
+    <string name="check_permissions">Check permissions</string>
     <string name="language_label">Language:</string>
     <string name="protection_description">Protection against unknown calls</string>
     <string name="protection_enabled_text">✅ Protection Enabled\nBlocking unknown calls</string>

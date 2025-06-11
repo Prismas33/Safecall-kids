@@ -28,3 +28,26 @@
 
 # Keep service
 -keep class com.safecallkids.app.CallBlockingService { *; }
+
+# Keep MainActivity for system interactions
+-keep class com.safecallkids.app.MainActivity { *; }
+
+# Preserve telecom and phone state classes
+-keep class android.telecom.** { *; }
+-dontwarn android.telecom.**
+
+# Keep phone state and call handling related classes
+-keep class android.telephony.** { *; }
+-dontwarn android.telephony.**
+
+# Preserve SharedPreferences access
+-keepclassmembers class * {
+    *** get*SharedPreferences(...);
+}
+
+# Keep Android annotations
+-keep class androidx.annotation.** { *; }
+
+# Preserve line numbers for debugging crashes in Play Console
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile

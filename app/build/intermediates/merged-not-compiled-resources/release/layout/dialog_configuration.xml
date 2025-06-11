@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@android:color/white">        <TextView
+            android:id="@+id/dialog_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@string/dialog_placeholder"
+            android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:lineSpacingExtra="4dp" />
+
+        <!-- Spacer para empurrar botões para baixo -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:minHeight="20dp" />
+
+        <!-- Primeira linha: Configurações e Cancelar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="16dp">            <Button
+                android:id="@+id/btn_settings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/open_settings"
+                android:textColor="@android:color/white"
+                android:background="@drawable/button_primary" />
+
+            <Space
+                android:layout_width="16dp"
+                android:layout_height="wrap_content" />            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:textColor="@android:color/black"
+                android:background="@drawable/button_secondary" />
+        </LinearLayout>        <!-- Segunda linha: Já configurei tudo -->
+        <Button
+            android:id="@+id/btn_already_configured"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/already_configured"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_primary"
+            android:gravity="center" />
+    </LinearLayout>
+</ScrollView>

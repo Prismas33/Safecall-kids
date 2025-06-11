@@ -32,6 +32,7 @@
     <string name="calls_blocked_error">Chamadas bloqueadas: erro</string>
     <string name="calls_blocked_format">Chamadas bloqueadas: %1$d</string>
     <string name="cancel">Cancelar</string>
+    <string name="check_permissions">Verificar permissões</string>
     <string name="contacts_loaded">Contatos carregados</string>
     <string name="contacts_loaded_error">Contatos carregados: erro</string>
     <string name="contacts_loaded_format">Contatos carregados: %1$d</string>
