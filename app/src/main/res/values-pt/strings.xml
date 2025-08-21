@@ -31,7 +31,7 @@
     <string name="open_settings">Configurações</string>
     <string name="cancel">Cancelar</string>
     <string name="already_configured">Já configurei tudo</string>
-    <string name="dialog_placeholder">Mensagem do dialog</string>    <string name="info_text">• Bloqueia chamadas de números desconhecidos\n• Permite apenas contactos guardados\n• Funciona em segundo plano\n• Mantenha pressionado o botão para diagnóstico</string>
+    <string name="dialog_placeholder">Mensagem do dialog</string>    <string name="info_text">• Bloqueia chamadas de números desconhecidos\n• Bloqueia chamadas privadas/ocultas\n• Permite apenas contactos guardados\n• Funciona em segundo plano\n• Mantenha pressionado o botão para diagnóstico</string>
     
     <!-- Quick action buttons -->
     <string name="overlay_permission_button">Permitir sobreposição</string>
@@ -82,6 +82,6 @@
     
     <!-- Simplified Instructions Dialog -->
     <string name="simple_instructions_title">📋 Como Configurar a Proteção</string>
-    <string name="simple_instructions_content">A SafeCall Kids precisa de 2 passos simples para proteger o seu telefone:\n\n🔐 <b>Passo 1: Permissões Básicas</b>\nPermite à app:\n• Ler os seus contactos (para saber quem pode ligar)\n• Aceder às funções do telefone (para bloquear chamadas desconhecidas)\n• Mostrar por cima de outras apps (para mostrar notificações de bloqueio)\n\n📞 <b>Passo 2: Definir como App de Telefone</b>\nTorna a SafeCall Kids a app de telefone padrão, que:\n• Dá permissão para filtrar todas as chamadas recebidas\n• Bloqueia automaticamente números que não estão nos seus contactos\n• Funciona em segundo plano sem gastar bateria\n\n✅ <b>É só isto!</b>\nDepois de configurada, a SafeCall Kids protegerá silenciosamente o seu telefone ao permitir apenas chamadas dos seus contactos guardados.</string>
+    <string name="simple_instructions_content">A SafeCall Kids precisa de 2 passos simples para proteger o seu telefone:\n\n🔐 <b>Passo 1: Permissões Básicas</b>\nPermite à app:\n• Ler os seus contactos (para saber quem pode ligar)\n• Aceder às funções do telefone (para bloquear chamadas desconhecidas)\n• Mostrar por cima de outras apps (para mostrar notificações de bloqueio)\n\n📞 <b>Passo 2: Definir como App de Telefone</b>\nTorna a SafeCall Kids a app de telefone padrão, que:\n• Dá permissão para filtrar todas as chamadas recebidas\n• Bloqueia automaticamente números que não estão nos seus contactos\n• Bloqueia chamadas privadas/ocultas (números que não aparecem)\n• Funciona em segundo plano sem gastar bateria\n\n✅ <b>É só isto!</b>\nDepois de configurada, a SafeCall Kids protegerá silenciosamente o seu telefone ao permitir apenas chamadas dos seus contactos guardados e bloqueando todas as chamadas privadas/desconhecidas.</string>
     <string name="got_it">Entendi!</string>
 </resources>

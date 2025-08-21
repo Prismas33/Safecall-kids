@@ -19,40 +19,50 @@ class CallScreeningService : CallScreeningService() {
         
         val phoneNumber = callDetails.handle?.schemeSpecificPart
         
-        if (phoneNumber != null) {
-            val shouldBlock = shouldBlockCall(phoneNumber)
-              if (shouldBlock) {
-                Log.i(TAG, "Blocking call from: $phoneNumber")
-                
-                // Bloquear e rejeitar a chamada
-                val response = CallScreeningService.CallResponse.Builder()
-                    .setDisallowCall(true)
-                    .setRejectCall(true)
-                    .setSkipCallLog(false) // Manter no log para estatísticas
-                    .setSkipNotification(true) // Não mostrar notificação
-                    .build()
-                
-                respondToCall(callDetails, response)
-                
-                // Incrementar contador de chamadas bloqueadas
-                incrementBlockedCallsCount()
-                
-                // Atualizar notificação do serviço
-                updateServiceNotification()
-                  } else {
-                Log.d(TAG, "Allowing call from: $phoneNumber")
-                
-                // Permitir a chamada
-                val response = CallScreeningService.CallResponse.Builder()
-                    .setDisallowCall(false)
-                    .setRejectCall(false)
-                    .build()
-                
-                respondToCall(callDetails, response)
-            }        } else {
-            Log.w(TAG, "Call with null phone number, allowing by default")
+        if (phoneNumber == null || phoneNumber.isBlank()) {
+            Log.w(TAG, "Private/Hidden call detected - blocking")
             
-            // Se não conseguir obter o número, permitir por segurança
+            // Bloquear chamada privada/oculta
+            val response = CallScreeningService.CallResponse.Builder()
+                .setDisallowCall(true)
+                .setRejectCall(true)
+                .setSkipCallLog(false) // Manter no log para estatísticas
+                .setSkipNotification(true) // Não mostrar notificação
+                .build()
+            
+            respondToCall(callDetails, response)
+            
+            // Incrementar contador de chamadas bloqueadas
+            incrementBlockedCallsCount()
+            
+            // Atualizar notificação do serviço
+            updateServiceNotification()
+            return
+        }
+        
+        val shouldBlock = shouldBlockCall(phoneNumber)
+          if (shouldBlock) {
+            Log.i(TAG, "Blocking call from: $phoneNumber")
+            
+            // Bloquear e rejeitar a chamada
+            val response = CallScreeningService.CallResponse.Builder()
+                .setDisallowCall(true)
+                .setRejectCall(true)
+                .setSkipCallLog(false) // Manter no log para estatísticas
+                .setSkipNotification(true) // Não mostrar notificação
+                .build()
+            
+            respondToCall(callDetails, response)
+            
+            // Incrementar contador de chamadas bloqueadas
+            incrementBlockedCallsCount()
+            
+            // Atualizar notificação do serviço
+            updateServiceNotification()
+              } else {
+            Log.d(TAG, "Allowing call from: $phoneNumber")
+            
+            // Permitir a chamada
             val response = CallScreeningService.CallResponse.Builder()
                 .setDisallowCall(false)
                 .setRejectCall(false)

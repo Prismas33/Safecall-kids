@@ -15,10 +15,7 @@ class CallReceiver : BroadcastReceiver() {
             val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
             @Suppress("DEPRECATION")
             val phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
-            if (phoneNumber == null) {
-                Log.w(TAG, "Número da chamada não disponível (pode ser restrição do Android)")
-                return
-            }
+            
             Log.d(TAG, "Phone state changed: $state, Number: $phoneNumber")
             when (state) {
                 TelephonyManager.EXTRA_STATE_RINGING -> {
@@ -34,7 +31,19 @@ class CallReceiver : BroadcastReceiver() {
         }
     }
 
-    private fun handleIncomingCall(context: Context, phoneNumber: String) {
+    private fun handleIncomingCall(context: Context, phoneNumber: String?) {
+        if (phoneNumber == null || phoneNumber.isBlank()) {
+            Log.w(TAG, "Private/Hidden call detected - blocking")
+            val blocked = blockCall(context)
+            if (blocked) {
+                incrementBlockedCallsCount(context)
+                Log.i(TAG, "Successfully blocked private/hidden call")
+            } else {
+                Log.w(TAG, "Failed to block private/hidden call")
+            }
+            return
+        }
+        
         Log.d(TAG, "Handling incoming call from: $phoneNumber")
         val contactsHelper = ContactsHelper(context)
         if (!contactsHelper.isNumberInContacts(phoneNumber)) {

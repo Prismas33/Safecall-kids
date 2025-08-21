@@ -33,7 +33,7 @@
     <string name="footer_text">SafecallKids v2.0 - Proteção para crianças</string>
     <string name="open_settings">Abrir Config</string>
     <string name="cancel">Cancelar</string>    <string name="already_configured">Já configurei tudo</string>
-    <string name="dialog_placeholder">Mensagem do dialog</string>    <string name="info_text">• Bloqueia chamadas de números desconhecidos\n• Permite apenas contatos salvos\n• Funciona em segundo plano\n• Mantenha pressionado o botão para diagnóstico</string>
+    <string name="dialog_placeholder">Mensagem do dialog</string>    <string name="info_text">• Bloqueia chamadas de números desconhecidos\n• Bloqueia chamadas privadas/ocultas\n• Permite apenas contatos salvos\n• Funciona em segundo plano\n• Mantenha pressionado o botão para diagnóstico</string>
     
     <!-- Quick action buttons (default locale) -->
     <string name="overlay_permission_button">Permitir sobreposição</string>
@@ -84,6 +84,6 @@
     
     <!-- Simplified Instructions Dialog -->
     <string name="simple_instructions_title">📋 How to Setup Protection</string>
-    <string name="simple_instructions_content">SafeCall Kids needs 2 simple steps to protect your phone:\n\n🔐 <b>Step 1: Basic Permissions</b>\nAllows the app to:\n• Read your contacts (to know who can call)\n• Access phone functions (to block unknown calls)\n• Display over other apps (to show block notifications)\n\n📞 <b>Step 2: Set as Phone App</b>\nMakes SafeCall Kids the default phone app, which:\n• Gives permission to screen all incoming calls\n• Automatically blocks numbers not in your contacts\n• Works in the background without draining battery\n\n✅ <b>That\'s it!</b>\nOnce configured, SafeCall Kids will quietly protect your phone by only allowing calls from your saved contacts.</string>
+    <string name="simple_instructions_content">SafeCall Kids needs 2 simple steps to protect your phone:\n\n🔐 <b>Step 1: Basic Permissions</b>\nAllows the app to:\n• Read your contacts (to know who can call)\n• Access phone functions (to block unknown calls)\n• Display over other apps (to show block notifications)\n\n📞 <b>Step 2: Set as Phone App</b>\nMakes SafeCall Kids the default phone app, which:\n• Gives permission to screen all incoming calls\n• Automatically blocks numbers not in your contacts\n• Blocks private/hidden calls (numbers that don\'t show)\n• Works in the background without draining battery\n\n✅ <b>That\'s it!</b>\nOnce configured, SafeCall Kids will quietly protect your phone by only allowing calls from your saved contacts and blocking all private/unknown calls.</string>
     <string name="got_it">Got it!</string>
 </resources>
