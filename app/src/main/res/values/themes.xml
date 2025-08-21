@@ -17,11 +17,17 @@
         
         <!-- Text -->
         <item name="android:textColorPrimary">@color/text_color</item>
-        <item name="android:textColorSecondary">@color/secondary_text_color</item>        <!-- Status Bar -->
+        <item name="android:textColorSecondary">@color/secondary_text_color</item>
+        
+        <!-- Status Bar - Compatible with edge-to-edge -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        
+        <!-- Navigation Bar - Edge-to-edge ready -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="O_MR1">true</item>
     </style>
 
     <style name="Theme.SafecallKids" parent="Base.Theme.SafecallKids" />

@@ -55,6 +55,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
+            // Enable Edge-to-Edge for Android 15+ compatibility (API 35+)
+            if (Build.VERSION.SDK_INT >= 35) {
+                androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false)
+            }
+            
             // Load saved language preference first
             loadLocale()
             
