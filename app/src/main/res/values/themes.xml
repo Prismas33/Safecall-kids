@@ -54,4 +54,12 @@
         <item name="android:layout_margin">16dp</item>
         <item name="android:elevation">6dp</item>
     </style>
+    
+    <!-- White background dialog style -->
+    <style name="WhiteBackgroundDialog" parent="Theme.Material3.DayNight.Dialog">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:textColorPrimary">@color/text_color</item>
+        <item name="android:textColorSecondary">@color/secondary_text_color</item>
+        <item name="colorPrimary">@color/primary_color</item>
+    </style>
 </resources>

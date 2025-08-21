@@ -1049,13 +1049,16 @@ class MainActivity : AppCompatActivity() {
      */
     private fun showSimpleInstructionsDialog() {
         try {
-            AlertDialog.Builder(this)
+            val dialog = AlertDialog.Builder(this, R.style.WhiteBackgroundDialog)
                 .setTitle(getString(R.string.simple_instructions_title))
                 .setMessage(getString(R.string.simple_instructions_content))
                 .setPositiveButton(getString(R.string.got_it), null)
                 .setCancelable(true)
                 .create()
-                .show()
+            
+            // Ensure white background
+            dialog.window?.setBackgroundDrawableResource(android.R.color.white)
+            dialog.show()
                 
         } catch (e: Exception) {
             Log.e("MainActivity", "Error showing simple instructions dialog", e)
