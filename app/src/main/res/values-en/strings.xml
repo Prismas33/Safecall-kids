@@ -41,6 +41,18 @@
     <string name="default_phone_app_button">Set phone app</string>
     <string name="default_phone_app_alt_note">On some phones it is called Call app</string>
     
+    <!-- Guided Setup Dialog -->
+    <string name="guided_setup_title">🔧 Setup Protection</string>
+    <string name="step1_basic_permissions">1. Basic Permissions</string>
+    <string name="step2_phone_app">2. Set as Phone App</string>
+    <string name="step3_return">3. Return to App</string>
+    
+    <!-- Main buttons -->
+    <string name="setup_protection">Setup Protection</string>
+    <string name="verify_and_activate">Verify &amp; Activate</string>
+    <string name="deactivate_protection">Deactivate Protection</string>
+    <string name="detailed_instructions">Detailed Instructions</string>
+    
     <!-- Dialog Configuration Title -->
     <string name="dialog_configuration_title">🔧 Complete Setup - Android %1$d</string>
     

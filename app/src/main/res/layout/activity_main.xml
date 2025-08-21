@@ -153,57 +153,58 @@
 
     </LinearLayout>
 
-    <!-- Main Action Button -->    <Button
-        android:id="@+id/enableButton"
+    <!-- Main Action Buttons -->
+    <Button
+        android:id="@+id/setupProtectionButton"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="@string/grant_permissions"
+        android:text="@string/setup_protection"
         android:textSize="16sp"
         android:textColor="@android:color/white"
         android:background="@drawable/button_primary"
-        android:layout_marginBottom="16dp" />    <!-- Verify Permissions Button -->
-    <Button
-        android:id="@+id/verifyButton"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="@string/verify_permissions"
-        android:textSize="16sp"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:background="#2196F3"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="12dp" />
 
-    <!-- Quick Actions: always visible helpers -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="12dp">
 
         <Button
-            android:id="@+id/btn_overlay_permission"
+            android:id="@+id/verifyButton"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:text="@string/overlay_permission_button"
+            android:text="@string/verify_and_activate"
             android:textSize="14sp"
-            android:background="#4CAF50"
-            android:textColor="@android:color/white"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:background="#2196F3"
             android:layout_marginEnd="8dp" />
 
         <Button
-            android:id="@+id/btn_default_phone_app"
+            android:id="@+id/deactivateButton"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:text="@string/default_phone_app_button"
+            android:text="@string/deactivate_protection"
             android:textSize="14sp"
-            android:background="#FF9800"
-            android:textColor="@android:color/white"
+            android:textColor="#FFFFFF"
+            android:background="#F44336"
             android:layout_marginStart="8dp" />
 
     </LinearLayout>
+
+    <!-- Instructions Button -->
+    <Button
+        android:id="@+id/instructionsButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/detailed_instructions"
+        android:textSize="16sp"
+        android:textColor="@color/primary_color"
+        android:background="@drawable/button_secondary"
+        android:layout_marginBottom="16dp" />
 
     <!-- Info Text -->
     <TextView

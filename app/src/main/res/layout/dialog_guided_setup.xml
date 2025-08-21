@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/guided_setup_title"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/primary_color"
+        android:gravity="center"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Step 1: Basic Permissions -->
+    <Button
+        android:id="@+id/btn_step1_basic_permissions"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="@string/step1_basic_permissions"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_primary"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Step 2: Phone App (automatically grants overlay) -->
+    <Button
+        android:id="@+id/btn_step2_phone_app"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="@string/step2_phone_app"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:background="#FF9800"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Step 3: Return to App -->
+    <Button
+        android:id="@+id/btn_step3_return"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="@string/step3_return"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:background="#9E9E9E"
+        android:layout_marginBottom="12dp" />
+
+</LinearLayout>

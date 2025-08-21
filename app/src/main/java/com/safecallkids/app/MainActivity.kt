@@ -8,6 +8,8 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.telecom.TelecomManager
 import android.app.role.RoleManager
@@ -29,13 +31,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var statusText: TextView
     private lateinit var contactsCount: TextView
     private lateinit var blockedCount: TextView
-    private lateinit var enableButton: Button
+    private lateinit var setupProtectionButton: Button
     private lateinit var verifyButton: Button
+    private lateinit var deactivateButton: Button
+    private lateinit var instructionsButton: Button
     private lateinit var btnLangPt: ImageButton
     private lateinit var btnLangEn: ImageButton
-    // New quick action buttons
-    private lateinit var btnOverlayPermission: Button
-    private lateinit var btnDefaultPhoneApp: Button
+    
+    // Flag to track if guided setup dialog should be reopened
+    private var shouldReopenGuidedSetup = false
     private val PERMISSIONS_REQUEST_CODE = 100
     private val REQUIRED_PERMISSIONS = arrayOf(
         Manifest.permission.READ_PHONE_STATE,
@@ -69,53 +73,40 @@ class MainActivity : AppCompatActivity() {
             statusText = findViewById(R.id.statusText)
             contactsCount = findViewById(R.id.contactsCount)
             blockedCount = findViewById(R.id.blockedCount)
-            enableButton = findViewById(R.id.enableButton)
+            setupProtectionButton = findViewById(R.id.setupProtectionButton)
             verifyButton = findViewById(R.id.verifyButton)
+            deactivateButton = findViewById(R.id.deactivateButton)
+            instructionsButton = findViewById(R.id.instructionsButton)
             btnLangPt = findViewById(R.id.btn_lang_pt)
             btnLangEn = findViewById(R.id.btn_lang_en)
-            // New quick action buttons
-            btnOverlayPermission = findViewById(R.id.btn_overlay_permission)
-            btnDefaultPhoneApp = findViewById(R.id.btn_default_phone_app)
 
-            // Define explicit text and visibility for verify button
-            verifyButton.text = getString(R.string.verify_permissions)
+            // Define explicit text and visibility for buttons
+            verifyButton.text = getString(R.string.verify_and_activate)
             verifyButton.visibility = android.view.View.VISIBLE
 
-            enableButton.setOnClickListener {
+            setupProtectionButton.setOnClickListener {
                 try {
-                    if (hasAllProtection()) {
-                        openAppSettings()
-                    } else {
-                        requestAllProtection()
-                    }
+                    showGuidedSetupDialog()
                 } catch (e: Exception) {
-                    Log.e("MainActivity", "Error in button click", e)
+                    Log.e("MainActivity", "Error showing guided setup", e)
                     Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
-            // Quick actions
-            btnOverlayPermission.setOnClickListener {
+
+            deactivateButton.setOnClickListener {
                 try {
-                    requestOverlayPermission()
+                    showDeactivationDialog()
                 } catch (e: Exception) {
-                    Log.e("MainActivity", "Error requesting overlay", e)
+                    Log.e("MainActivity", "Error showing deactivation dialog", e)
+                    Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
-            btnDefaultPhoneApp.setOnClickListener {
+
+            instructionsButton.setOnClickListener {
                 try {
-                    Toast.makeText(this, "Botão clicado! Abrindo configurações...", Toast.LENGTH_SHORT).show()
-                    Log.d("MainActivity", "Botão Definir app de telefone clicado")
-                    
-                    // Tentar abrir configurações de apps padrão
-                    try {
-                        val intent = Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)
-                        startActivity(intent)
-                    } catch (e: Exception) {
-                        Log.e("MainActivity", "Erro ao abrir configurações", e)
-                        Toast.makeText(this, "Erro ao abrir configurações: ${e.message}", Toast.LENGTH_LONG).show()
-                    }
+                    requestAllPermissionsAtOnce() // Uses existing detailed instructions
                 } catch (e: Exception) {
-                    Log.e("MainActivity", "Error in button click", e)
+                    Log.e("MainActivity", "Error showing instructions", e)
                     Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -130,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            enableButton.setOnLongClickListener {
+            setupProtectionButton.setOnLongClickListener {
                 try {
                     runDiagnostic()
                 } catch (e: Exception) {
@@ -162,11 +153,13 @@ class MainActivity : AppCompatActivity() {
     
     private fun hasOverlayPermission(): Boolean {
         return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 Settings.canDrawOverlays(this)
             } else {
                 true
             }
+            Log.d("MainActivity", "hasOverlayPermission() returning: $result (API level: ${Build.VERSION.SDK_INT})")
+            result
         } catch (e: Exception) {
             Log.e("MainActivity", "Error checking overlay permission", e)
             false
@@ -356,8 +349,9 @@ class MainActivity : AppCompatActivity() {
     
     private fun updateUI() {        try {            if (hasAllProtection()) {
                 statusText.text = getString(R.string.protection_enabled_text)
-                enableButton.text = getString(R.string.app_settings)
+                setupProtectionButton.text = getString(R.string.app_settings)
                 verifyButton.visibility = android.view.View.GONE
+                deactivateButton.visibility = android.view.View.VISIBLE
                 
                 try {
                     val contactsHelper = ContactsHelper(this)
@@ -390,16 +384,18 @@ class MainActivity : AppCompatActivity() {
                 if (!hasOverlayPermission()) missing.add(getString(R.string.overlay_apps))
                 if (!isDefaultCallScreeningService()) missing.add(getString(R.string.call_screening))
                   statusText.text = getString(R.string.protection_disabled_text, missing.joinToString(", "))
-                enableButton.text = getString(R.string.grant_permissions)
+                setupProtectionButton.text = getString(R.string.setup_protection)
                 verifyButton.visibility = android.view.View.VISIBLE
+                deactivateButton.visibility = android.view.View.GONE
                 contactsCount.text = getString(R.string.contacts_loaded_format, 0)
                 blockedCount.text = getString(R.string.calls_blocked_format, 0)
             }
         } catch (e: Exception) {            Log.e("MainActivity", "Erro ao atualizar UI", e)
             logErrorToFile("updateUI", e)
             statusText.text = getString(R.string.interface_error)
-            enableButton.text = getString(R.string.try_again)
+            setupProtectionButton.text = getString(R.string.try_again)
             verifyButton.visibility = android.view.View.VISIBLE
+            deactivateButton.visibility = android.view.View.GONE
             Toast.makeText(this, "Erro ao atualizar interface: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -698,10 +694,29 @@ class MainActivity : AppCompatActivity() {
                 
                 if (allGranted) {
                     Log.d("MainActivity", "Todas as permissões concedidas")
-                    requestAllProtection()
+                    Toast.makeText(this, "✅ Permissões básicas concedidas!", Toast.LENGTH_SHORT).show()
+                    
+                    // Se vem do guided setup, reabrir o diálogo
+                    if (shouldReopenGuidedSetup) {
+                        shouldReopenGuidedSetup = false
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            showGuidedSetupDialog()
+                        }, 500)
+                    } else {
+                        // Se não vem do guided setup, continuar com o fluxo normal
+                        requestAllProtection()
+                    }
                 } else {
                     Log.w("MainActivity", "Algumas permissões foram negadas")
                     Toast.makeText(this, "Algumas permissões são necessárias para o funcionamento do app", Toast.LENGTH_LONG).show()
+                    
+                    // Se vem do guided setup, reabrir o diálogo mesmo com permissões negadas
+                    if (shouldReopenGuidedSetup) {
+                        shouldReopenGuidedSetup = false
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            showGuidedSetupDialog()
+                        }, 500)
+                    }
                 }
                 
                 updateUI()
@@ -717,6 +732,15 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         try {
             updateUI()
+            
+            // Reopen guided setup dialog if returning from settings
+            if (shouldReopenGuidedSetup) {
+                shouldReopenGuidedSetup = false
+                // Small delay to ensure UI is ready
+                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                    showGuidedSetupDialog()
+                }, 500)
+            }
         } catch (e: Exception) {
             Log.e("MainActivity", "Error in onResume", e)
             logErrorToFile("onResume", e)
@@ -842,6 +866,287 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("MainActivity", "Erro ao verificar permissões", e)
             Toast.makeText(this, "Erro ao verificar: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Shows the guided setup dialog with ordered configuration steps
+     */
+    private fun showGuidedSetupDialog() {
+        try {
+            val dialogView = layoutInflater.inflate(R.layout.dialog_guided_setup, null)
+            val dialog = AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setCancelable(true)
+                .create()
+
+            // Get buttons  
+            val btnStep1: Button = dialogView.findViewById(R.id.btn_step1_basic_permissions)
+            val btnStep2: Button = dialogView.findViewById(R.id.btn_step2_phone_app)
+            val btnStep3: Button = dialogView.findViewById(R.id.btn_step3_return)
+
+            // Update button states based on current permissions
+            updateDialogButtonStates(btnStep1, btnStep2, btnStep3)
+
+            // Step 1: Basic Permissions
+            btnStep1.setOnClickListener {
+                if (hasAllPermissions()) {
+                    Toast.makeText(this, "✅ Permissões básicas já concedidas!", Toast.LENGTH_SHORT).show()
+                } else {
+                    dialog.dismiss()
+                    shouldReopenGuidedSetup = true
+                    requestPermissions()
+                }
+            }
+
+            // Step 2: Phone App  
+            btnStep2.setOnClickListener {
+                Log.d("MainActivity", "Step 2 button clicked")
+                try {
+                    dialog.dismiss()
+                    shouldReopenGuidedSetup = true
+                    
+                    // Show immediate feedback
+                    Toast.makeText(this, "Abrindo configurações do telefone...", Toast.LENGTH_SHORT).show()
+                    Log.d("MainActivity", "Toast shown, checking if already configured...")
+                    
+                    if (isDefaultCallScreeningService()) {
+                        Log.d("MainActivity", "Already configured as default phone app")
+                        Toast.makeText(this, "✅ App de telefone já configurado!", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+                    
+                    Log.d("MainActivity", "Not configured, attempting to open settings...")
+                    // Use the EXACT implementation that worked before
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        Log.d("MainActivity", "Android 10+ detected, trying intents...")
+                        val intents = listOf(
+                            Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS).apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            },
+                            Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER).apply {
+                                putExtra(TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, packageName)
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            },
+                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.fromParts("package", packageName, null)
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            }
+                        )
+                        
+                        var opened = false
+                        for ((index, intent) in intents.withIndex()) {
+                            try {
+                                Log.d("MainActivity", "Trying intent $index: ${intent.action}")
+                                startActivity(intent)
+                                Log.d("MainActivity", "Intent $index succeeded!")
+                                opened = true
+                                break
+                            } catch (e: Exception) {
+                                Log.w("MainActivity", "Intent $index failed: ${intent.action}", e)
+                            }
+                        }
+                        
+                        if (!opened) {
+                            Log.e("MainActivity", "All intents failed!")
+                            Toast.makeText(this, "❌ Não foi possível abrir configurações automaticamente", Toast.LENGTH_LONG).show()
+                        }
+                    } else {
+                        Log.d("MainActivity", "Android < 10, trying app details...")
+                        // Para Android < 10
+                        try {
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.fromParts("package", packageName, null)
+                            }
+                            startActivity(intent)
+                            Log.d("MainActivity", "App details opened successfully")
+                        } catch (e: Exception) {
+                            Log.e("MainActivity", "Failed to open app details", e)
+                            Toast.makeText(this, "❌ Erro ao abrir configurações", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Error in Step 2 click listener", e)
+                    Toast.makeText(this, "❌ Erro ao abrir configurações", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            // Step 3: Return to App
+            btnStep3.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error showing guided setup dialog", e)
+            Toast.makeText(this, "Erro ao mostrar configuração: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Updates dialog button colors and text based on current permission states
+     */
+    private fun updateDialogButtonStates(btnStep1: Button, btnStep2: Button, btnStep3: Button) {
+        try {
+            // Step 1: Basic Permissions
+            if (hasAllPermissions()) {
+                btnStep1.setBackgroundColor(0xFF4CAF50.toInt()) // Green - completed
+                btnStep1.text = "✅ ${getString(R.string.step1_basic_permissions)}"
+                btnStep1.isEnabled = false // Disable if already granted
+            } else {
+                btnStep1.setBackgroundColor(0xFF2196F3.toInt()) // Blue - action needed
+                btnStep1.text = getString(R.string.step1_basic_permissions)
+                btnStep1.isEnabled = true
+            }
+
+            // Step 2: Phone App (automatically grants overlay permission)
+            if (isDefaultCallScreeningService()) {
+                btnStep2.setBackgroundColor(0xFF4CAF50.toInt()) // Green - completed
+                btnStep2.text = "✅ ${getString(R.string.step2_phone_app)}"
+                btnStep2.isEnabled = false // Disable if already granted
+            } else {
+                btnStep2.setBackgroundColor(0xFFFF9800.toInt()) // Orange - action needed
+                btnStep2.text = getString(R.string.step2_phone_app)
+                btnStep2.isEnabled = true
+            }
+
+            // Step 3: Return button (always enabled)
+            btnStep3.setBackgroundColor(0xFF9E9E9E.toInt()) // Grey
+            btnStep3.text = getString(R.string.step3_return)
+            btnStep3.isEnabled = true
+
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Erro ao atualizar estado dos botões", e)
+        }
+    }
+
+    /**
+     * Shows a dialog with deactivation options
+     */
+    private fun showDeactivationDialog() {
+        try {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Desativar SafeCall Kids")
+            builder.setMessage("Escolha uma opção para desativar a proteção:")
+            
+            builder.setPositiveButton("Limpar Armazenamento") { _, _ ->
+                clearAppStorage()
+            }
+            
+            builder.setNeutralButton("Remover App de Telefone") { _, _ ->
+                removePhoneAppConfiguration()
+            }
+            
+            builder.setNegativeButton("Cancelar", null)
+            
+            builder.create().show()
+            
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error showing deactivation dialog", e)
+            Toast.makeText(this, "Erro ao mostrar opções de desativação: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Clears app storage data
+     */
+    private fun clearAppStorage() {
+        try {
+            // Show confirmation dialog
+            AlertDialog.Builder(this)
+                .setTitle("Confirmar Limpeza")
+                .setMessage("Isto irá remover todos os dados da aplicação. Deseja continuar?")
+                .setPositiveButton("Sim") { _, _ ->
+                    try {
+                        // Clear shared preferences
+                        val prefs = getSharedPreferences("safecall_prefs", Context.MODE_PRIVATE)
+                        prefs.edit().clear().apply()
+                        
+                        // Clear any cached data
+                        cacheDir.deleteRecursively()
+                        
+                        Toast.makeText(this, "✅ Armazenamento limpo com sucesso!", Toast.LENGTH_LONG).show()
+                        
+                        // Restart the app to reflect changes
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            finish()
+                        }, 1000)
+                        
+                    } catch (e: Exception) {
+                        Log.e("MainActivity", "Error clearing storage", e)
+                        Toast.makeText(this, "❌ Erro ao limpar armazenamento: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Cancelar", null)
+                .show()
+                
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error in clearAppStorage", e)
+            Toast.makeText(this, "❌ Erro: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Removes the app as default phone app
+     */
+    private fun removePhoneAppConfiguration() {
+        try {
+            AlertDialog.Builder(this)
+                .setTitle("Remover App de Telefone")
+                .setMessage("Isto irá abrir as configurações para remover a SafeCall Kids como aplicação de telefone padrão.")
+                .setPositiveButton("Abrir Configurações") { _, _ ->
+                    try {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            val intents = listOf(
+                                Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS).apply {
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                },
+                                Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER).apply {
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                },
+                                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                    data = Uri.fromParts("package", packageName, null)
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                }
+                            )
+                            
+                            var opened = false
+                            for ((index, intent) in intents.withIndex()) {
+                                try {
+                                    startActivity(intent)
+                                    opened = true
+                                    break
+                                } catch (e: Exception) {
+                                    Log.w("MainActivity", "Intent $index failed", e)
+                                }
+                            }
+                            
+                            if (!opened) {
+                                Toast.makeText(this, "❌ Não foi possível abrir configurações", Toast.LENGTH_LONG).show()
+                            }
+                        } else {
+                            // Android < 10
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.fromParts("package", packageName, null)
+                            }
+                            startActivity(intent)
+                        }
+                        
+                    } catch (e: Exception) {
+                        Log.e("MainActivity", "Error opening phone app settings", e)
+                        Toast.makeText(this, "❌ Erro ao abrir configurações: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Cancelar", null)
+                .show()
+                
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error in removePhoneAppConfiguration", e)
+            Toast.makeText(this, "❌ Erro: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 }

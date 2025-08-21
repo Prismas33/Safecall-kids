@@ -40,6 +40,18 @@
     <string name="default_phone_app_button">Definir app de telefone</string>
     <string name="default_phone_app_alt_note">Em alguns telefones chama-se App ID de chamada</string>
     
+    <!-- Guided Setup Dialog -->
+    <string name="guided_setup_title">🔧 Configurar Proteção</string>
+    <string name="step1_basic_permissions">1. Permissões Básicas</string>
+    <string name="step2_phone_app">2. Definir como App ID Spam</string>
+    <string name="step3_return">3. Voltar à App</string>
+    
+    <!-- Main buttons -->
+    <string name="setup_protection">Configurar Proteção</string>
+    <string name="verify_and_activate">Verificar e Ativar</string>
+    <string name="deactivate_protection">Desativar Proteção</string>
+    <string name="detailed_instructions">Instruções Detalhadas</string>
+    
     <!-- Dialog Configuration Title -->
     <string name="dialog_configuration_title">🔧 Configuração Completa - Android %1$d</string>
     
