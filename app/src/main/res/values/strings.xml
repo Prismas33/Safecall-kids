@@ -73,4 +73,12 @@
     <string name="huawei_note">🔸 HUAWEI: Procure em \'Configurações → Aplicativos → Aplicativos padrão\'</string>
     <string name="oppo_note">🔸 OPPO/OnePlus: \'Configurações → Aplicativos → Apps padrão\'</string>
     <string name="samsung_note_android12">🔸 SAMSUNG: Pode estar em \'Aplicações\' em vez de \'Apps\'</string>
+    
+    <!-- Deactivation Dialog -->
+    <string name="deactivate_dialog_title">Deactivate SafeCall Kids</string>
+    <string name="deactivate_dialog_message">Choose an option to deactivate protection:</string>
+    <string name="remove_phone_app">Remove Phone App</string>
+    <string name="remove_phone_app_title">Remove Phone App</string>
+    <string name="remove_phone_app_message">This will open settings to remove SafeCall Kids as the default phone app.</string>
+    <string name="open_phone_settings">Open Settings</string>
 </resources>

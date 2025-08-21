@@ -1027,18 +1027,14 @@ class MainActivity : AppCompatActivity() {
     private fun showDeactivationDialog() {
         try {
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("Desativar SafeCall Kids")
-            builder.setMessage("Escolha uma opção para desativar a proteção:")
+            builder.setTitle(getString(R.string.deactivate_dialog_title))
+            builder.setMessage(getString(R.string.deactivate_dialog_message))
             
-            builder.setPositiveButton("Limpar Armazenamento") { _, _ ->
-                clearAppStorage()
-            }
-            
-            builder.setNeutralButton("Remover App de Telefone") { _, _ ->
+            builder.setPositiveButton(getString(R.string.remove_phone_app)) { _, _ ->
                 removePhoneAppConfiguration()
             }
             
-            builder.setNegativeButton("Cancelar", null)
+            builder.setNegativeButton(getString(R.string.cancel), null)
             
             builder.create().show()
             
@@ -1049,56 +1045,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Clears app storage data
-     */
-    private fun clearAppStorage() {
-        try {
-            // Show confirmation dialog
-            AlertDialog.Builder(this)
-                .setTitle("Confirmar Limpeza")
-                .setMessage("Isto irá remover todos os dados da aplicação. Deseja continuar?")
-                .setPositiveButton("Sim") { _, _ ->
-                    try {
-                        // Clear shared preferences
-                        val prefs = getSharedPreferences("safecall_prefs", Context.MODE_PRIVATE)
-                        prefs.edit().clear().apply()
-                        
-                        // Clear any cached data
-                        cacheDir.deleteRecursively()
-                        
-                        Toast.makeText(this, "✅ Armazenamento limpo com sucesso!", Toast.LENGTH_LONG).show()
-                        
-                        // Restart the app to reflect changes
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                            finish()
-                        }, 1000)
-                        
-                    } catch (e: Exception) {
-                        Log.e("MainActivity", "Error clearing storage", e)
-                        Toast.makeText(this, "❌ Erro ao limpar armazenamento: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                .setNegativeButton("Cancelar", null)
-                .show()
-                
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Error in clearAppStorage", e)
-            Toast.makeText(this, "❌ Erro: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    /**
      * Removes the app as default phone app
      */
     private fun removePhoneAppConfiguration() {
         try {
             AlertDialog.Builder(this)
-                .setTitle("Remover App de Telefone")
-                .setMessage("Isto irá abrir as configurações para remover a SafeCall Kids como aplicação de telefone padrão.")
-                .setPositiveButton("Abrir Configurações") { _, _ ->
+                .setTitle(getString(R.string.remove_phone_app_title))
+                .setMessage(getString(R.string.remove_phone_app_message))
+                .setPositiveButton(getString(R.string.open_phone_settings)) { _, _ ->
                     try {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                             val intents = listOf(
@@ -1141,7 +1095,7 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this, "❌ Erro ao abrir configurações: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show()
                 
         } catch (e: Exception) {
