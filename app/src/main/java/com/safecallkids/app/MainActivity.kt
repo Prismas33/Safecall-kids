@@ -10,9 +10,11 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.telecom.TelecomManager
+import android.app.role.RoleManager
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import java.util.Locale
@@ -31,7 +33,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var verifyButton: Button
     private lateinit var btnLangPt: ImageButton
     private lateinit var btnLangEn: ImageButton
-      private val PERMISSIONS_REQUEST_CODE = 100
+    // New quick action buttons
+    private lateinit var btnOverlayPermission: Button
+    private lateinit var btnDefaultPhoneApp: Button
+    private val PERMISSIONS_REQUEST_CODE = 100
     private val REQUIRED_PERMISSIONS = arrayOf(
         Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.READ_CONTACTS,
@@ -68,13 +73,14 @@ class MainActivity : AppCompatActivity() {
             verifyButton = findViewById(R.id.verifyButton)
             btnLangPt = findViewById(R.id.btn_lang_pt)
             btnLangEn = findViewById(R.id.btn_lang_en)
-              // Definir texto explicitamente para garantir que aparece
+            // New quick action buttons
+            btnOverlayPermission = findViewById(R.id.btn_overlay_permission)
+            btnDefaultPhoneApp = findViewById(R.id.btn_default_phone_app)
+
+            // Define explicit text and visibility for verify button
             verifyButton.text = getString(R.string.verify_permissions)
-            Log.d("MainActivity", "Verify button text set to: ${verifyButton.text}")
-            
-            // Force visibility
             verifyButton.visibility = android.view.View.VISIBLE
-            
+
             enableButton.setOnClickListener {
                 try {
                     if (hasAllProtection()) {
@@ -87,7 +93,34 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
-              // Configure verify button to check permissions and activate if all are correct
+            // Quick actions
+            btnOverlayPermission.setOnClickListener {
+                try {
+                    requestOverlayPermission()
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Error requesting overlay", e)
+                }
+            }
+            btnDefaultPhoneApp.setOnClickListener {
+                try {
+                    Toast.makeText(this, "Botão clicado! Abrindo configurações...", Toast.LENGTH_SHORT).show()
+                    Log.d("MainActivity", "Botão Definir app de telefone clicado")
+                    
+                    // Tentar abrir configurações de apps padrão
+                    try {
+                        val intent = Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        Log.e("MainActivity", "Erro ao abrir configurações", e)
+                        Toast.makeText(this, "Erro ao abrir configurações: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Error in button click", e)
+                    Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            // Configure verify button
             verifyButton.setOnClickListener {
                 try {
                     verifyAndActivateProtection()
@@ -96,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
-            
+
             enableButton.setOnLongClickListener {
                 try {
                     runDiagnostic()
@@ -106,16 +139,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
-            
+
             // Setup language switch buttons
-            btnLangPt.setOnClickListener {
-                setLocale("pt")
-            }
-            
-            btnLangEn.setOnClickListener {
-                setLocale("en")
-            }
-            
+            btnLangPt.setOnClickListener { setLocale("pt") }
+            btnLangEn.setOnClickListener { setLocale("en") }
         } catch (e: Exception) {
             Log.e("MainActivity", "Error initializing views", e)
             logErrorToFile("initViews", e)
@@ -150,24 +177,84 @@ class MainActivity : AppCompatActivity() {
     private fun isDefaultCallScreeningService(): Boolean {
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                // Para Android 10+, vamos verificar se temos permissões necessárias
-                // e se o usuário já configurou o serviço
-                val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
-                val userConfigured = prefs.getBoolean("call_screening_configured", false)
-                
-                Log.d("MainActivity", "Android ${Build.VERSION.SDK_INT} detected")
-                Log.d("MainActivity", "User configured call screening: $userConfigured")
-                
-                // Se o usuário já marcou como configurado, assumimos que está ok
-                return userConfigured
-            } else {
-                true // Em versões antigas não é necessário
+                val roleManager = getSystemService(RoleManager::class.java)
+                if (roleManager.isRoleAvailable(RoleManager.ROLE_CALL_SCREENING) &&
+                    roleManager.isRoleHeld(RoleManager.ROLE_CALL_SCREENING)) {
+                    return true
+                }
             }
+            val telecom = getSystemService(Context.TELECOM_SERVICE) as TelecomManager
+            val isDefaultDialer = telecom.defaultDialerPackage == packageName
+            Log.d("MainActivity", "Is default dialer: $isDefaultDialer")
+            isDefaultDialer
         } catch (e: Exception) {
-            Log.e("MainActivity", "Error checking call screening service", e)
+            Log.e("MainActivity", "Error checking call screening/default dialer", e)
             false
         }
-    }    /**
+    }
+
+    private fun requestCallScreeningRoleOrDialer(): Boolean {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val roleManager = getSystemService(RoleManager::class.java)
+
+                // 1) Tentar definir como app de telefone padrão (ROLE_DIALER)
+                if (roleManager.isRoleAvailable(RoleManager.ROLE_DIALER) && !roleManager.isRoleHeld(RoleManager.ROLE_DIALER)) {
+                    val dialerRoleIntent = roleManager.createRequestRoleIntent(RoleManager.ROLE_DIALER)
+                    try { startActivity(dialerRoleIntent); return true } catch (_: Exception) { Log.w("MainActivity","ROLE_DIALER intent falhou") }
+                }
+
+                // 2) Tentar papel de triagem de chamadas (ROLE_CALL_SCREENING)
+                if (roleManager.isRoleAvailable(RoleManager.ROLE_CALL_SCREENING) && !roleManager.isRoleHeld(RoleManager.ROLE_CALL_SCREENING)) {
+                    val screeningRoleIntent = roleManager.createRequestRoleIntent(RoleManager.ROLE_CALL_SCREENING)
+                    try { startActivity(screeningRoleIntent); return true } catch (_: Exception) { Log.w("MainActivity","ROLE_CALL_SCREENING intent falhou") }
+                }
+            }
+            // Try to open change default dialer directly
+            try {
+                val dialerIntent = Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER).apply {
+                    putExtra(TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, packageName)
+                }
+                startActivity(dialerIntent)
+                return true
+            } catch (_: Exception) { Log.w("MainActivity","ACTION_CHANGE_DEFAULT_DIALER falhou") }
+
+            // System settings (generic)
+            val fallbacks = listOf(
+                Intent("android.settings.ROLE_SETTINGS"),
+                Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS),
+                Intent(Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS),
+                Intent(Settings.ACTION_SETTINGS)
+            )
+            for (i in fallbacks) {
+                try { startActivity(i); return true } catch (_: Exception) { Log.w("MainActivity","Falha ao abrir ${i.action}") }
+            }
+
+            // Explicit components for some OEMs/Android versions
+            val explicitAttempts = listOf(
+                // AOSP default apps
+                Intent().setClassName("com.android.settings", "com.android.settings.Settings\$ManageDefaultAppsActivity"),
+                Intent().setClassName("com.android.settings", "com.android.settings.Settings\$RoleSettingsActivity"),
+                Intent().setClassName("com.android.settings", "com.android.settings.Settings")
+            )
+            for (i in explicitAttempts) {
+                try { startActivity(i); return true } catch (_: Exception) { /* ignore */ }
+            }
+
+            // App details as last resort
+            try {
+                val appDetails = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.fromParts("package", packageName, null)
+                }
+                startActivity(appDetails)
+                return true
+            } catch (_: Exception) { Log.w("MainActivity","Falha ao abrir detalhes do app") }
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Erro ao solicitar papel de triagem/dialer", e)
+        }
+        return false
+    }
+    /**
      * Solicita ao usuário para configurar o app como CallScreeningService
      * Agora usa detecção inteligente por versão do Android
      */
@@ -407,12 +494,15 @@ class MainActivity : AppCompatActivity() {
      */
     private fun markCallScreeningAsConfigured() {
         try {
-            val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
-            prefs.edit().putBoolean("call_screening_configured", true).apply()
-            
-            Log.d("MainActivity", "Call screening marked as configured by user")
-            Toast.makeText(this, "✅ Call Screening marcado como configurado!", Toast.LENGTH_SHORT).show()
-            
+            // Instead of blindly marking, re-check real status and inform the user
+            val realConfigured = isDefaultCallScreeningService()
+            if (realConfigured) {
+                Log.d("MainActivity", "Call screening is actually configured")
+                Toast.makeText(this, "✅ Call Screening realmente configurado!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "❌ Ainda não é o app de telefone/triagem padrão", Toast.LENGTH_LONG).show()
+                requestCallScreeningRoleOrDialer()
+            }
             updateUI()
         } catch (e: Exception) {
             Log.e("MainActivity", "Error marking call screening as configured", e)
@@ -465,7 +555,7 @@ class MainActivity : AppCompatActivity() {
             }
             alreadyConfiguredButton.setOnClickListener { 
                 dialog.dismiss()
-                markAllAsConfigured()
+                markCallScreeningAsConfigured()
             }
             
             dialog.show()

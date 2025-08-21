@@ -35,6 +35,11 @@
     <string name="cancel">Cancelar</string>    <string name="already_configured">Já configurei tudo</string>
     <string name="dialog_placeholder">Mensagem do dialog</string>    <string name="info_text">• Bloqueia chamadas de números desconhecidos\n• Permite apenas contatos salvos\n• Funciona em segundo plano\n• Mantenha pressionado o botão para diagnóstico</string>
     
+    <!-- Quick action buttons (default locale) -->
+    <string name="overlay_permission_button">Permitir sobreposição</string>
+    <string name="default_phone_app_button">Definir app de telefone</string>
+    <string name="default_phone_app_alt_note">Em alguns telefones chama-se App ID de chamada</string>
+    
     <!-- Dialog Configuration Title -->
     <string name="dialog_configuration_title">🔧 Configuração Completa - Android %1$d</string>
     

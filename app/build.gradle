@@ -34,8 +34,7 @@ android {
     }
 
     buildTypes {        debug {
-            // Nome personalizado para APK debug
-            applicationIdSuffix ".debug"
+            // Build de debug sem sufixo no applicationId
             versionNameSuffix "-DEBUG"
         }
         

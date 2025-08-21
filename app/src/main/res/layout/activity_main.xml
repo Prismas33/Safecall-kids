@@ -171,7 +171,41 @@
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:background="#2196F3"
-        android:layout_marginBottom="16dp" /><!-- Info Text -->
+        android:layout_marginBottom="16dp" />
+
+    <!-- Quick Actions: always visible helpers -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btn_overlay_permission"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="@string/overlay_permission_button"
+            android:textSize="14sp"
+            android:background="#4CAF50"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btn_default_phone_app"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="@string/default_phone_app_button"
+            android:textSize="14sp"
+            android:background="#FF9800"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <!-- Info Text -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

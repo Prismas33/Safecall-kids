@@ -36,6 +36,11 @@
     <string name="already_configured">Already configured</string>
     <string name="dialog_placeholder">Dialog message</string>    <string name="info_text">• Blocks calls from unknown numbers\n• Allows only saved contacts\n• Runs in the background\n• Long press the button for diagnostics</string>
     
+    <!-- Quick action buttons -->
+    <string name="overlay_permission_button">Allow overlay</string>
+    <string name="default_phone_app_button">Set phone app</string>
+    <string name="default_phone_app_alt_note">On some phones it is called Call app</string>
+    
     <!-- Dialog Configuration Title -->
     <string name="dialog_configuration_title">🔧 Complete Setup - Android %1$d</string>
     
