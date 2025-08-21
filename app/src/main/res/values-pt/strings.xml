@@ -79,4 +79,9 @@
     <string name="remove_phone_app_title">Remover App de Telefone</string>
     <string name="remove_phone_app_message">Isto irá abrir as configurações para remover a SafeCall Kids como aplicação de telefone padrão.</string>
     <string name="open_phone_settings">Abrir Configurações</string>
+    
+    <!-- Simplified Instructions Dialog -->
+    <string name="simple_instructions_title">📋 Como Configurar a Proteção</string>
+    <string name="simple_instructions_content">A SafeCall Kids precisa de 2 passos simples para proteger o seu telefone:\n\n🔐 <b>Passo 1: Permissões Básicas</b>\nPermite à app:\n• Ler os seus contactos (para saber quem pode ligar)\n• Aceder às funções do telefone (para bloquear chamadas desconhecidas)\n• Mostrar por cima de outras apps (para mostrar notificações de bloqueio)\n\n📞 <b>Passo 2: Definir como App de Telefone</b>\nTorna a SafeCall Kids a app de telefone padrão, que:\n• Dá permissão para filtrar todas as chamadas recebidas\n• Bloqueia automaticamente números que não estão nos seus contactos\n• Funciona em segundo plano sem gastar bateria\n\n✅ <b>É só isto!</b>\nDepois de configurada, a SafeCall Kids protegerá silenciosamente o seu telefone ao permitir apenas chamadas dos seus contactos guardados.</string>
+    <string name="got_it">Entendi!</string>
 </resources>

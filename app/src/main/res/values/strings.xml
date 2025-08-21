@@ -81,4 +81,9 @@
     <string name="remove_phone_app_title">Remove Phone App</string>
     <string name="remove_phone_app_message">This will open settings to remove SafeCall Kids as the default phone app.</string>
     <string name="open_phone_settings">Open Settings</string>
+    
+    <!-- Simplified Instructions Dialog -->
+    <string name="simple_instructions_title">📋 How to Setup Protection</string>
+    <string name="simple_instructions_content">SafeCall Kids needs 2 simple steps to protect your phone:\n\n🔐 <b>Step 1: Basic Permissions</b>\nAllows the app to:\n• Read your contacts (to know who can call)\n• Access phone functions (to block unknown calls)\n• Display over other apps (to show block notifications)\n\n📞 <b>Step 2: Set as Phone App</b>\nMakes SafeCall Kids the default phone app, which:\n• Gives permission to screen all incoming calls\n• Automatically blocks numbers not in your contacts\n• Works in the background without draining battery\n\n✅ <b>That\'s it!</b>\nOnce configured, SafeCall Kids will quietly protect your phone by only allowing calls from your saved contacts.</string>
+    <string name="got_it">Got it!</string>
 </resources>

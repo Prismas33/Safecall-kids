@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
             instructionsButton.setOnClickListener {
                 try {
-                    requestAllPermissionsAtOnce() // Uses existing detailed instructions
+                    showSimpleInstructionsDialog()
                 } catch (e: Exception) {
                     Log.e("MainActivity", "Error showing instructions", e)
                     Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -1041,6 +1041,25 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("MainActivity", "Error showing deactivation dialog", e)
             Toast.makeText(this, "Erro ao mostrar opções de desativação: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Shows a simplified instructions dialog explaining our 2-step process
+     */
+    private fun showSimpleInstructionsDialog() {
+        try {
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.simple_instructions_title))
+                .setMessage(getString(R.string.simple_instructions_content))
+                .setPositiveButton(getString(R.string.got_it), null)
+                .setCancelable(true)
+                .create()
+                .show()
+                
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error showing simple instructions dialog", e)
+            Toast.makeText(this, "Erro ao mostrar instruções: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 
