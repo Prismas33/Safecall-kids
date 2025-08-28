@@ -30,7 +30,7 @@
     <string name="calls_blocked_format">Chamadas bloqueadas: %1$d</string>    <string name="calls_blocked_error">Chamadas bloqueadas: erro</string>
     <string name="interface_error">Erro na interface</string>
     <string name="try_again">Tentar novamente</string>
-    <string name="footer_text">SafecallKids v2.0 - Proteção para crianças</string>
+    <string name="footer_text">SafecallKids v3.1 - Proteção para crianças</string>
     <string name="open_settings">Abrir Config</string>
     <string name="cancel">Cancelar</string>    <string name="already_configured">Já configurei tudo</string>
     <string name="dialog_placeholder">Mensagem do dialog</string>    <string name="info_text">• Bloqueia chamadas de números desconhecidos\n• Bloqueia chamadas privadas/ocultas\n• Permite apenas contatos salvos\n• Funciona em segundo plano\n• Mantenha pressionado o botão para diagnóstico</string>
@@ -86,4 +86,14 @@
     <string name="simple_instructions_title">📋 How to Setup Protection</string>
     <string name="simple_instructions_content">SafeCall Kids needs 2 simple steps to protect your phone:\n\n🔐 <b>Step 1: Basic Permissions</b>\nAllows the app to:\n• Read your contacts (to know who can call)\n• Access phone functions (to block unknown calls)\n• Display over other apps (to show block notifications)\n\n📞 <b>Step 2: Set as Phone App</b>\nMakes SafeCall Kids the default phone app, which:\n• Gives permission to screen all incoming calls\n• Automatically blocks numbers not in your contacts\n• Blocks private/hidden calls (numbers that don\'t show)\n• Works in the background without draining battery\n\n✅ <b>That\'s it!</b>\nOnce configured, SafeCall Kids will quietly protect your phone by only allowing calls from your saved contacts and blocking all private/unknown calls.</string>
     <string name="got_it">Got it!</string>
+    
+    <!-- Error and Toast Messages -->
+    <string name="system_not_configured">❌ Sistema não configurado: %1$s</string>
+    <string name="missing_setup">❌ Falta configurar: %1$s</string>
+    <string name="protection_deactivated">🔓 Proteção DESATIVADA</string>
+    <string name="protection_activated">🔒 Proteção ATIVADA! A bloquear chamadas desconhecidas</string>
+    
+    <!-- Dynamic Button Texts -->
+    <string name="activate_protection_button">🔒 Ativar Proteção</string>
+    <string name="deactivate_protection_button">🔓 Desativar Proteção</string>
 </resources>

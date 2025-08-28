@@ -383,7 +383,7 @@ class MainActivity : AppCompatActivity() {
                 // REALMENTE ATIVO: permissões + flag manual
                 statusText.text = getString(R.string.protection_enabled_text)
                 setupProtectionButton.text = getString(R.string.app_settings)
-                verifyButton.text = "🔓 Desativar Proteção"
+                verifyButton.text = getString(R.string.deactivate_protection_button)
                 verifyButton.visibility = android.view.View.VISIBLE
                 deactivateButton.visibility = android.view.View.GONE
                 
@@ -392,7 +392,7 @@ class MainActivity : AppCompatActivity() {
                 statusText.text = "⚠️ Proteção Disponível\nPrime 'Ativar' para começar a bloquear"
                 setupProtectionButton.visibility = android.view.View.VISIBLE
                 setupProtectionButton.text = getString(R.string.setup_protection)
-                verifyButton.text = "🔒 Ativar Proteção"
+                verifyButton.text = getString(R.string.activate_protection_button)
                 verifyButton.visibility = android.view.View.VISIBLE
                 deactivateButton.visibility = android.view.View.GONE
                 
@@ -883,7 +883,7 @@ class MainActivity : AppCompatActivity() {
                     .putBoolean("call_screening_configured", false)
                     .apply()
                 
-                Toast.makeText(this, "🔓 Proteção DESATIVADA", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.protection_deactivated), Toast.LENGTH_SHORT).show()
                 updateUI()
                 return
             }
@@ -896,10 +896,10 @@ class MainActivity : AppCompatActivity() {
                 if (!isDefaultCallScreeningService()) missing.add(getString(R.string.call_screening))
                 
                 val missingText = missing.joinToString(", ")
-                Log.w("MainActivity", "❌ Sistema não configurado: $missingText")
+                Log.w("MainActivity", getString(R.string.system_not_configured, missingText))
                 Toast.makeText(
                     this, 
-                    "❌ Falta configurar: $missingText", 
+                    getString(R.string.missing_setup, missingText), 
                     Toast.LENGTH_LONG
                 ).show()
                 return
@@ -912,7 +912,7 @@ class MainActivity : AppCompatActivity() {
                 .putBoolean("all_setup_completed", true)
                 .apply()
             
-            Toast.makeText(this, "🔒 Proteção ATIVADA! A bloquear chamadas desconhecidas", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.protection_activated), Toast.LENGTH_LONG).show()
             
             // Iniciar serviço
             if (hasAllPermissions()) {
