@@ -14,6 +14,7 @@ import android.provider.Settings
 import android.telecom.TelecomManager
 import android.app.role.RoleManager
 import android.util.Log
+import androidx.core.view.WindowCompat
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -56,9 +57,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
-            // Enable Edge-to-Edge using AndroidX API (recommended for Android 15+)
+            // Enable Edge-to-Edge for Android 15+ (API 35+) compatibility
             if (Build.VERSION.SDK_INT >= 35) {
-                enableEdgeToEdge()
+                WindowCompat.setDecorFitsSystemWindows(window, false)
             }
             
             // Load saved language preference first
