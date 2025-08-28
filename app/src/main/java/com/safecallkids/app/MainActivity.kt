@@ -382,12 +382,14 @@ class MainActivity : AppCompatActivity() {
                 // REALMENTE ATIVO: permissões + flag manual
                 statusText.text = getString(R.string.protection_enabled_text)
                 setupProtectionButton.text = getString(R.string.app_settings)
-                verifyButton.visibility = android.view.View.GONE
-                deactivateButton.visibility = android.view.View.VISIBLE
+                verifyButton.text = "🔓 Desativar Proteção"
+                verifyButton.visibility = android.view.View.VISIBLE
+                deactivateButton.visibility = android.view.View.GONE
                 
             } else if (hasSystemRequirements) {
                 // SISTEMA PRONTO mas flag manual desativa
                 statusText.text = "⚠️ Proteção Disponível\nPrime 'Ativar' para começar a bloquear"
+                setupProtectionButton.visibility = android.view.View.VISIBLE
                 setupProtectionButton.text = getString(R.string.setup_protection)
                 verifyButton.text = "🔒 Ativar Proteção"
                 verifyButton.visibility = android.view.View.VISIBLE
@@ -401,6 +403,7 @@ class MainActivity : AppCompatActivity() {
                 if (!isDefaultCallScreeningService()) missing.add(getString(R.string.call_screening))
                   
                 statusText.text = getString(R.string.protection_disabled_text, missing.joinToString(", "))
+                setupProtectionButton.visibility = android.view.View.VISIBLE
                 setupProtectionButton.text = getString(R.string.setup_protection)
                 verifyButton.text = getString(R.string.verify_and_activate)
                 verifyButton.visibility = android.view.View.VISIBLE
@@ -871,8 +874,21 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivity", "Currently enabled: $currentlyEnabled")
             Log.d("MainActivity", "Has system requirements: $hasSystemRequirements")
             
+            if (currentlyEnabled) {
+                // Flag está ativa → SEMPRE pode desativar (mesmo sem configurações do sistema)
+                Log.i("MainActivity", "🔓 Desativando proteção...")
+                prefs.edit()
+                    .putBoolean("all_setup_completed", false)
+                    .putBoolean("call_screening_configured", false)
+                    .apply()
+                
+                Toast.makeText(this, "🔓 Proteção DESATIVADA", Toast.LENGTH_SHORT).show()
+                updateUI()
+                return
+            }
+            
             if (!hasSystemRequirements) {
-                // Sistema não está configurado - mostrar erro
+                // Sistema não está configurado e quer ativar - mostrar erro
                 val missing = mutableListOf<String>()
                 if (!hasAllPermissions()) missing.add(getString(R.string.basic_permissions))
                 if (!hasOverlayPermission()) missing.add(getString(R.string.overlay_apps))
@@ -888,30 +904,18 @@ class MainActivity : AppCompatActivity() {
                 return
             }
             
-            if (currentlyEnabled) {
-                // Está ativo → DESATIVAR
-                Log.i("MainActivity", "🔓 Desativando proteção...")
-                prefs.edit()
-                    .putBoolean("all_setup_completed", false)
-                    .putBoolean("call_screening_configured", false)
-                    .apply()
-                
-                Toast.makeText(this, "🔓 Proteção DESATIVADA", Toast.LENGTH_SHORT).show()
-                
-            } else {
-                // Está inativo → ATIVAR
-                Log.i("MainActivity", "🔒 Ativando proteção...")
-                prefs.edit()
-                    .putBoolean("call_screening_configured", true)
-                    .putBoolean("all_setup_completed", true)
-                    .apply()
-                
-                Toast.makeText(this, "🔒 Proteção ATIVADA! A bloquear chamadas desconhecidas", Toast.LENGTH_LONG).show()
-                
-                // Iniciar serviço
-                if (hasAllPermissions()) {
-                    startCallBlockingService()
-                }
+            // Se chegou aqui: flag inativa + sistema configurado → ATIVAR
+            Log.i("MainActivity", "🔒 Ativando proteção...")
+            prefs.edit()
+                .putBoolean("call_screening_configured", true)
+                .putBoolean("all_setup_completed", true)
+                .apply()
+            
+            Toast.makeText(this, "🔒 Proteção ATIVADA! A bloquear chamadas desconhecidas", Toast.LENGTH_LONG).show()
+            
+            // Iniciar serviço
+            if (hasAllPermissions()) {
+                startCallBlockingService()
             }
             
             updateUI()
