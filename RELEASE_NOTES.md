@@ -2,37 +2,69 @@
 
 ## 🇧🇷 Português (Brasil)
 
-### SafeCall Kids v2.0 - Verificação de Permissões
+### SafeCall Kids v2.0 - ATUALIZAÇÃO CRÍTICA DE SEGURANÇA
 
-**Novas funcionalidades adicionadas:**
+**🚨 CORREÇÃO CRÍTICA DE SEGURANÇA:**
+- **🔒 NOVO:** Bloqueio de chamadas privadas/ocultas (números que não aparecem no ecrã)
+- **🛡️ ANTES:** Chamadas privadas passavam sempre (falha grave de segurança)  
+- **✅ AGORA:** Bloqueia TODAS as chamadas não identificadas, incluindo privadas
 
-- **Botão "Verificar Permissões"**: Adicionado novo botão que permite verificar se todas as permissões necessárias foram realmente concedidas
-- **Verificação Completa**: Verifica todas as permissões antes de ativar a proteção
-- **Feedback Visual**: Mostra mensagens de sucesso ou falha detalhadas ao usuário
-- **Ativação Segura**: Só ativa a proteção quando todas as permissões estão corretamente configuradas
+**🎨 MELHORIAS DE INTERFACE:**
+- **📱 Botões padronizados:** Altura, cor e texto consistentes em toda a app
+- **👁️ Texto visível:** Correção de instruções que apareciam invisíveis
+- **🌟 Design moderno:** Interface mais profissional e intuitiva
+- **📋 Instruções claras:** Melhor explicação do que a app bloqueia
 
-#### 🔄 Melhorias:
-- Interface do usuário aprimorada com feedback mais claro
-- Processo de configuração mais seguro e intuitivo
-- Prevenção de problemas causados por permissões incompletas
-- Feedback visual ao usuário sobre o status da configuração
+**⚡ COMPATIBILIDADE FUTURA:**
+- **📱 Android 15:** Suporte Edge-to-Edge implementado
+- **🔧 APIs modernas:** Eliminação de avisos do Google Play Console
+- **🌍 Multilíngue:** Informações atualizadas em português e inglês
+
+**🎯 FUNCIONALIDADES APRIMORADAS:**
+- **📞 CallReceiver:** Detecção melhorada de chamadas privadas para Android antigo
+- **🛡️ CallScreeningService:** Bloqueio sistemático de números ocultos no Android moderno
+- **🔍 Diagnóstico:** Verificação mais precisa do estado de proteção
+
+#### ✅ AGORA A APP BLOQUEIA:
+- ❌ Números desconhecidos (não nos contatos)
+- ❌ Chamadas privadas/ocultas (números escondidos) ← **NOVO!**
+- ✅ Permite apenas contatos salvos
+
+**Esta atualização é altamente recomendada para máxima segurança das crianças!**
+
+---
 
 ## 🇺🇸 English
 
-### SafeCall Kids v2.0 - Permission Verification
+### SafeCall Kids v2.0 - CRITICAL SECURITY UPDATE
 
-**New features added:**
+**🚨 CRITICAL SECURITY FIX:**
+- **🔒 NEW:** Blocking of private/hidden calls (numbers that don't show on screen)
+- **🛡️ BEFORE:** Private calls always got through (serious security flaw)
+- **✅ NOW:** Blocks ALL unidentified calls, including private ones
 
-- **"Check Permissions" Button**: Added new button that verifies if all required permissions are actually granted
-- **Complete Verification**: Checks all permissions before activating protection
-- **Visual Feedback**: Shows detailed success or failure messages to the user
-- **Safe Activation**: Only activates protection when all permissions are properly set up
+**🎨 INTERFACE IMPROVEMENTS:**
+- **📱 Standardized buttons:** Consistent height, color and text throughout the app
+- **👁️ Visible text:** Fixed instructions that appeared invisible
+- **🌟 Modern design:** More professional and intuitive interface
+- **📋 Clear instructions:** Better explanation of what the app blocks
 
-#### 🔄 Improvements:
-- Enhanced user interface with clearer feedback
-- More secure and intuitive configuration process
-- Prevention of issues caused by incomplete permissions
-- Visual feedback to users about configuration status
+**⚡ FUTURE COMPATIBILITY:**
+- **📱 Android 15:** Edge-to-Edge support implemented
+- **🔧 Modern APIs:** Eliminated Google Play Console warnings
+- **🌍 Multilingual:** Updated information in Portuguese and English
+
+**🎯 ENHANCED FEATURES:**
+- **📞 CallReceiver:** Improved private call detection for older Android
+- **�️ CallScreeningService:** Systematic blocking of hidden numbers on modern Android
+- **🔍 Diagnostics:** More accurate protection status verification
+
+#### ✅ NOW THE APP BLOCKS:
+- ❌ Unknown numbers (not in contacts)
+- ❌ Private/hidden calls (hidden numbers) ← **NEW!**
+- ✅ Allows only saved contacts
+
+**This update is highly recommended for maximum child safety!**
 
 ---
 

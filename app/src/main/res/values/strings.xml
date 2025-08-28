@@ -19,7 +19,7 @@
     <string name="error_occurred">Erro ocorrido</string>
     <string name="language_label">Idioma:</string>
     <string name="protection_description">Proteção contra chamadas desconhecidas</string>
-    <string name="protection_enabled_text">✅ Proteção Ativada\nBloqueando chamadas desconhecidas</string>
+    <string name="protection_enabled_text">✅ Proteção Ativada\nA Bloquear chamadas desconhecidas</string>
     <string name="protection_disabled_text">❌ Proteção Desativada\nFaltando: %1$s</string>
     <string name="basic_permissions">Permissões básicas</string>
     <string name="overlay_apps">Sobrepor apps</string>

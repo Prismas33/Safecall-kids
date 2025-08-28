@@ -16,6 +16,17 @@ class CallScreeningService : CallScreeningService() {
     
     override fun onScreenCall(callDetails: Call.Details) {
         Log.d(TAG, "Screening call from: ${callDetails.handle}")
+
+        // Gate: only screen/block if user activated and app is properly configured
+        if (!isProtectionActive()) {
+            Log.d(TAG, "Protection not active; allowing call by default")
+            val allow = CallResponse.Builder()
+                .setDisallowCall(false)
+                .setRejectCall(false)
+                .build()
+            respondToCall(callDetails, allow)
+            return
+        }
         
         val phoneNumber = callDetails.handle?.schemeSpecificPart
         
@@ -69,6 +80,25 @@ class CallScreeningService : CallScreeningService() {
                 .build()
             
             respondToCall(callDetails, response)
+        }
+    }
+
+    private fun isProtectionActive(): Boolean {
+        return try {
+            val prefs = getSharedPreferences("safecall_prefs", Context.MODE_PRIVATE)
+            val userEnabled = prefs.getBoolean("all_setup_completed", false)
+            if (!userEnabled) return false
+
+            // For Android 10+, ensure role/default dialer is held
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                val telecom = getSystemService(Context.TELECOM_SERVICE) as android.telecom.TelecomManager
+                val isDefault = telecom.defaultDialerPackage == packageName
+                if (!isDefault) return false
+            }
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking protection active state", e)
+            false
         }
     }
     
