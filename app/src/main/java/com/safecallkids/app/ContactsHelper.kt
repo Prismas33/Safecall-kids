@@ -20,29 +20,50 @@ class ContactsHelper(private val context: Context) {
      */
     fun isNumberInContacts(phoneNumber: String): Boolean {
         try {
+            Log.d(TAG, "=== CHECKING IF NUMBER IN CONTACTS ===")
+            Log.d(TAG, "Input number: '$phoneNumber'")
+            
             // Normalize the input number for comparison
             val normalizedInput = normalizePhoneNumber(phoneNumber)
+            Log.d(TAG, "Normalized input: '$normalizedInput'")
+            
+            if (normalizedInput.isEmpty()) {
+                Log.w(TAG, "Empty normalized number - considering as NOT in contacts")
+                return false
+            }
             
             // Query contacts for phone numbers
             val cursor = queryContactNumbers()
-            cursor?.use { c ->
+            if (cursor == null) {
+                Log.e(TAG, "Failed to query contacts - assuming NOT in contacts")
+                return false
+            }
+            
+            var checkedCount = 0
+            cursor.use { c ->
                 while (c.moveToNext()) {
                     val contactNumber = c.getString(0)
                     val normalizedContact = normalizePhoneNumber(contactNumber ?: "")
+                    checkedCount++
                     
                     // Compare normalized numbers
                     if (comparePhoneNumbers(normalizedInput, normalizedContact)) {
-                        Log.d(TAG, "Number $phoneNumber found in contacts as $contactNumber")
+                        Log.i(TAG, "✓ FOUND: $phoneNumber matches contact $contactNumber")
                         return true
+                    }
+                    
+                    // Log first few for debugging
+                    if (checkedCount <= 5) {
+                        Log.v(TAG, "Checked contact $checkedCount: '$contactNumber' -> '$normalizedContact'")
                     }
                 }
             }
             
-            Log.d(TAG, "Number $phoneNumber not found in contacts")
+            Log.i(TAG, "✗ NOT FOUND: $phoneNumber not in $checkedCount contacts")
             return false
             
         } catch (e: SecurityException) {
-            Log.w(TAG, "Permission denied to access contacts", e)
+            Log.e(TAG, "SecurityException accessing contacts", e)
             return false // If no permission, assume not in contacts (safer)
         } catch (e: Exception) {
             Log.e(TAG, "Error checking contacts", e)

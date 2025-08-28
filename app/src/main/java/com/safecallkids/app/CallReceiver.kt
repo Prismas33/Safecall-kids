@@ -42,9 +42,13 @@ class CallReceiver : BroadcastReceiver() {
     }
 
     private fun isProtectionActive(context: Context): Boolean {
+        // Verificar flag manual do utilizador primeiro
         val prefs = context.getSharedPreferences("safecall_prefs", Context.MODE_PRIVATE)
         val userEnabled = prefs.getBoolean("all_setup_completed", false)
-        if (!userEnabled) return false
+        if (!userEnabled) {
+            Log.d(TAG, "Protection not active: user hasn't manually activated")
+            return false
+        }
 
         // Require basic permissions
         val hasAnswer = ContextCompat.checkSelfPermission(context, Manifest.permission.ANSWER_PHONE_CALLS) == PackageManager.PERMISSION_GRANTED

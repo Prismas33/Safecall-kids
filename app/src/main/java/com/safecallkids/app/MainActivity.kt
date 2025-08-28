@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.FileNotFoundException
+import androidx.activity.enableEdgeToEdge
 
 class MainActivity : AppCompatActivity() {
     private lateinit var statusText: TextView
@@ -55,9 +56,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
-            // Enable Edge-to-Edge for Android 15+ compatibility (API 35+)
+            // Enable Edge-to-Edge using AndroidX API (recommended for Android 15+)
             if (Build.VERSION.SDK_INT >= 35) {
-                androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false)
+                enableEdgeToEdge()
             }
             
             // Load saved language preference first
@@ -316,6 +317,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
     
+    /**
+     * Verifica se a proteção está realmente ativa (permissões + flag manual do utilizador)
+     */
+    private fun isProtectionReallyActive(): Boolean {
+        return try {
+            val hasSystemRequirements = hasAllProtection()
+            val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
+            val userEnabled = prefs.getBoolean("all_setup_completed", false)
+            
+            Log.d("MainActivity", "System requirements: $hasSystemRequirements, User enabled: $userEnabled")
+            
+            hasSystemRequirements && userEnabled
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Error checking real protection status", e)
+            false
+        }
+    }
+    
     private fun requestPermissions() {
         try {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
@@ -352,49 +371,69 @@ class MainActivity : AppCompatActivity() {
         }
     }
     
-    private fun updateUI() {        try {            if (hasAllProtection()) {
+    private fun updateUI() {        
+        try {            
+            val hasSystemRequirements = hasAllProtection() // permissões + call screening ativo
+            val isReallyActive = isProtectionReallyActive() // + flag manual
+            
+            Log.d("MainActivity", "UI Update - System: $hasSystemRequirements, Really active: $isReallyActive")
+            
+            if (isReallyActive) {
+                // REALMENTE ATIVO: permissões + flag manual
                 statusText.text = getString(R.string.protection_enabled_text)
                 setupProtectionButton.text = getString(R.string.app_settings)
                 verifyButton.visibility = android.view.View.GONE
                 deactivateButton.visibility = android.view.View.VISIBLE
                 
-                try {
-                    val contactsHelper = ContactsHelper(this)
-                    val contactsNum = contactsHelper.getContactsCount()
-                    contactsCount.text = getString(R.string.contacts_loaded_format, contactsNum)
-                } catch (e: SecurityException) {
-                    Log.w("MainActivity", "Permissão de contatos negada", e)
-                    contactsCount.text = getString(R.string.contacts_loaded_no_permission)
-                } catch (e: Exception) {
-                    Log.e("MainActivity", "Erro ao carregar contatos", e)
-                    contactsCount.text = getString(R.string.contacts_loaded_error)
-                }
-                
-                try {
-                    val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
-                    val blocked = prefs.getInt("blocked_calls_count", 0)
-                    blockedCount.text = getString(R.string.calls_blocked_format, blocked)
-                } catch (e: Exception) {
-                    Log.e("MainActivity", "Erro ao acessar preferências", e)
-                    blockedCount.text = getString(R.string.calls_blocked_error)
-                }
-                
-                if (hasAllPermissions()) {
-                    startCallBlockingService()
-                }
+            } else if (hasSystemRequirements) {
+                // SISTEMA PRONTO mas flag manual desativa
+                statusText.text = "⚠️ Proteção Disponível\nPrime 'Ativar' para começar a bloquear"
+                setupProtectionButton.text = getString(R.string.setup_protection)
+                verifyButton.text = "🔒 Ativar Proteção"
+                verifyButton.visibility = android.view.View.VISIBLE
+                deactivateButton.visibility = android.view.View.GONE
                 
             } else {
+                // FALTA CONFIGURAR SISTEMA
                 val missing = mutableListOf<String>()
                 if (!hasAllPermissions()) missing.add(getString(R.string.basic_permissions))
                 if (!hasOverlayPermission()) missing.add(getString(R.string.overlay_apps))
                 if (!isDefaultCallScreeningService()) missing.add(getString(R.string.call_screening))
-                  statusText.text = getString(R.string.protection_disabled_text, missing.joinToString(", "))
+                  
+                statusText.text = getString(R.string.protection_disabled_text, missing.joinToString(", "))
                 setupProtectionButton.text = getString(R.string.setup_protection)
+                verifyButton.text = getString(R.string.verify_and_activate)
                 verifyButton.visibility = android.view.View.VISIBLE
                 deactivateButton.visibility = android.view.View.GONE
-                contactsCount.text = getString(R.string.contacts_loaded_format, 0)
-                blockedCount.text = getString(R.string.calls_blocked_format, 0)
             }
+            
+            // Estatísticas (sempre mostrar)
+            try {
+                val contactsHelper = ContactsHelper(this)
+                val contactsNum = contactsHelper.getContactsCount()
+                contactsCount.text = getString(R.string.contacts_loaded_format, contactsNum)
+            } catch (e: SecurityException) {
+                Log.w("MainActivity", "Permissão de contatos negada", e)
+                contactsCount.text = getString(R.string.contacts_loaded_no_permission)
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Erro ao carregar contatos", e)
+                contactsCount.text = getString(R.string.contacts_loaded_error)
+            }
+            
+            try {
+                val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
+                val blocked = prefs.getInt("blocked_calls_count", 0)
+                blockedCount.text = getString(R.string.calls_blocked_format, blocked)
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Erro ao acessar preferências", e)
+                blockedCount.text = getString(R.string.calls_blocked_error)
+            }
+            
+            // Iniciar serviço se estiver ativo
+            if (isReallyActive && hasAllPermissions()) {
+                startCallBlockingService()
+            }
+                
         } catch (e: Exception) {            Log.e("MainActivity", "Erro ao atualizar UI", e)
             logErrorToFile("updateUI", e)
             statusText.text = getString(R.string.interface_error)
@@ -819,61 +858,70 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Verifica se todas as permissões estão realmente ativas e só então ativa a proteção
+     * Ativa/Desativa a proteção baseado no estado atual
      */
     private fun verifyAndActivateProtection() {
         try {
-            Log.d("MainActivity", "=== VERIFICANDO PERMISSÕES ===")
+            Log.d("MainActivity", "=== TOGGLE PROTECTION ===")
             
-            val hasBasicPerms = hasAllPermissions()
-            val hasOverlay = hasOverlayPermission()
-            val hasCallScreening = isDefaultCallScreeningService()
+            val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
+            val currentlyEnabled = prefs.getBoolean("all_setup_completed", false)
+            val hasSystemRequirements = hasAllProtection()
             
-            Log.d("MainActivity", "Permissões básicas: $hasBasicPerms")
-            Log.d("MainActivity", "Overlay permission: $hasOverlay")
-            Log.d("MainActivity", "Call screening: $hasCallScreening")
+            Log.d("MainActivity", "Currently enabled: $currentlyEnabled")
+            Log.d("MainActivity", "Has system requirements: $hasSystemRequirements")
             
-            if (hasBasicPerms && hasOverlay && hasCallScreening) {
-                // Todas as permissões estão corretas - ativar proteção
-                Log.d("MainActivity", "✅ Todas as permissões verificadas - Ativando proteção")
+            if (!hasSystemRequirements) {
+                // Sistema não está configurado - mostrar erro
+                val missing = mutableListOf<String>()
+                if (!hasAllPermissions()) missing.add(getString(R.string.basic_permissions))
+                if (!hasOverlayPermission()) missing.add(getString(R.string.overlay_apps))
+                if (!isDefaultCallScreeningService()) missing.add(getString(R.string.call_screening))
                 
-                val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
+                val missingText = missing.joinToString(", ")
+                Log.w("MainActivity", "❌ Sistema não configurado: $missingText")
+                Toast.makeText(
+                    this, 
+                    "❌ Falta configurar: $missingText", 
+                    Toast.LENGTH_LONG
+                ).show()
+                return
+            }
+            
+            if (currentlyEnabled) {
+                // Está ativo → DESATIVAR
+                Log.i("MainActivity", "🔓 Desativando proteção...")
+                prefs.edit()
+                    .putBoolean("all_setup_completed", false)
+                    .putBoolean("call_screening_configured", false)
+                    .apply()
+                
+                Toast.makeText(this, "🔓 Proteção DESATIVADA", Toast.LENGTH_SHORT).show()
+                
+            } else {
+                // Está inativo → ATIVAR
+                Log.i("MainActivity", "🔒 Ativando proteção...")
                 prefs.edit()
                     .putBoolean("call_screening_configured", true)
                     .putBoolean("all_setup_completed", true)
                     .apply()
                 
-                Toast.makeText(this, getString(R.string.verification_success), Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "🔒 Proteção ATIVADA! A bloquear chamadas desconhecidas", Toast.LENGTH_LONG).show()
                 
-                updateUI()
-                
-                // Iniciar serviço se tudo estiver ok
+                // Iniciar serviço
                 if (hasAllPermissions()) {
                     startCallBlockingService()
                 }
-                
-            } else {
-                // Algumas permissões ainda estão faltando
-                val missing = mutableListOf<String>()
-                if (!hasBasicPerms) missing.add(getString(R.string.basic_permissions))
-                if (!hasOverlay) missing.add(getString(R.string.overlay_apps))
-                if (!hasCallScreening) missing.add(getString(R.string.call_screening))
-                
-                val missingText = missing.joinToString(", ")
-                Log.w("MainActivity", "❌ Permissões faltando: $missingText")
-                  Toast.makeText(
-                    this, 
-                    getString(R.string.verification_failed, missingText), 
-                    Toast.LENGTH_LONG
-                ).show()
             }
             
+            updateUI()
+            
         } catch (e: Exception) {
-            Log.e("MainActivity", "Erro ao verificar permissões", e)
-            Toast.makeText(this, "Erro ao verificar: ${e.message}", Toast.LENGTH_SHORT).show()
+            Log.e("MainActivity", "Erro ao toggle proteção", e)
+            Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
-
+                
     /**
      * Shows the guided setup dialog with ordered configuration steps
      */
