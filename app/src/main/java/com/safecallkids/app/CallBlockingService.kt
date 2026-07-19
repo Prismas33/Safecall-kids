@@ -70,10 +70,10 @@ class CallBlockingService : android.app.Service() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val channel = android.app.NotificationChannel(
                 CHANNEL_ID,
-                "SafecallKids Protection",
+                getString(R.string.notification_channel_name),
                 android.app.NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "Serviço de proteção contra chamadas indesejadas"
+                description = getString(R.string.notification_channel_description)
                 setShowBadge(false)
             }
             
@@ -103,8 +103,8 @@ class CallBlockingService : android.app.Service() {
         }
         
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("SafecallKids Ativo")
-            .setContentText("Proteção ativa • $contactsCount contatos • $blockedCount bloqueadas")
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText(getString(R.string.notification_content_format, contactsCount, blockedCount))
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentIntent(pendingIntent)
             .setOngoing(true)

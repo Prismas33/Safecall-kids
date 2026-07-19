@@ -3,18 +3,22 @@ package com.safecallkids.app.domain
 import android.content.Context
 import android.os.Build
 import com.safecallkids.app.data.ProtectionPreferences
+import com.safecallkids.app.monetization.PremiumAccessManager
 import com.safecallkids.app.system.PermissionChecker
 import com.safecallkids.app.system.RoleChecker
 
 class ProtectionStatusChecker(context: Context) {
-    private val preferences = ProtectionPreferences(context)
-    private val permissionChecker = PermissionChecker(context)
-    private val roleChecker = RoleChecker(context)
+    private val appContext = context.applicationContext
+    private val preferences = ProtectionPreferences(appContext)
+    private val permissionChecker = PermissionChecker(appContext)
+    private val roleChecker = RoleChecker(appContext)
+    private val premiumAccessManager = PremiumAccessManager(appContext)
 
     fun getMainStatus(): ProtectionStatus {
         return ProtectionStatus(
             hasSystemRequirements = hasMainSystemRequirements(),
-            isUserEnabled = preferences.isUserProtectionEnabled
+            isUserEnabled = preferences.isUserProtectionEnabled,
+            hasPremiumAccess = premiumAccessManager.canUsePremiumFeatures()
         )
     }
 
@@ -25,6 +29,7 @@ class ProtectionStatusChecker(context: Context) {
     }
 
     fun isActiveForCallScreeningService(): Boolean {
+        if (!premiumAccessManager.canUsePremiumFeatures()) return false
         if (!preferences.isUserProtectionEnabled) return false
         if (!permissionChecker.hasReadContactsPermission()) return false
         if (!permissionChecker.hasAnswerPhoneCallsPermission()) return false
@@ -37,6 +42,7 @@ class ProtectionStatusChecker(context: Context) {
     }
 
     fun isActiveForLegacyReceiver(): Boolean {
+        if (!premiumAccessManager.canUsePremiumFeatures()) return false
         if (!preferences.isUserProtectionEnabled) return false
         if (!permissionChecker.hasReadContactsPermission()) return false
         if (!permissionChecker.hasAnswerPhoneCallsPermission()) return false

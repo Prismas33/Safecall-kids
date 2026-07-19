@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "145441278309",
+    "project_id": "safecall-blocker",
+    "storage_bucket": "safecall-blocker.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145441278309:android:0b592b12cfca219928798c",
+        "android_client_info": {
+          "package_name": "com.safecallkids.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsVbm4kJFBg_8Pq7Ke3FM3qK5tr_m24hU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

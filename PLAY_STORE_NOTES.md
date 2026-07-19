@@ -1,73 +1,59 @@
 # Play Store Release Notes
 
-## 🇧🇷 Português (Para o Play Store)
+## Portugues (para a Play Store)
 
-**SafeCall Kids v2.0 - Proteção Infantil Contra Chamadas Indesejadas**
+**SafeCall - Bloq. Chamadas**
 
-🛡️ **NOVA ATUALIZAÇÃO**
+SafeCall ajuda pais e responsaveis a protegerem o telefone contra chamadas desconhecidas, privadas ou indesejadas. A app permite apenas chamadas de contactos guardados e funciona em segundo plano depois de configurada.
 
-Proteja seus filhos de chamadas de números desconhecidos! O SafeCall Kids bloqueia automaticamente chamadas que não estão na sua lista de contatos.
+**O que ha de novo:**
+- Novo nome visivel: SafeCall
+- Preparacao para app gratuita com trial interno de 7 dias
+- Compra unica vitalicia pela Google Play
+- Sem subscricao, sem anuncios e sem pagina externa
+- Restauro automatico da compra no arranque e ao voltar a app
+- Interface mais clara para protecao completa
 
-**✨ O que há de novo:**
-• Novo botão "Verificar Permissões"
-• Verificação completa antes de ativar proteção
-• Feedback visual detalhado sobre permissões
-• Ativação segura com todas permissões verificadas
-• Interface aprimorada com instruções mais claras
-• Compatível com Android 8.0+
+**Monetizacao prevista:**
+Experimente todas as funcionalidades durante 7 dias. Depois, desbloqueie a SafeCall para sempre com uma unica compra pela Google Play.
 
-**🔒 Segurança garantida:**
-• Preserva chamadas de emergência
-• Não interfere em contatos conhecidos
-• Configuração específica por versão do Android
-• Proteção contra spam e telemarketing
-
-**👨‍👩‍👧‍👦 Ideal para:**
-• Pais que querem proteger seus filhos
-• Evitar chamadas inadequadas para crianças
-• Bloquear telemarketing agressivo
-• Prevenir tentativas de golpe
-
-Configure uma vez e mantenha seus filhos protegidos 24/7!
+**Seguranca:**
+- Mantem o mesmo app/package existente na Google Play
+- Preserva configuracoes e dados locais
+- Nao interfere com contactos conhecidos
+- Preserva chamadas de emergencia
 
 ---
 
-## 🇺🇸 English (For Play Store)
+## English (for Play Store)
 
-**SafeCall Kids v2.0 - Child Protection Against Unwanted Calls**
+**SafeCall - Call Blocker**
 
-🛡️ **NEW UPDATE**
+SafeCall helps parents and guardians protect a phone from unknown, private, or unwanted calls. The app only allows calls from saved contacts and runs in the background after setup.
 
-Protect your children from calls from unknown numbers! SafeCall Kids automatically blocks calls that are not in your contact list.
+**What's new:**
+- New visible name: SafeCall
+- Preparation for a free app with an internal 7-day trial
+- One-time lifetime purchase through Google Play
+- No subscription, no ads, and no external payment page
+- Automatic purchase restore on startup and when returning to the app
+- Clearer complete protection screen
 
-**✨ What's new:**
-• New "Check Permissions" button
-• Complete verification before enabling protection
-• Detailed visual feedback on permissions
-• Safe activation with all permissions verified
-• Enhanced interface with clearer instructions
-• Compatible with Android 8.0+
+**Planned monetization:**
+Try every feature for 7 days. Then unlock SafeCall forever with one single purchase through Google Play.
 
-**🔒 Guaranteed security:**
-• Preserves emergency calls
-• Doesn't interfere with known contacts
-• Specific configuration per Android version
-• Protection against spam and telemarketing
-
-**👨‍👩‍👧‍👦 Perfect for:**
-• Parents who want to protect their children
-• Avoid inappropriate calls for children
-• Block aggressive telemarketing
-• Prevent scam attempts
-
-Set it up once and keep your children protected 24/7!
+**Safety:**
+- Keeps the same existing Google Play app/package
+- Preserves local settings and data
+- Does not interfere with known contacts
+- Preserves emergency calls
 
 ---
 
-## Short Version (500 characters limit)
+## Short Version
 
-### Português:
-Proteja seus filhos! SafeCall Kids bloqueia automaticamente chamadas de números desconhecidos. Interface simples, proteção 24/7, preserva emergências. Ideal para pais que querem tranquilidade. Configure uma vez e esqueça! 🛡️👶
+### Portugues
+SafeCall bloqueia chamadas desconhecidas e privadas, permitindo apenas contactos guardados. Trial de 7 dias, compra unica vitalicia pela Google Play, sem subscricao e sem anuncios.
 
-### English:
-Protect your kids! SafeCall Kids automatically blocks unknown calls. Simple interface, 24/7 protection, preserves emergencies. Perfect for parents seeking peace of mind. Set once and forget! 🛡️👶
+### English
+SafeCall blocks unknown and private calls while allowing saved contacts. 7-day trial, one-time lifetime purchase through Google Play, no subscription and no ads.

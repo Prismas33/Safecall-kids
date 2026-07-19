@@ -2,9 +2,12 @@ package com.safecallkids.app
 
 import android.content.Context
 import android.database.Cursor
+import android.os.Build
 import android.provider.ContactsContract
 import android.telephony.PhoneNumberUtils
+import android.telephony.TelephonyManager
 import android.util.Log
+import java.util.Locale
 
 /**
  * Helper class to manage contacts and phone number matching
@@ -167,24 +170,33 @@ class ContactsHelper(private val context: Context) {
         if (suffix1.length == 8 && suffix2.length == 8 && suffix1 == suffix2) {
             return true
         }
-        // Use Android's built-in phone number comparison (API level 29+ uses areSamePhoneNumber)
+        // Use Android's built-in phone number comparison with an API-safe fallback.
         return try {
-            val sdkInt = android.os.Build.VERSION.SDK_INT
-            if (sdkInt >= 29) {
-                val countryIso = try {
-                    val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as? android.telephony.TelephonyManager
-                    tm?.networkCountryIso?.uppercase() ?: java.util.Locale.getDefault().country
-                } catch (e: Exception) {
-                    java.util.Locale.getDefault().country
-                }
-                PhoneNumberUtils.areSamePhoneNumber(number1, number2, countryIso)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                PhoneNumberUtils.areSamePhoneNumber(number1, number2, getDefaultCountryIso())
             } else {
                 PhoneNumberUtils.compare(number1, number2)
             }
+        } catch (e: NoSuchMethodError) {
+            Log.w(TAG, "areSamePhoneNumber is unavailable on this Android version", e)
+            PhoneNumberUtils.compare(number1, number2)
         } catch (e: Exception) {
             Log.w(TAG, "Error using PhoneNumberUtils.compare/areSamePhoneNumber", e)
             false
         }
+    }
+
+    private fun getDefaultCountryIso(): String {
+        val networkCountryIso = try {
+            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+            telephonyManager?.networkCountryIso
+        } catch (e: Exception) {
+            null
+        }
+
+        return networkCountryIso
+            ?.takeIf { it.isNotBlank() }
+            ?: Locale.getDefault().country.lowercase(Locale.US)
     }
     
     /**

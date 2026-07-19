@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 // Load keystore properties
@@ -13,13 +15,18 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace 'com.safecallkids.app'
     compileSdk 35
+    ndkVersion '28.2.13676358'
+
+    buildFeatures {
+        buildConfig true
+    }
 
     defaultConfig {
         applicationId "com.safecallkids.app"
         minSdkVersion 26
         targetSdkVersion 35
-        versionCode 10
-        versionName "4.0.1"
+        versionCode 12
+        versionName "5.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -39,18 +46,21 @@ android {
         }
     }
 
-    buildTypes {        debug {
-            // Build de debug com sufixo para instalar em paralelo ao release
-            applicationIdSuffix ".debug"
+    buildTypes {
+        debug {
+            // Keep the debug package aligned with google-services.json for Crashlytics testing.
             versionNameSuffix "-DEBUG"
             // Nome diferenciado no launcher (opcional)
-            resValue "string", "app_name", "SafecallKids DEBUG"
+            resValue "string", "app_name", "SafeCall DEBUG"
         }
 
         release {
             // Configurações para release do Play Store
             minifyEnabled true
             shrinkResources true
+            ndk {
+                debugSymbolLevel 'SYMBOL_TABLE'
+            }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
               // Desabilitar lint para resolver problemas de arquivo bloqueado
             lintOptions {
@@ -61,6 +71,10 @@ android {
 
             // Assinatura configurada para release
             signingConfig signingConfigs.release
+
+            firebaseCrashlytics {
+                mappingFileUploadEnabled true
+            }
         }
     }
 
@@ -97,10 +111,13 @@ android {
 dependencies {
     implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'com.google.android.material:material:1.14.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
     implementation 'androidx.activity:activity-ktx:1.9.3'
     implementation 'com.google.android.play:review:2.0.2'
+    implementation 'com.android.billingclient:billing:9.1.0'
+    implementation platform('com.google.firebase:firebase-bom:34.15.0')
+    implementation 'com.google.firebase:firebase-crashlytics'
 
     // Dependências para bloqueio de chamadas no Android moderno
     implementation 'androidx.work:work-runtime-ktx:2.10.0'

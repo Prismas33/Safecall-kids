@@ -30,10 +30,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.safecallkids.app.billing.PlayBillingManager
 import com.safecallkids.app.data.ParentalControlPreferences
 import com.safecallkids.app.data.ProtectionPreferences
 import com.safecallkids.app.data.ReviewPromptPreferences
 import com.safecallkids.app.domain.ProtectionStatusChecker
+import com.safecallkids.app.monetization.MonetizationSnapshot
+import com.safecallkids.app.monetization.MonetizationState
+import com.safecallkids.app.monetization.PremiumAccessManager
+import com.safecallkids.app.monitoring.CrashReporter
 import com.safecallkids.app.review.InAppReviewPrompter
 import com.safecallkids.app.system.PermissionChecker
 import com.safecallkids.app.system.RoleChecker
@@ -47,6 +52,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var deactivateButton: Button
     private lateinit var instructionsButton: Button
     private lateinit var parentalControlButton: Button
+    private lateinit var monetizationPanel: LinearLayout
+    private lateinit var monetizationStateText: TextView
+    private lateinit var unlockPremiumButton: Button
     private lateinit var btnLangPt: ImageButton
     private lateinit var btnLangEn: ImageButton
     
@@ -60,6 +68,9 @@ class MainActivity : AppCompatActivity() {
     private val permissionChecker by lazy { PermissionChecker(this) }
     private val roleChecker by lazy { RoleChecker(this) }
     private val protectionStatusChecker by lazy { ProtectionStatusChecker(this) }
+    private val premiumAccessManager by lazy { PremiumAccessManager(this) }
+    private var playBillingManager: PlayBillingManager? = null
+    private var isBillingLoading = true
       private val overlayPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { 
@@ -68,6 +79,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         try {
             enableEdgeToEdge()
             
@@ -77,6 +89,7 @@ class MainActivity : AppCompatActivity() {
             setContentView(R.layout.activity_main)
             applySystemBarInsets()
             initViews()
+            setupBilling()
             updateUI()
             Log.d("MainActivity", "onCreate completed successfully")
         } catch (e: Exception) {
@@ -95,6 +108,9 @@ class MainActivity : AppCompatActivity() {
             deactivateButton = findViewById(R.id.deactivateButton)
             instructionsButton = findViewById(R.id.instructionsButton)
             parentalControlButton = findViewById(R.id.parentalControlButton)
+            monetizationPanel = findViewById(R.id.monetizationPanel)
+            monetizationStateText = findViewById(R.id.monetizationStateText)
+            unlockPremiumButton = findViewById(R.id.unlockPremiumButton)
             btnLangPt = findViewById(R.id.btn_lang_pt)
             btnLangEn = findViewById(R.id.btn_lang_en)
 
@@ -104,6 +120,7 @@ class MainActivity : AppCompatActivity() {
 
             setupProtectionButton.setOnClickListener {
                 try {
+                    if (!ensurePremiumAccessForAction()) return@setOnClickListener
                     showGuidedSetupDialog()
                 } catch (e: Exception) {
                     Log.e("MainActivity", "Error showing guided setup", e)
@@ -131,6 +148,7 @@ class MainActivity : AppCompatActivity() {
 
             parentalControlButton.setOnClickListener {
                 try {
+                    if (!ensurePremiumAccessForAction()) return@setOnClickListener
                     showParentalControlDialog()
                 } catch (e: Exception) {
                     Log.e("MainActivity", "Error showing parental control", e)
@@ -161,12 +179,130 @@ class MainActivity : AppCompatActivity() {
             // Setup language switch buttons
             btnLangPt.setOnClickListener { setLocale("pt") }
             btnLangEn.setOnClickListener { setLocale("en") }
+
+            unlockPremiumButton.setOnClickListener {
+                playBillingManager?.launchPremiumPurchase()
+                    ?: Toast.makeText(this, getString(R.string.premium_price_unavailable), Toast.LENGTH_SHORT).show()
+            }
+
         } catch (e: Exception) {
             Log.e("MainActivity", "Error initializing views", e)
             logErrorToFile("initViews", e)
             throw e
         }
     }
+
+    private fun setupBilling() {
+        playBillingManager = PlayBillingManager(this, object : PlayBillingManager.Callbacks {
+            override fun onProductLoaded(formattedPrice: String) {
+                runOnUiThread {
+                    isBillingLoading = false
+                    premiumAccessManager.savePlayPrice(formattedPrice)
+                    updateUI()
+                }
+            }
+
+            override fun onPurchaseCompleted(purchaseToken: String, orderId: String?) {
+                runOnUiThread {
+                    isBillingLoading = false
+                    premiumAccessManager.markPremiumPurchased(purchaseToken, orderId)
+                    Toast.makeText(this@MainActivity, getString(R.string.premium_purchase_completed), Toast.LENGTH_LONG).show()
+                    updateUI()
+                }
+            }
+
+            override fun onPurchasePending() {
+                runOnUiThread {
+                    isBillingLoading = false
+                    premiumAccessManager.markPurchasePending()
+                    Toast.makeText(this@MainActivity, getString(R.string.premium_purchase_pending), Toast.LENGTH_LONG).show()
+                    updateUI()
+                }
+            }
+
+            override fun onPurchaseCancelled() {
+                runOnUiThread {
+                    isBillingLoading = false
+                    premiumAccessManager.clearPurchasePending()
+                    Toast.makeText(this@MainActivity, getString(R.string.premium_purchase_cancelled), Toast.LENGTH_SHORT).show()
+                    updateUI()
+                }
+            }
+
+            override fun onNoActivePremiumPurchase() {
+                runOnUiThread {
+                    isBillingLoading = false
+                    premiumAccessManager.markPlayPremiumNotPurchased()
+                    updateUI()
+                }
+            }
+
+            override fun onBillingError(message: String) {
+                runOnUiThread {
+                    isBillingLoading = false
+                    premiumAccessManager.markBillingError(message.ifBlank { "Google Play Billing error" })
+                    updateUI()
+                }
+            }
+        })
+
+        playBillingManager?.start()
+    }
+
+    private fun ensurePremiumAccessForAction(): Boolean {
+        if (premiumAccessManager.canUsePremiumFeatures()) return true
+
+        updateMonetizationUi()
+        Toast.makeText(this, getString(R.string.premium_required_message), Toast.LENGTH_LONG).show()
+        return false
+    }
+
+    private fun updateMonetizationUi() {
+        val snapshot = premiumAccessManager.getSnapshot(isLoading = isBillingLoading)
+        monetizationPanel.visibility = if (snapshot.state == MonetizationState.PREMIUM) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+        monetizationStateText.text = getMonetizationStateText(snapshot)
+
+        val price = snapshot.playPrice
+        val shouldShowUnlockButton = snapshot.state == MonetizationState.TRIAL_EXPIRED ||
+            snapshot.state == MonetizationState.BILLING_ERROR
+
+        unlockPremiumButton.text = if (price.isNullOrBlank()) {
+            getString(R.string.premium_unlock_loading)
+        } else {
+            getString(R.string.premium_unlock_button, price)
+        }
+
+        unlockPremiumButton.visibility = if (shouldShowUnlockButton) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+        unlockPremiumButton.isEnabled = shouldShowUnlockButton && !price.isNullOrBlank()
+    }
+
+    private fun getMonetizationStateText(snapshot: MonetizationSnapshot): String {
+        return when (snapshot.state) {
+            MonetizationState.LOADING -> getString(R.string.premium_state_loading)
+            MonetizationState.TRIAL_ACTIVE -> getString(R.string.premium_state_trial_active, snapshot.trialDaysRemaining)
+            MonetizationState.TRIAL_EXPIRED -> getString(R.string.premium_state_trial_expired)
+            MonetizationState.PREMIUM -> getString(R.string.premium_state_premium)
+            MonetizationState.PURCHASE_PENDING -> getString(R.string.premium_state_purchase_pending)
+            MonetizationState.BILLING_ERROR -> getString(R.string.premium_state_billing_error)
+        }
+    }
+
+    private fun getLocalizedString(resourceId: Int): String {
+        val language = getSharedPreferences("safecall_prefs", Context.MODE_PRIVATE)
+            .getString("language", "pt") ?: "pt"
+        val config = Configuration(resources.configuration)
+        config.setLocale(Locale(language))
+        return createConfigurationContext(config).getString(resourceId)
+    }
+
       private fun hasAllPermissions(): Boolean {
         return try {
             permissionChecker.hasAllBasicPermissions()
@@ -382,10 +518,14 @@ class MainActivity : AppCompatActivity() {
     
     private fun updateUI() {        
         try {            
-            val hasSystemRequirements = hasAllProtection() // permissões + call screening ativo
-            val isReallyActive = isProtectionReallyActive() // + flag manual
+            updateMonetizationUi()
+
+            val protectionStatus = protectionStatusChecker.getMainStatus()
+            val hasSystemRequirements = protectionStatus.hasSystemRequirements // permissões + call screening ativo
+            val hasPremiumAccess = protectionStatus.hasPremiumAccess
+            val isReallyActive = protectionStatus.isReallyActive // + flag manual + trial/premium
             
-            Log.d("MainActivity", "UI Update - System: $hasSystemRequirements, Really active: $isReallyActive")
+            Log.d("MainActivity", "UI Update - System: $hasSystemRequirements, Premium: $hasPremiumAccess, Really active: $isReallyActive")
             
             if (isReallyActive) {
                 // REALMENTE ATIVO: permissões + flag manual
@@ -395,9 +535,17 @@ class MainActivity : AppCompatActivity() {
                 verifyButton.visibility = android.view.View.VISIBLE
                 deactivateButton.visibility = android.view.View.GONE
                 
+            } else if (!hasPremiumAccess) {
+                statusText.text = getString(R.string.premium_state_trial_expired)
+                setupProtectionButton.visibility = android.view.View.VISIBLE
+                setupProtectionButton.text = getString(R.string.setup_protection)
+                verifyButton.text = getString(R.string.activate_protection_button)
+                verifyButton.visibility = android.view.View.VISIBLE
+                deactivateButton.visibility = android.view.View.GONE
+
             } else if (hasSystemRequirements) {
                 // SISTEMA PRONTO mas flag manual desativa
-                statusText.text = "⚠️ Proteção Disponível\nPrime 'Ativar' para começar a bloquear"
+                statusText.text = getLocalizedString(R.string.protection_available_text)
                 setupProtectionButton.visibility = android.view.View.VISIBLE
                 setupProtectionButton.text = getString(R.string.setup_protection)
                 verifyButton.text = getString(R.string.activate_protection_button)
@@ -463,6 +611,10 @@ class MainActivity : AppCompatActivity() {
     
     private fun requestAllProtection() {
         try {
+            if (!ensurePremiumAccessForAction()) {
+                return
+            }
+
             if (!hasAllPermissions()) {
                 requestPermissions()
                 return
@@ -500,7 +652,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun runDiagnostic() {
-        Log.d("MainActivity", "=== DIAGNÓSTICO SAFECALLKIDS ===")
+        Log.d("MainActivity", "=== DIAGNÓSTICO SAFECALL ===")
         try {
             REQUIRED_PERMISSIONS.forEach { permission ->
                 val granted = ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
@@ -538,6 +690,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun logErrorToFile(tag: String, error: Throwable) {
         try {
+            CrashReporter.recordNonFatal(tag, error)
             val logMsg = "[${System.currentTimeMillis()}] $tag: ${error.message}\n${Log.getStackTraceString(error)}\n"
             openFileOutput("safecall_error.log", MODE_APPEND).use { fos ->
                 fos.write(logMsg.toByteArray())
@@ -719,6 +872,10 @@ class MainActivity : AppCompatActivity() {
      */
     private fun markAllAsConfigured() {
         try {
+            if (!ensurePremiumAccessForAction()) {
+                return
+            }
+
             protectionPreferences.setProtectionEnabled(true)
             
             Log.d("MainActivity", "All configuration marked as completed by user")
@@ -790,6 +947,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         try {
             updateUI()
+            playBillingManager?.syncExistingPurchases()
             
             // Reopen guided setup dialog if returning from settings
             if (shouldReopenGuidedSetup) {
@@ -807,6 +965,7 @@ class MainActivity : AppCompatActivity() {
     }
       override fun onDestroy() {
         super.onDestroy()
+        playBillingManager?.endConnection()
         Log.d("MainActivity", "MainActivity destruída")
     }    /**
      * Set the locale for the app and recreate activity
@@ -888,6 +1047,10 @@ class MainActivity : AppCompatActivity() {
                 // Flag está ativa → SEMPRE pode desativar (mesmo sem configurações do sistema)
                 Log.i("MainActivity", "🔓 Desativando proteção...")
                 requestPinBeforeDeactivation()
+                return
+            }
+
+            if (!ensurePremiumAccessForAction()) {
                 return
             }
             

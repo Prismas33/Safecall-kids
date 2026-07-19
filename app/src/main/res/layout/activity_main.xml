@@ -19,10 +19,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="12dp"
             android:background="@color/primary_color"
             android:gravity="center_vertical"
-            android:minHeight="88dp"
+            android:minHeight="96dp"
             android:orientation="horizontal"
             android:paddingStart="16dp"
             android:paddingTop="14dp"
@@ -30,10 +30,10 @@
             android:paddingBottom="14dp">
 
             <ImageView
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_marginEnd="14dp"
-                android:contentDescription="SafecallKids Logo"
+                android:contentDescription="@string/app_logo_content_description"
                 android:src="@drawable/logo_safecall_transparent" />
 
             <LinearLayout
@@ -45,24 +45,26 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="SafecallKids"
+                    android:maxLines="2"
+                    android:text="@string/app_name"
                     android:textColor="@color/header_text"
-                    android:textSize="25sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="3dp"
                     android:text="@string/protection_description"
                     android:textColor="@color/header_text"
                     android:textSize="13sp" />
             </LinearLayout>
 
             <ImageView
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:contentDescription="Proteção Ativa"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/protection_icon_content_description"
                 android:src="@drawable/ic_shield_heart" />
 
         </LinearLayout>
@@ -70,7 +72,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="14dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -108,10 +110,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="14dp"
             android:background="@drawable/panel_card_bg"
             android:elevation="3dp"
-            android:minHeight="116dp"
+            android:minHeight="108dp"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -121,9 +123,52 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:lineSpacingMultiplier="1.15"
-                android:text="❌ Proteção Desativada"
+                android:text="@string/protection_inactive"
                 android:textColor="@color/text_color"
                 android:textSize="19sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/setupProtectionButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_primary"
+            android:text="@string/setup_protection"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/verifyButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_primary"
+                android:text="@string/verify_and_activate"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/deactivateButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_primary"
+                android:text="@string/deactivate_protection"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -131,7 +176,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="14dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -142,7 +187,7 @@
                 android:background="@drawable/panel_card_bg"
                 android:elevation="2dp"
                 android:gravity="center"
-                android:minHeight="78dp"
+                android:minHeight="76dp"
                 android:orientation="vertical"
                 android:padding="14dp">
 
@@ -165,7 +210,7 @@
                 android:background="@drawable/panel_card_bg"
                 android:elevation="2dp"
                 android:gravity="center"
-                android:minHeight="78dp"
+                android:minHeight="76dp"
                 android:orientation="vertical"
                 android:padding="14dp">
 
@@ -182,46 +227,63 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/setupProtectionButton"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/button_primary"
-            android:text="@string/setup_protection"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
         <LinearLayout
+            android:id="@+id/monetizationPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:layout_marginBottom="14dp"
+            android:background="@drawable/panel_card_bg"
+            android:elevation="2dp"
+            android:orientation="vertical"
+            android:padding="18dp">
 
-            <Button
-                android:id="@+id/verifyButton"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_primary"
-                android:text="@string/verify_and_activate"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
+            <TextView
+                android:id="@+id/monetizationTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/premium_title"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/monetizationStateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/premium_state_loading"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/premiumDescriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="@string/premium_description"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="13sp" />
+
             <Button
-                android:id="@+id/deactivateButton"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
+                android:id="@+id/unlockPremiumButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="14dp"
                 android:background="@drawable/button_primary"
-                android:text="@string/deactivate_protection"
+                android:text="@string/premium_unlock_loading"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/billingDisclaimerText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/premium_disclaimer"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -240,7 +302,7 @@
             android:id="@+id/parentalControlButton"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="14dp"
             android:background="@drawable/button_secondary"
             android:text="@string/parental_control_button"
             android:textColor="@color/text_color"

@@ -4,12 +4,14 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
+import com.safecallkids.app.monitoring.CrashReporter
 import java.util.Locale
 
 class SafecallApplication : Application() {
     
     override fun onCreate() {
         super.onCreate()
+        CrashReporter.configure(this)
         // Apply saved language on app start
         applySavedLanguage()
     }

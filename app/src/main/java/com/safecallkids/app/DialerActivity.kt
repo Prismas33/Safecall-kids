@@ -15,7 +15,7 @@ class DialerActivity : Activity() {
         // Se chamado como discador, apenas mostra uma mensagem e fecha
         val data: Uri? = this.intent?.data
         if (data != null && data.scheme == "tel") {
-            Toast.makeText(this, "SafecallKids não faz chamadas, apenas protege!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.dialer_no_calls_message), Toast.LENGTH_SHORT).show()
         }
         finish()
     }
