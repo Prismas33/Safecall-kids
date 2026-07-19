@@ -1,32 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- SafecallKids Theme - Azul Celeste Header, Fundo Branco, Laranja Suave -->
-    <style name="Base.Theme.SafecallKids" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.SafecallKids" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Header: Azul Celeste -->
         <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorPrimaryVariant">@color/primary_dark_color</item>
-        <item name="colorOnPrimary">@color/header_text</item>
+        <item name="colorPrimaryDark">@color/primary_dark_color</item>
         
         <!-- Body: Fundo Branco -->
         <item name="android:colorBackground">@color/background_color</item>
-        <item name="colorSurface">@color/card_background</item>
         
         <!-- Footer: Laranja Suave -->
-        <item name="colorSecondary">@color/accent_color</item>
-        <item name="colorOnSecondary">@color/header_text</item>
+        <item name="colorAccent">@color/accent_color</item>
         
         <!-- Text -->
         <item name="android:textColorPrimary">@color/text_color</item>
         <item name="android:textColorSecondary">@color/secondary_text_color</item>
         
-        <!-- Status Bar - Compatible with edge-to-edge -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- System bars are configured by enableEdgeToEdge() in MainActivity. -->
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         
-        <!-- Navigation Bar - Edge-to-edge ready -->
-        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="O_MR1">true</item>
     </style>
 
@@ -62,7 +56,7 @@
     </style>
     
     <!-- White background dialog style -->
-    <style name="WhiteBackgroundDialog" parent="Theme.Material3.DayNight.Dialog">
+    <style name="WhiteBackgroundDialog" parent="Theme.AppCompat.DayNight.Dialog">
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:textColorPrimary">@color/text_color</item>
         <item name="android:textColorSecondary">@color/secondary_text_color</item>
