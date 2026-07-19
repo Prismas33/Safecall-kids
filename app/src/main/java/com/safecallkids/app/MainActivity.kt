@@ -1,6 +1,5 @@
 package com.safecallkids.app
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,9 +12,14 @@ import android.os.Looper
 import android.provider.Settings
 import android.telecom.TelecomManager
 import android.app.role.RoleManager
+import android.text.InputType
 import android.util.Log
-import androidx.core.view.WindowCompat
+import android.view.View
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -26,8 +30,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import java.io.FileNotFoundException
-import androidx.activity.enableEdgeToEdge
+import com.safecallkids.app.data.ParentalControlPreferences
+import com.safecallkids.app.data.ProtectionPreferences
+import com.safecallkids.app.data.ReviewPromptPreferences
+import com.safecallkids.app.domain.ProtectionStatusChecker
+import com.safecallkids.app.review.InAppReviewPrompter
+import com.safecallkids.app.system.PermissionChecker
+import com.safecallkids.app.system.RoleChecker
 
 class MainActivity : AppCompatActivity() {
     private lateinit var statusText: TextView
@@ -37,17 +46,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var verifyButton: Button
     private lateinit var deactivateButton: Button
     private lateinit var instructionsButton: Button
+    private lateinit var parentalControlButton: Button
     private lateinit var btnLangPt: ImageButton
     private lateinit var btnLangEn: ImageButton
     
     // Flag to track if guided setup dialog should be reopened
     private var shouldReopenGuidedSetup = false
     private val PERMISSIONS_REQUEST_CODE = 100
-    private val REQUIRED_PERMISSIONS = arrayOf(
-        Manifest.permission.READ_PHONE_STATE,
-        Manifest.permission.READ_CONTACTS,
-        Manifest.permission.ANSWER_PHONE_CALLS
-    )
+    private val REQUIRED_PERMISSIONS = PermissionChecker.REQUIRED_PERMISSIONS
+    private val parentalControlPreferences by lazy { ParentalControlPreferences(this) }
+    private val protectionPreferences by lazy { ProtectionPreferences(this) }
+    private val reviewPromptPreferences by lazy { ReviewPromptPreferences(this) }
+    private val permissionChecker by lazy { PermissionChecker(this) }
+    private val roleChecker by lazy { RoleChecker(this) }
+    private val protectionStatusChecker by lazy { ProtectionStatusChecker(this) }
       private val overlayPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { 
@@ -57,15 +69,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
-            // Enable Edge-to-Edge for Android 15+ (API 35+) compatibility
-            if (Build.VERSION.SDK_INT >= 35) {
-                WindowCompat.setDecorFitsSystemWindows(window, false)
-            }
+            enableEdgeToEdge()
             
             // Load saved language preference first
             loadLocale()
             
             setContentView(R.layout.activity_main)
+            applySystemBarInsets()
             initViews()
             updateUI()
             Log.d("MainActivity", "onCreate completed successfully")
@@ -84,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             verifyButton = findViewById(R.id.verifyButton)
             deactivateButton = findViewById(R.id.deactivateButton)
             instructionsButton = findViewById(R.id.instructionsButton)
+            parentalControlButton = findViewById(R.id.parentalControlButton)
             btnLangPt = findViewById(R.id.btn_lang_pt)
             btnLangEn = findViewById(R.id.btn_lang_en)
 
@@ -114,6 +125,15 @@ class MainActivity : AppCompatActivity() {
                     showSimpleInstructionsDialog()
                 } catch (e: Exception) {
                     Log.e("MainActivity", "Error showing instructions", e)
+                    Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            parentalControlButton.setOnClickListener {
+                try {
+                    showParentalControlDialog()
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Error showing parental control", e)
                     Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -149,9 +169,7 @@ class MainActivity : AppCompatActivity() {
     }
       private fun hasAllPermissions(): Boolean {
         return try {
-            REQUIRED_PERMISSIONS.all { permission ->
-                ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
-            }
+            permissionChecker.hasAllBasicPermissions()
         } catch (e: Exception) {
             Log.e("MainActivity", "Error checking permissions", e)
             false
@@ -160,11 +178,7 @@ class MainActivity : AppCompatActivity() {
     
     private fun hasOverlayPermission(): Boolean {
         return try {
-            val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                Settings.canDrawOverlays(this)
-            } else {
-                true
-            }
+            val result = permissionChecker.hasOverlayPermission()
             Log.d("MainActivity", "hasOverlayPermission() returning: $result (API level: ${Build.VERSION.SDK_INT})")
             result
         } catch (e: Exception) {
@@ -176,17 +190,11 @@ class MainActivity : AppCompatActivity() {
      */
     private fun isDefaultCallScreeningService(): Boolean {
         return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val roleManager = getSystemService(RoleManager::class.java)
-                if (roleManager.isRoleAvailable(RoleManager.ROLE_CALL_SCREENING) &&
-                    roleManager.isRoleHeld(RoleManager.ROLE_CALL_SCREENING)) {
-                    return true
-                }
-            }
-            val telecom = getSystemService(Context.TELECOM_SERVICE) as TelecomManager
-            val isDefaultDialer = telecom.defaultDialerPackage == packageName
+            val hasCallScreeningRole = roleChecker.hasCallScreeningRole()
+            val isDefaultDialer = roleChecker.isDefaultDialer()
+            Log.d("MainActivity", "Has call screening role: $hasCallScreeningRole")
             Log.d("MainActivity", "Is default dialer: $isDefaultDialer")
-            isDefaultDialer
+            hasCallScreeningRole || isDefaultDialer
         } catch (e: Exception) {
             Log.e("MainActivity", "Error checking call screening/default dialer", e)
             false
@@ -311,7 +319,7 @@ class MainActivity : AppCompatActivity() {
     
     private fun hasAllProtection(): Boolean {
         return try {
-            hasAllPermissions() && hasOverlayPermission() && isDefaultCallScreeningService()
+            protectionStatusChecker.hasMainSystemRequirements()
         } catch (e: Exception) {
             Log.e("MainActivity", "Error checking protection status", e)
             false
@@ -323,13 +331,13 @@ class MainActivity : AppCompatActivity() {
      */
     private fun isProtectionReallyActive(): Boolean {
         return try {
-            val hasSystemRequirements = hasAllProtection()
-            val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
-            val userEnabled = prefs.getBoolean("all_setup_completed", false)
+            val status = protectionStatusChecker.getMainStatus()
+            val hasSystemRequirements = status.hasSystemRequirements
+            val userEnabled = status.isUserEnabled
             
             Log.d("MainActivity", "System requirements: $hasSystemRequirements, User enabled: $userEnabled")
             
-            hasSystemRequirements && userEnabled
+            status.isReallyActive
         } catch (e: Exception) {
             Log.e("MainActivity", "Error checking real protection status", e)
             false
@@ -412,6 +420,12 @@ class MainActivity : AppCompatActivity() {
             }
             
             // Estatísticas (sempre mostrar)
+            parentalControlButton.text = if (parentalControlPreferences.isPinConfigured) {
+                getString(R.string.parental_control_enabled_button)
+            } else {
+                getString(R.string.parental_control_button)
+            }
+
             try {
                 val contactsHelper = ContactsHelper(this)
                 val contactsNum = contactsHelper.getContactsCount()
@@ -425,8 +439,7 @@ class MainActivity : AppCompatActivity() {
             }
             
             try {
-                val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
-                val blocked = prefs.getInt("blocked_calls_count", 0)
+                val blocked = protectionPreferences.blockedCallsCount
                 blockedCount.text = getString(R.string.calls_blocked_format, blocked)
             } catch (e: Exception) {
                 Log.e("MainActivity", "Erro ao acessar preferências", e)
@@ -466,6 +479,7 @@ class MainActivity : AppCompatActivity() {
             }
             
             updateUI()
+            maybeRequestPlayReview()
             
         } catch (e: Exception) {
             Log.e("MainActivity", "Erro ao solicitar proteção", e)
@@ -705,11 +719,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun markAllAsConfigured() {
         try {
-            val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
-            prefs.edit()
-                .putBoolean("call_screening_configured", true)
-                .putBoolean("all_setup_completed", true)
-                .apply()
+            protectionPreferences.setProtectionEnabled(true)
             
             Log.d("MainActivity", "All configuration marked as completed by user")
             Toast.makeText(this, "✅ Configuração completa! Testando proteção...", Toast.LENGTH_LONG).show()
@@ -868,8 +878,7 @@ class MainActivity : AppCompatActivity() {
         try {
             Log.d("MainActivity", "=== TOGGLE PROTECTION ===")
             
-            val prefs = getSharedPreferences("safecall_prefs", MODE_PRIVATE)
-            val currentlyEnabled = prefs.getBoolean("all_setup_completed", false)
+            val currentlyEnabled = protectionPreferences.isUserProtectionEnabled
             val hasSystemRequirements = hasAllProtection()
             
             Log.d("MainActivity", "Currently enabled: $currentlyEnabled")
@@ -878,13 +887,7 @@ class MainActivity : AppCompatActivity() {
             if (currentlyEnabled) {
                 // Flag está ativa → SEMPRE pode desativar (mesmo sem configurações do sistema)
                 Log.i("MainActivity", "🔓 Desativando proteção...")
-                prefs.edit()
-                    .putBoolean("all_setup_completed", false)
-                    .putBoolean("call_screening_configured", false)
-                    .apply()
-                
-                Toast.makeText(this, getString(R.string.protection_deactivated), Toast.LENGTH_SHORT).show()
-                updateUI()
+                requestPinBeforeDeactivation()
                 return
             }
             
@@ -907,10 +910,7 @@ class MainActivity : AppCompatActivity() {
             
             // Se chegou aqui: flag inativa + sistema configurado → ATIVAR
             Log.i("MainActivity", "🔒 Ativando proteção...")
-            prefs.edit()
-                .putBoolean("call_screening_configured", true)
-                .putBoolean("all_setup_completed", true)
-                .apply()
+            protectionPreferences.setProtectionEnabled(true)
             
             Toast.makeText(this, getString(R.string.protection_activated), Toast.LENGTH_LONG).show()
             
@@ -925,6 +925,153 @@ class MainActivity : AppCompatActivity() {
             Log.e("MainActivity", "Erro ao toggle proteção", e)
             Toast.makeText(this, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun maybeRequestPlayReview() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            InAppReviewPrompter(this, reviewPromptPreferences)
+                .requestReviewIfEligible(isProtectionReallyActive())
+        }, 1500)
+    }
+
+    private fun applySystemBarInsets() {
+        val root = findViewById<View>(R.id.mainRoot)
+        ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+    }
+
+    private fun requestPinBeforeDeactivation() {
+        if (!parentalControlPreferences.isPinConfigured) {
+            deactivateProtection()
+            return
+        }
+
+        showPinValidationDialog(
+            title = getString(R.string.parental_pin_required_title),
+            message = getString(R.string.parental_pin_required_message)
+        ) {
+            deactivateProtection()
+        }
+    }
+
+    private fun deactivateProtection() {
+        protectionPreferences.setProtectionEnabled(false)
+        Toast.makeText(this, getString(R.string.protection_deactivated), Toast.LENGTH_SHORT).show()
+        updateUI()
+    }
+
+    private fun showParentalControlDialog() {
+        if (!parentalControlPreferences.isPinConfigured) {
+            showCreateParentalPinDialog()
+            return
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.parental_control_enabled_title))
+            .setMessage(getString(R.string.parental_control_enabled_message))
+            .setPositiveButton(getString(R.string.change_parental_pin)) { _, _ ->
+                showPinValidationDialog(
+                    title = getString(R.string.parental_pin_required_title),
+                    message = getString(R.string.parental_pin_change_message)
+                ) {
+                    showCreateParentalPinDialog()
+                }
+            }
+            .setNegativeButton(getString(R.string.remove_parental_pin)) { _, _ ->
+                showPinValidationDialog(
+                    title = getString(R.string.parental_pin_required_title),
+                    message = getString(R.string.parental_pin_remove_message)
+                ) {
+                    parentalControlPreferences.clearPin()
+                    Toast.makeText(this, getString(R.string.parental_pin_removed), Toast.LENGTH_SHORT).show()
+                    updateUI()
+                }
+            }
+            .setNeutralButton(getString(R.string.cancel), null)
+            .show()
+    }
+
+    private fun showCreateParentalPinDialog() {
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(48, 12, 48, 0)
+        }
+
+        val pinInput = createPinInput(getString(R.string.parental_pin_hint))
+        val confirmInput = createPinInput(getString(R.string.parental_pin_confirm_hint))
+        layout.addView(pinInput)
+        layout.addView(confirmInput)
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.parental_control_title))
+            .setMessage(getString(R.string.parental_control_create_message))
+            .setView(layout)
+            .setPositiveButton(getString(R.string.save_parental_pin), null)
+            .setNegativeButton(getString(R.string.cancel), null)
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val pin = pinInput.text.toString()
+                val confirmPin = confirmInput.text.toString()
+
+                when {
+                    !isValidPin(pin) -> pinInput.error = getString(R.string.parental_pin_invalid)
+                    pin != confirmPin -> confirmInput.error = getString(R.string.parental_pin_mismatch)
+                    else -> {
+                        parentalControlPreferences.setPin(pin)
+                        Toast.makeText(this, getString(R.string.parental_pin_saved), Toast.LENGTH_SHORT).show()
+                        updateUI()
+                        dialog.dismiss()
+                    }
+                }
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun showPinValidationDialog(title: String, message: String, onSuccess: () -> Unit) {
+        val pinInput = createPinInput(getString(R.string.parental_pin_hint)).apply {
+            setPadding(48, 12, 48, 0)
+        }
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setView(pinInput)
+            .setPositiveButton(getString(R.string.confirm), null)
+            .setNegativeButton(getString(R.string.cancel), null)
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val pin = pinInput.text.toString()
+                if (parentalControlPreferences.verifyPin(pin)) {
+                    dialog.dismiss()
+                    onSuccess()
+                } else {
+                    pinInput.error = getString(R.string.parental_pin_wrong)
+                }
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun createPinInput(hintText: String): EditText {
+        return EditText(this).apply {
+            hint = hintText
+            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            maxLines = 1
+        }
+    }
+
+    private fun isValidPin(pin: String): Boolean {
+        return pin.length in 4..8 && pin.all { it.isDigit() }
     }
                 
     /**

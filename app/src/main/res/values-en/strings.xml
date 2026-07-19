@@ -30,7 +30,7 @@
     <string name="calls_blocked_format">Calls blocked: %1$d</string>
     <string name="calls_blocked_error">Calls blocked: error</string>
     <string name="interface_error">Interface error</string>    <string name="try_again">Try again</string>
-    <string name="footer_text">SafecallKids v3.1 - Child protection</string>
+    <string name="footer_text">SafecallKids v3.2 - Family safety protection</string>
     <string name="open_settings">Settings</string>
     <string name="cancel">Cancel</string>
     <string name="already_configured">Already configured</string>
@@ -94,6 +94,29 @@
     <string name="protection_deactivated">🔓 Protection DEACTIVATED</string>
     <string name="protection_activated">🔒 Protection ACTIVATED! Blocking unknown calls</string>
     
+    <!-- Parental Control -->
+    <string name="parental_control_button">Parental Control</string>
+    <string name="parental_control_enabled_button">Parental Control Active</string>
+    <string name="parental_control_title">Parental Control</string>
+    <string name="parental_control_create_message">Create a PIN to prevent protection from being turned off without authorization.</string>
+    <string name="parental_control_enabled_title">Parental Control Active</string>
+    <string name="parental_control_enabled_message">Protection can only be turned off with the parental PIN.</string>
+    <string name="parental_pin_required_title">Parental PIN required</string>
+    <string name="parental_pin_required_message">Enter the parental PIN to turn off protection.</string>
+    <string name="parental_pin_change_message">Enter the current PIN to change the parental PIN.</string>
+    <string name="parental_pin_remove_message">Enter the current PIN to remove parental control.</string>
+    <string name="parental_pin_hint">PIN</string>
+    <string name="parental_pin_confirm_hint">Confirm PIN</string>
+    <string name="parental_pin_invalid">Use 4 to 8 digits.</string>
+    <string name="parental_pin_mismatch">The PINs do not match.</string>
+    <string name="parental_pin_wrong">Incorrect PIN.</string>
+    <string name="parental_pin_saved">Parental PIN saved.</string>
+    <string name="parental_pin_removed">Parental control removed.</string>
+    <string name="save_parental_pin">Save PIN</string>
+    <string name="change_parental_pin">Change PIN</string>
+    <string name="remove_parental_pin">Remove PIN</string>
+    <string name="confirm">Confirm</string>
+
     <!-- Dynamic Button Texts -->
     <string name="activate_protection_button">🔒 Activate Protection</string>
     <string name="deactivate_protection_button">🔓 Deactivate Protection</string>

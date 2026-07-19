@@ -1,236 +1,270 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:paddingTop="24dp"
-    android:fitsSystemWindows="true"
-    android:background="@color/background_color">    <!-- Spacer for Status Bar -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
+    android:background="@color/background_color"
+    android:clipToPadding="false"
+    android:fillViewport="true">
 
-    <!-- App Header with Logo and Title --><LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary_color"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/logo_safecall_transparent"
-            android:layout_marginEnd="12dp"
-            android:contentDescription="SafecallKids Logo" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="SafecallKids"
-            android:textSize="24sp"
-            android:textColor="@color/header_text"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_shield_heart"
-            android:contentDescription="Proteção Ativa" />
-
-    </LinearLayout>
-
-    <!-- Language Switch Buttons Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="16dp">        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/language_label"
-            android:textSize="14sp"
-            android:textColor="@color/secondary_text_color"
-            android:layout_marginEnd="12dp"
-            android:gravity="center_vertical" />
-
-        <ImageButton
-            android:id="@+id/btn_lang_pt"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="12dp"
-            android:src="@drawable/ic_flag_pt"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Português"
-            android:scaleType="fitCenter" />
-
-        <ImageButton
-            android:id="@+id/btn_lang_en"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_flag_en"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="English"
-            android:scaleType="fitCenter" />
-
-    </LinearLayout>    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/protection_description"
-        android:textSize="14sp"
-        android:textColor="@color/secondary_text_color"
-        android:gravity="center"
-        android:layout_marginBottom="24dp" /><!-- Status Card -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:background="@android:color/white"
-        android:elevation="4dp"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingStart="20dp"
+        android:paddingTop="24dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp">
 
-        <TextView
-            android:id="@+id/statusText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="❌ Proteção Desativada"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_marginBottom="18dp"
+            android:background="@color/primary_color"
+            android:gravity="center_vertical"
+            android:minHeight="88dp"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="14dp">
+
+            <ImageView
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="14dp"
+                android:contentDescription="SafecallKids Logo"
+                android:src="@drawable/logo_safecall_transparent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SafecallKids"
+                    android:textColor="@color/header_text"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/protection_description"
+                    android:textColor="@color/header_text"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:contentDescription="Proteção Ativa"
+                android:src="@drawable/ic_shield_heart" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/language_label"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/btn_lang_pt"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="10dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Português"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_flag_pt" />
+
+            <ImageButton
+                android:id="@+id/btn_lang_en"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="English"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_flag_en" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/panel_card_bg"
+            android:elevation="3dp"
+            android:minHeight="116dp"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/statusText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.15"
+                android:text="❌ Proteção Desativada"
+                android:textColor="@color/text_color"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/panel_card_bg"
+                android:elevation="2dp"
+                android:gravity="center"
+                android:minHeight="78dp"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:id="@+id/contactsCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/contacts_loaded"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/panel_card_bg"
+                android:elevation="2dp"
+                android:gravity="center"
+                android:minHeight="78dp"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:id="@+id/blockedCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/calls_blocked"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/setupProtectionButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_primary"
+            android:text="@string/setup_protection"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/verifyButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_primary"
+                android:text="@string/verify_and_activate"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/deactivateButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_primary"
+                android:text="@string/deactivate_protection"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/instructionsButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_secondary"
+            android:text="@string/detailed_instructions"
             android:textColor="@color/text_color"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/parentalControlButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/button_secondary"
+            android:text="@string/parental_control_button"
+            android:textColor="@color/text_color"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/panel_card_bg"
+            android:lineSpacingMultiplier="1.35"
+            android:padding="16dp"
+            android:text="@string/info_text"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:gravity="center"
-            android:lineSpacingMultiplier="1.2" />
-
-    </LinearLayout>    <!-- Statistics Cards -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="24dp">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:background="@android:color/white"
-            android:elevation="2dp"
-            android:orientation="vertical"
-            android:padding="16dp">            <TextView
-                android:id="@+id/contactsCount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/contacts_loaded"
-                android:textSize="14sp"
-                android:textColor="@color/text_color"
-                android:gravity="center" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:background="@android:color/white"
-            android:elevation="2dp"
-            android:orientation="vertical"
-            android:padding="16dp">            <TextView
-                android:id="@+id/blockedCount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/calls_blocked"
-                android:textSize="14sp"
-                android:textColor="@color/text_color"
-                android:gravity="center" />
-
-        </LinearLayout>
+            android:text="@string/footer_text"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="10sp" />
 
     </LinearLayout>
-
-    <!-- Main Action Buttons -->
-    <Button
-        android:id="@+id/setupProtectionButton"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="@string/setup_protection"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:background="@drawable/button_primary"
-        android:layout_marginBottom="12dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="12dp">
-
-        <Button
-            android:id="@+id/verifyButton"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="1"
-            android:text="@string/verify_and_activate"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:background="@drawable/button_primary"
-            android:layout_marginEnd="6dp" />
-
-        <Button
-            android:id="@+id/deactivateButton"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="1"
-            android:text="@string/deactivate_protection"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:background="@drawable/button_primary"
-            android:layout_marginStart="6dp" />
-
-    </LinearLayout>
-
-    <!-- Instructions Button -->
-    <Button
-        android:id="@+id/instructionsButton"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="@string/detailed_instructions"
-        android:textSize="16sp"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:background="@drawable/button_primary"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Info Text -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/info_text"
-        android:textSize="12sp"
-        android:textColor="@color/secondary_text_color"
-        android:lineSpacingMultiplier="1.4"
-        android:layout_marginTop="16dp" />
-
-    <!-- Spacer -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />    <!-- Footer -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/footer_text"
-        android:textSize="10sp"
-        android:textColor="@color/secondary_text_color"
-        android:gravity="center"
-        android:layout_marginTop="8dp" />
-
-</LinearLayout>
+</ScrollView>

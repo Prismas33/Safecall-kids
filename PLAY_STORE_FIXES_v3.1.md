@@ -98,4 +98,4 @@ User enabled: true → UI Update - Really active: true
 4. **Call blocking:** Testado com logs ADB, responde corretamente à flag manual
 
 ---
-*Documento gerado automaticamente - SafeCallKids v3.1*
+*Documento de update- SafeCallKids v3.1*

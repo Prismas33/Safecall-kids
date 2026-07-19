@@ -10,13 +10,15 @@ import android.telecom.TelecomManager
 import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.safecallkids.app.data.ProtectionPreferences
+import com.safecallkids.app.domain.ProtectionStatusChecker
 
 class CallReceiver : BroadcastReceiver() {
     private val TAG = "CallReceiver"
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
-            // Gate early: only act if user explicitly activated protection and app is properly configured
+            // Gate early: only act if user explicitly activated protection and app is properly configured.
             if (!isProtectionActive(context)) {
                 Log.d(TAG, "Protection not active; ignoring phone state broadcast")
                 return
@@ -28,46 +30,15 @@ class CallReceiver : BroadcastReceiver() {
 
             Log.d(TAG, "Phone state changed: $state, Number: $phoneNumber")
             when (state) {
-                TelephonyManager.EXTRA_STATE_RINGING -> {
-                    handleIncomingCall(context, phoneNumber)
-                }
-                TelephonyManager.EXTRA_STATE_IDLE -> {
-                    Log.d(TAG, "Call ended or idle")
-                }
-                TelephonyManager.EXTRA_STATE_OFFHOOK -> {
-                    Log.d(TAG, "Call answered")
-                }
+                TelephonyManager.EXTRA_STATE_RINGING -> handleIncomingCall(context, phoneNumber)
+                TelephonyManager.EXTRA_STATE_IDLE -> Log.d(TAG, "Call ended or idle")
+                TelephonyManager.EXTRA_STATE_OFFHOOK -> Log.d(TAG, "Call answered")
             }
         }
     }
 
     private fun isProtectionActive(context: Context): Boolean {
-        // Verificar flag manual do utilizador primeiro
-        val prefs = context.getSharedPreferences("safecall_prefs", Context.MODE_PRIVATE)
-        val userEnabled = prefs.getBoolean("all_setup_completed", false)
-        if (!userEnabled) {
-            Log.d(TAG, "Protection not active: user hasn't manually activated")
-            return false
-        }
-
-        // Require basic permissions
-        val hasAnswer = ContextCompat.checkSelfPermission(context, Manifest.permission.ANSWER_PHONE_CALLS) == PackageManager.PERMISSION_GRANTED
-        val hasReadContacts = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
-        if (!hasAnswer || !hasReadContacts) return false
-
-        // On Android 10+ ensure we're default dialer (or call screening role implies it)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return try {
-                val telecom = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
-                val isDefault = telecom.defaultDialerPackage == context.packageName
-                if (!isDefault) Log.w(TAG, "Not default dialer on Q+; will not block via receiver")
-                isDefault
-            } catch (e: Exception) {
-                Log.e(TAG, "Error checking default dialer", e)
-                false
-            }
-        }
-        return true
+        return ProtectionStatusChecker(context).isActiveForLegacyReceiver()
     }
 
     private fun handleIncomingCall(context: Context, phoneNumber: String?) {
@@ -126,9 +97,7 @@ class CallReceiver : BroadcastReceiver() {
     }
 
     private fun incrementBlockedCallsCount(context: Context) {
-        val prefs = context.getSharedPreferences("safecall_prefs", Context.MODE_PRIVATE)
-        val currentCount = prefs.getInt("blocked_calls_count", 0)
-        prefs.edit().putInt("blocked_calls_count", currentCount + 1).apply()
-        Log.d(TAG, "Blocked calls count updated: ${currentCount + 1}")
+        val nextCount = ProtectionPreferences(context).incrementBlockedCallsCount()
+        Log.d(TAG, "Blocked calls count updated: $nextCount")
     }
 }

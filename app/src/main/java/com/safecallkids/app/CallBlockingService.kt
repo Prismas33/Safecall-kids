@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.safecallkids.app.data.ProtectionPreferences
 
 class CallBlockingService : android.app.Service() {
     
@@ -89,8 +90,7 @@ class CallBlockingService : android.app.Service() {
         )
         
         // Obter estatísticas com tratamento de erro
-        val prefs = getSharedPreferences("safecall_prefs", android.content.Context.MODE_PRIVATE)
-        val blockedCount = prefs.getInt("blocked_calls_count", 0)
+        val blockedCount = ProtectionPreferences(this).blockedCallsCount
         
         val contactsCount = try {
             val contactsHelper = ContactsHelper(this)

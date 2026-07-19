@@ -30,7 +30,7 @@
     <string name="calls_blocked_format">Chamadas bloqueadas: %1$d</string>    <string name="calls_blocked_error">Chamadas bloqueadas: erro</string>
     <string name="interface_error">Erro na interface</string>
     <string name="try_again">Tentar novamente</string>
-    <string name="footer_text">SafecallKids v3.1 - Proteção para crianças</string>
+    <string name="footer_text">SafecallKids v3.2 - Proteção familiar segura</string>
     <string name="open_settings">Abrir Config</string>
     <string name="cancel">Cancelar</string>    <string name="already_configured">Já configurei tudo</string>
     <string name="dialog_placeholder">Mensagem do dialog</string>    <string name="info_text">• Bloqueia chamadas de números desconhecidos\n• Bloqueia chamadas privadas/ocultas\n• Permite apenas contatos salvos\n• Funciona em segundo plano\n• Mantenha pressionado o botão para diagnóstico</string>
@@ -93,6 +93,29 @@
     <string name="protection_deactivated">🔓 Proteção DESATIVADA</string>
     <string name="protection_activated">🔒 Proteção ATIVADA! A bloquear chamadas desconhecidas</string>
     
+    <!-- Parental Control -->
+    <string name="parental_control_button">Controlo Parental</string>
+    <string name="parental_control_enabled_button">Controlo Parental Ativo</string>
+    <string name="parental_control_title">Controlo Parental</string>
+    <string name="parental_control_create_message">Crie um PIN para impedir que a protecao seja desativada sem autorizacao.</string>
+    <string name="parental_control_enabled_title">Controlo Parental Ativo</string>
+    <string name="parental_control_enabled_message">A protecao so pode ser desativada com o PIN parental.</string>
+    <string name="parental_pin_required_title">PIN parental necessario</string>
+    <string name="parental_pin_required_message">Introduza o PIN parental para desativar a protecao.</string>
+    <string name="parental_pin_change_message">Introduza o PIN atual para alterar o PIN parental.</string>
+    <string name="parental_pin_remove_message">Introduza o PIN atual para remover o controlo parental.</string>
+    <string name="parental_pin_hint">PIN</string>
+    <string name="parental_pin_confirm_hint">Confirmar PIN</string>
+    <string name="parental_pin_invalid">Use 4 a 8 digitos.</string>
+    <string name="parental_pin_mismatch">Os PINs nao coincidem.</string>
+    <string name="parental_pin_wrong">PIN incorreto.</string>
+    <string name="parental_pin_saved">PIN parental guardado.</string>
+    <string name="parental_pin_removed">Controlo parental removido.</string>
+    <string name="save_parental_pin">Guardar PIN</string>
+    <string name="change_parental_pin">Alterar PIN</string>
+    <string name="remove_parental_pin">Remover PIN</string>
+    <string name="confirm">Confirmar</string>
+
     <!-- Dynamic Button Texts -->
     <string name="activate_protection_button">🔒 Ativar Proteção</string>
     <string name="deactivate_protection_button">🔓 Desativar Proteção</string>

@@ -13,15 +13,21 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace 'com.safecallkids.app'
     compileSdk 35
-    
+
     defaultConfig {
         applicationId "com.safecallkids.app"
         minSdkVersion 26
         targetSdkVersion 35
-        versionCode 7
-        versionName "3.1"
+        versionCode 10
+        versionName "4.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Family Policy Compliance - App content rating
+        manifestPlaceholders = [
+            target_age_group: "AGE_GROUP_CHILD",
+            max_ad_content_rating: "G"
+        ]
     }
 
     signingConfigs {
@@ -40,7 +46,7 @@ android {
             // Nome diferenciado no launcher (opcional)
             resValue "string", "app_name", "SafecallKids DEBUG"
         }
-        
+
         release {
             // Configurações para release do Play Store
             minifyEnabled true
@@ -52,7 +58,7 @@ android {
                 abortOnError false
                 disable 'FullBackupContent', 'ExtraTranslation', 'MissingTranslation'
             }
-            
+
             // Assinatura configurada para release
             signingConfig signingConfigs.release
         }
@@ -94,11 +100,12 @@ dependencies {
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
     implementation 'androidx.activity:activity-ktx:1.9.3'
-    
+    implementation 'com.google.android.play:review:2.0.2'
+
     // Dependências para bloqueio de chamadas no Android moderno
     implementation 'androidx.work:work-runtime-ktx:2.10.0'
     implementation 'androidx.lifecycle:lifecycle-service:2.8.7'
-    
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
