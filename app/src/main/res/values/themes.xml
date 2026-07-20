@@ -16,7 +16,7 @@
         <item name="android:textColorPrimary">@color/text_color</item>
         <item name="android:textColorSecondary">@color/secondary_text_color</item>
         
-        <!-- System bars are configured by enableEdgeToEdge() in MainActivity. -->
+        <!-- System bars are configured by EdgeToEdgeConfigurer. -->
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

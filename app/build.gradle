@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
 }
@@ -13,20 +12,21 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace 'com.safecallkids.app'
-    compileSdk 35
-    ndkVersion '28.2.13676358'
+    namespace = 'com.safecallkids.app'
+    compileSdk = 35
+    ndkVersion = '28.2.13676358'
 
     buildFeatures {
-        buildConfig true
+        buildConfig = true
+        resValues = true
     }
 
     defaultConfig {
         applicationId "com.safecallkids.app"
-        minSdkVersion 26
-        targetSdkVersion 35
-        versionCode 12
-        versionName "5.0.1"
+        minSdk = 26
+        targetSdk = 35
+        versionCode = 13
+        versionName = "5.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -56,24 +56,24 @@ android {
 
         release {
             // Configurações para release do Play Store
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled = true
+            shrinkResources = true
             ndk {
-                debugSymbolLevel 'SYMBOL_TABLE'
+                debugSymbolLevel = 'SYMBOL_TABLE'
             }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
               // Desabilitar lint para resolver problemas de arquivo bloqueado
             lintOptions {
-                checkReleaseBuilds false
-                abortOnError false
+                checkReleaseBuilds = false
+                abortOnError = false
                 disable 'FullBackupContent', 'ExtraTranslation', 'MissingTranslation'
             }
 
             // Assinatura configurada para release
-            signingConfig signingConfigs.release
+            signingConfig = signingConfigs.release
 
             firebaseCrashlytics {
-                mappingFileUploadEnabled true
+                mappingFileUploadEnabled = true
             }
         }
     }
@@ -97,14 +97,28 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-      kotlinOptions {
-        jvmTarget = '17'
-    }
 
     lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
+        checkReleaseBuilds = false
+        abortOnError = false
         disable 'FullBackupContent', 'ExtraTranslation'
+    }
+}
+
+tasks.register('packageReleaseNativeDebugSymbolsZip', Zip) {
+    dependsOn 'mergeReleaseNativeLibs'
+
+    archiveFileName = 'native-debug-symbols.zip'
+    destinationDirectory = layout.buildDirectory.dir('outputs/native-debug-symbols/release')
+
+    from(layout.buildDirectory.dir('intermediates/merged_native_libs/release/mergeReleaseNativeLibs/out/lib')) {
+        into 'lib'
+    }
+}
+
+afterEvaluate {
+    tasks.named('bundleRelease') {
+        finalizedBy 'packageReleaseNativeDebugSymbolsZip'
     }
 }
 
@@ -112,7 +126,6 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
-    implementation 'androidx.activity:activity-ktx:1.9.3'
     implementation 'com.google.android.play:review:2.0.2'
     implementation 'com.android.billingclient:billing:9.1.0'
     implementation platform('com.google.firebase:firebase-bom:34.15.0')

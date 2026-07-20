@@ -15,7 +15,6 @@ import android.app.role.RoleManager
 import android.text.InputType
 import android.util.Log
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.Button
@@ -40,6 +39,7 @@ import com.safecallkids.app.monetization.MonetizationState
 import com.safecallkids.app.monetization.PremiumAccessManager
 import com.safecallkids.app.monitoring.CrashReporter
 import com.safecallkids.app.review.InAppReviewPrompter
+import com.safecallkids.app.system.EdgeToEdgeConfigurer
 import com.safecallkids.app.system.PermissionChecker
 import com.safecallkids.app.system.RoleChecker
 
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         try {
-            enableEdgeToEdge()
+            EdgeToEdgeConfigurer.apply(this)
             
             // Load saved language preference first
             loadLocale()
