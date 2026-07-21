@@ -101,6 +101,8 @@ are cleared.
 - The AndroidX `enableEdgeToEdge()` extension was replaced by a local
   `EdgeToEdgeConfigurer` that sets `LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS` on
   Android 15 and above.
+- Native debug symbols must be embedded in the release AAB through
+  `debugSymbolLevel = 'symbol_table'`; the AGP DSL values are lowercase.
 
 ## Remaining Play Console checks
 

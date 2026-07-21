@@ -25,7 +25,7 @@ android {
         applicationId "com.safecallkids.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 13
+        versionCode = 15
         versionName = "5.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -59,7 +59,7 @@ android {
             minifyEnabled = true
             shrinkResources = true
             ndk {
-                debugSymbolLevel = 'SYMBOL_TABLE'
+                debugSymbolLevel = 'symbol_table'
             }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
               // Desabilitar lint para resolver problemas de arquivo bloqueado
@@ -130,10 +130,6 @@ dependencies {
     implementation 'com.android.billingclient:billing:9.1.0'
     implementation platform('com.google.firebase:firebase-bom:34.15.0')
     implementation 'com.google.firebase:firebase-crashlytics'
-
-    // Dependências para bloqueio de chamadas no Android moderno
-    implementation 'androidx.work:work-runtime-ktx:2.10.0'
-    implementation 'androidx.lifecycle:lifecycle-service:2.8.7'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
