@@ -1,6 +1,7 @@
 package com.safecallkids.app
 
 import android.content.Context
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -37,6 +38,8 @@ import com.safecallkids.app.domain.ProtectionStatusChecker
 import com.safecallkids.app.monetization.MonetizationSnapshot
 import com.safecallkids.app.monetization.MonetizationState
 import com.safecallkids.app.monetization.PremiumAccessManager
+import com.safecallkids.app.monetization.TrialExpiryNotifier
+import com.safecallkids.app.monetization.TrialExpiryScheduler
 import com.safecallkids.app.monitoring.CrashReporter
 import com.safecallkids.app.review.InAppReviewPrompter
 import com.safecallkids.app.system.EdgeToEdgeConfigurer
@@ -71,6 +74,17 @@ class MainActivity : AppCompatActivity() {
     private val premiumAccessManager by lazy { PremiumAccessManager(this) }
     private var playBillingManager: PlayBillingManager? = null
     private var isBillingLoading = true
+    private var isActivityResumed = false
+    private val trialExpiryHandler = Handler(Looper.getMainLooper())
+    private val trialExpiryRunnable = Runnable {
+        updateUI()
+        playBillingManager?.syncExistingPurchases()
+    }
+    private val notificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) TrialExpiryScheduler.schedule(this)
+    }
       private val overlayPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { 
@@ -91,6 +105,7 @@ class MainActivity : AppCompatActivity() {
             initViews()
             setupBilling()
             updateUI()
+            requestTrialExpiryNotificationPermissionIfNeeded()
             Log.d("MainActivity", "onCreate completed successfully")
         } catch (e: Exception) {
             Log.e("MainActivity", "Error in onCreate", e)
@@ -202,20 +217,27 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onPurchaseCompleted(purchaseToken: String, orderId: String?) {
+            override fun onPurchaseCompleted(purchaseToken: String, orderId: String?, isNewPurchase: Boolean) {
                 runOnUiThread {
                     isBillingLoading = false
                     premiumAccessManager.markPremiumPurchased(purchaseToken, orderId)
-                    Toast.makeText(this@MainActivity, getString(R.string.premium_purchase_completed), Toast.LENGTH_LONG).show()
+                    TrialExpiryScheduler.schedule(this@MainActivity)
+                    TrialExpiryNotifier.dismissAll(this@MainActivity)
+                    sendBroadcast(Intent(CallBlockingService.ACTION_UPDATE_NOTIFICATION).setPackage(packageName))
+                    if (isNewPurchase) {
+                        Toast.makeText(this@MainActivity, getString(R.string.premium_purchase_completed), Toast.LENGTH_LONG).show()
+                    }
                     updateUI()
                 }
             }
 
-            override fun onPurchasePending() {
+            override fun onPurchasePending(isNewPurchase: Boolean) {
                 runOnUiThread {
                     isBillingLoading = false
                     premiumAccessManager.markPurchasePending()
-                    Toast.makeText(this@MainActivity, getString(R.string.premium_purchase_pending), Toast.LENGTH_LONG).show()
+                    if (isNewPurchase) {
+                        Toast.makeText(this@MainActivity, getString(R.string.premium_purchase_pending), Toast.LENGTH_LONG).show()
+                    }
                     updateUI()
                 }
             }
@@ -234,6 +256,8 @@ class MainActivity : AppCompatActivity() {
                     isBillingLoading = false
                     premiumAccessManager.markPlayPremiumNotPurchased()
                     updateUI()
+                    showTrialExpiryNoticeIfNeeded()
+                    TrialExpiryScheduler.schedule(this@MainActivity)
                 }
             }
 
@@ -247,6 +271,38 @@ class MainActivity : AppCompatActivity() {
         })
 
         playBillingManager?.start()
+    }
+
+    private fun showTrialExpiryNoticeIfNeeded() {
+        if (!isActivityResumed || !premiumAccessManager.shouldShowTrialExpiryNotice()) return
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.trial_expired_dialog_title)
+            .setMessage(R.string.trial_expired_dialog_message)
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
+        premiumAccessManager.markTrialExpiryNoticeShown()
+        TrialExpiryNotifier.dismissAll(this)
+        sendBroadcast(Intent(CallBlockingService.ACTION_UPDATE_NOTIFICATION).setPackage(packageName))
+    }
+
+    private fun requestTrialExpiryNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+            PackageManager.PERMISSION_GRANTED ||
+            !premiumAccessManager.shouldRequestNotificationPermission()
+        ) return
+
+        premiumAccessManager.markNotificationPermissionRequested()
+        notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+    }
+
+    private fun scheduleTrialExpiryCheck() {
+        trialExpiryHandler.removeCallbacks(trialExpiryRunnable)
+        val remainingMillis = premiumAccessManager.getTrialRemainingMillis()
+        if (remainingMillis > 0L && premiumAccessManager.getSnapshot().state != MonetizationState.PREMIUM) {
+            trialExpiryHandler.postDelayed(trialExpiryRunnable, remainingMillis)
+        }
     }
 
     private fun ensurePremiumAccessForAction(): Boolean {
@@ -267,8 +323,11 @@ class MainActivity : AppCompatActivity() {
         monetizationStateText.text = getMonetizationStateText(snapshot)
 
         val price = snapshot.playPrice
-        val shouldShowUnlockButton = snapshot.state == MonetizationState.TRIAL_EXPIRED ||
-            snapshot.state == MonetizationState.BILLING_ERROR
+        val shouldShowUnlockButton = snapshot.state != MonetizationState.PREMIUM
+        val canLaunchPurchase = shouldShowUnlockButton &&
+            snapshot.state != MonetizationState.LOADING &&
+            snapshot.state != MonetizationState.PURCHASE_PENDING &&
+            !price.isNullOrBlank()
 
         unlockPremiumButton.text = if (price.isNullOrBlank()) {
             getString(R.string.premium_unlock_loading)
@@ -281,7 +340,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             View.GONE
         }
-        unlockPremiumButton.isEnabled = shouldShowUnlockButton && !price.isNullOrBlank()
+        unlockPremiumButton.isEnabled = canLaunchPurchase
     }
 
     private fun getMonetizationStateText(snapshot: MonetizationSnapshot): String {
@@ -945,8 +1004,10 @@ class MainActivity : AppCompatActivity() {
     
     override fun onResume() {
         super.onResume()
+        isActivityResumed = true
         try {
             updateUI()
+            scheduleTrialExpiryCheck()
             playBillingManager?.syncExistingPurchases()
             
             // Reopen guided setup dialog if returning from settings
@@ -962,6 +1023,11 @@ class MainActivity : AppCompatActivity() {
             logErrorToFile("onResume", e)
             Toast.makeText(this, "Erro ao retomar app: ${e.message}", Toast.LENGTH_SHORT).show()
         }
+    }
+    override fun onPause() {
+        isActivityResumed = false
+        trialExpiryHandler.removeCallbacks(trialExpiryRunnable)
+        super.onPause()
     }
       override fun onDestroy() {
         super.onDestroy()

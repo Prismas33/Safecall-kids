@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import com.safecallkids.app.monitoring.CrashReporter
+import com.safecallkids.app.monetization.TrialExpiryScheduler
 import java.util.Locale
 
 class SafecallApplication : Application() {
@@ -14,6 +15,7 @@ class SafecallApplication : Application() {
         CrashReporter.configure(this)
         // Apply saved language on app start
         applySavedLanguage()
+        TrialExpiryScheduler.schedule(this)
     }
     
     override fun attachBaseContext(base: Context) {

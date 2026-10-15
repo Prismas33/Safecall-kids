@@ -137,6 +137,14 @@
     <string name="premium_state_loading">Checking Premium access...</string>
     <string name="premium_state_trial_active">Trial active: %1$d day(s) remaining.</string>
     <string name="premium_state_trial_expired">Trial ended. Unlock SafeCall to keep using Premium features.</string>
+    <string name="trial_expired_dialog_title">Your trial has ended</string>
+    <string name="trial_expired_dialog_message">The 7-day trial has ended and call protection is paused. Unlock SafeCall to stay protected.</string>
+    <string name="trial_expired_notification_channel">SafeCall alerts</string>
+    <string name="trial_expired_notification_message">The trial ended and protection is paused. Open SafeCall to check your access.</string>
+    <string name="trial_reminder_three_days_title">SafeCall: 3 days after your trial</string>
+    <string name="trial_reminder_three_days_message">Protection is still paused. Open SafeCall to confirm Premium access or unlock the app.</string>
+    <string name="trial_reminder_seven_days_title">SafeCall: 7 days after your trial</string>
+    <string name="trial_reminder_seven_days_message">Protection is still paused. Open SafeCall to confirm Premium access or unlock the app.</string>
     <string name="premium_state_premium">Premium active.</string>
     <string name="premium_state_purchase_pending">Purchase pending. SafeCall will unlock when Google Play confirms the payment.</string>
     <string name="premium_state_billing_error">Could not load the Google Play purchase. Open the app again later.</string>

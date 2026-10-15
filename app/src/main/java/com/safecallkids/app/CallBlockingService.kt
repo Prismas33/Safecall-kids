@@ -14,8 +14,12 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.safecallkids.app.data.ProtectionPreferences
+import com.safecallkids.app.monetization.PremiumAccessManager
 
 class CallBlockingService : android.app.Service() {
+    companion object {
+        const val ACTION_UPDATE_NOTIFICATION = "com.safecallkids.app.UPDATE_NOTIFICATION"
+    }
     
     private val TAG = "CallBlockingService"
     private val NOTIFICATION_ID = 1
@@ -23,7 +27,7 @@ class CallBlockingService : android.app.Service() {
     
     private val notificationUpdateReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == "com.safecallkids.app.UPDATE_NOTIFICATION") {
+            if (intent.action == ACTION_UPDATE_NOTIFICATION) {
                 updateNotification()
             }
         }
@@ -35,7 +39,7 @@ class CallBlockingService : android.app.Service() {
         createNotificationChannel()
         
         // Registrar receiver para atualizar notificação
-        val filter = IntentFilter("com.safecallkids.app.UPDATE_NOTIFICATION")
+        val filter = IntentFilter(ACTION_UPDATE_NOTIFICATION)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(notificationUpdateReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
         } else {
@@ -102,9 +106,13 @@ class CallBlockingService : android.app.Service() {
             0
         }
         
+        val hasPremiumAccess = PremiumAccessManager(this).canUsePremiumFeatures()
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(getString(R.string.notification_title))
-            .setContentText(getString(R.string.notification_content_format, contactsCount, blockedCount))
+            .setContentTitle(getString(if (hasPremiumAccess) R.string.notification_title else R.string.trial_expired_dialog_title))
+            .setContentText(
+                if (hasPremiumAccess) getString(R.string.notification_content_format, contactsCount, blockedCount)
+                else getString(R.string.trial_expired_notification_message)
+            )
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentIntent(pendingIntent)
             .setOngoing(true)

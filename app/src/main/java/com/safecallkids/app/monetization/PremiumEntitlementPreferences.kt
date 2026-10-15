@@ -20,6 +20,35 @@ class PremiumEntitlementPreferences(context: Context) {
     val billingErrorMessage: String?
         get() = prefs.getString(KEY_BILLING_ERROR, null)
 
+    fun wasTrialExpiryNoticeShown(trialStartedAtMillis: Long): Boolean {
+        return prefs.getLong(KEY_TRIAL_EXPIRY_NOTICE_START, 0L) == trialStartedAtMillis
+    }
+
+    fun markTrialExpiryNoticeShown(trialStartedAtMillis: Long) {
+        prefs.edit().putLong(KEY_TRIAL_EXPIRY_NOTICE_START, trialStartedAtMillis).apply()
+    }
+
+    fun wasTrialReminderHandled(reminder: TrialReminder, trialStartedAtMillis: Long): Boolean {
+        return prefs.getLong(reminderKey(reminder), 0L) == trialStartedAtMillis
+    }
+
+    fun markTrialReminderHandled(reminder: TrialReminder, trialStartedAtMillis: Long) {
+        prefs.edit().putLong(reminderKey(reminder), trialStartedAtMillis).apply()
+    }
+
+    private fun reminderKey(reminder: TrialReminder): String = when (reminder) {
+        TrialReminder.EXPIRED -> KEY_TRIAL_EXPIRY_NOTIFICATION_START
+        TrialReminder.AFTER_THREE_DAYS -> KEY_TRIAL_REMINDER_THREE_DAYS_START
+        TrialReminder.AFTER_SEVEN_DAYS -> KEY_TRIAL_REMINDER_SEVEN_DAYS_START
+    }
+
+    val wasNotificationPermissionRequested: Boolean
+        get() = prefs.getBoolean(KEY_NOTIFICATION_PERMISSION_REQUESTED, false)
+
+    fun markNotificationPermissionRequested() {
+        prefs.edit().putBoolean(KEY_NOTIFICATION_PERMISSION_REQUESTED, true).apply()
+    }
+
     fun ensureTrialStarted(nowMillis: Long): Long {
         val existing = trialStartedAtMillis
         if (existing > 0L) return existing
@@ -84,6 +113,11 @@ class PremiumEntitlementPreferences(context: Context) {
         private const val KEY_PURCHASE_PENDING = "purchase_pending"
         private const val KEY_PLAY_PRICE = "play_price"
         private const val KEY_BILLING_ERROR = "billing_error"
+        private const val KEY_TRIAL_EXPIRY_NOTICE_START = "trial_expiry_notice_start"
+        private const val KEY_TRIAL_EXPIRY_NOTIFICATION_START = "trial_expiry_notification_start"
+        private const val KEY_TRIAL_REMINDER_THREE_DAYS_START = "trial_reminder_three_days_start"
+        private const val KEY_TRIAL_REMINDER_SEVEN_DAYS_START = "trial_reminder_seven_days_start"
+        private const val KEY_NOTIFICATION_PERMISSION_REQUESTED = "notification_permission_requested"
         private const val KEY_PURCHASE_TOKEN = "purchase_token"
         private const val KEY_PURCHASE_ORDER_ID = "purchase_order_id"
         private const val KEY_PREMIUM_SOURCE = "premium_source"

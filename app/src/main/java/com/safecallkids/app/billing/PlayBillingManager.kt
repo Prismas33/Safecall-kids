@@ -91,7 +91,7 @@ class PlayBillingManager(
 
         billingClient.queryPurchasesAsync(params) { billingResult, purchases ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                val foundPremium = handlePremiumPurchases(purchases)
+                val foundPremium = handlePremiumPurchases(purchases, isNewPurchase = false)
                 if (!foundPremium) {
                     callbacks.onNoActivePremiumPurchase()
                 }
@@ -107,7 +107,7 @@ class PlayBillingManager(
 
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
         when (billingResult.responseCode) {
-            BillingClient.BillingResponseCode.OK -> handlePremiumPurchases(purchases.orEmpty())
+            BillingClient.BillingResponseCode.OK -> handlePremiumPurchases(purchases.orEmpty(), isNewPurchase = true)
             BillingClient.BillingResponseCode.USER_CANCELED -> callbacks.onPurchaseCancelled()
             BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> syncExistingPurchases()
             else -> callbacks.onBillingError(billingResult.debugMessage)
@@ -155,7 +155,7 @@ class PlayBillingManager(
         }
     }
 
-    private fun handlePremiumPurchases(purchases: List<Purchase>): Boolean {
+    private fun handlePremiumPurchases(purchases: List<Purchase>, isNewPurchase: Boolean): Boolean {
         var foundPremium = false
 
         purchases
@@ -163,8 +163,8 @@ class PlayBillingManager(
             .forEach { purchase ->
                 foundPremium = true
                 when (purchase.purchaseState) {
-                    Purchase.PurchaseState.PURCHASED -> acknowledgePremiumPurchase(purchase)
-                    Purchase.PurchaseState.PENDING -> callbacks.onPurchasePending()
+                    Purchase.PurchaseState.PURCHASED -> acknowledgePremiumPurchase(purchase, isNewPurchase)
+                    Purchase.PurchaseState.PENDING -> callbacks.onPurchasePending(isNewPurchase)
                     else -> Unit
                 }
             }
@@ -172,9 +172,9 @@ class PlayBillingManager(
         return foundPremium
     }
 
-    private fun acknowledgePremiumPurchase(purchase: Purchase) {
+    private fun acknowledgePremiumPurchase(purchase: Purchase, isNewPurchase: Boolean) {
         if (purchase.isAcknowledged) {
-            callbacks.onPurchaseCompleted(purchase.purchaseToken, purchase.orderId)
+            callbacks.onPurchaseCompleted(purchase.purchaseToken, purchase.orderId, isNewPurchase)
             return
         }
 
@@ -184,7 +184,7 @@ class PlayBillingManager(
 
         billingClient.acknowledgePurchase(params) { billingResult ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                callbacks.onPurchaseCompleted(purchase.purchaseToken, purchase.orderId)
+                callbacks.onPurchaseCompleted(purchase.purchaseToken, purchase.orderId, isNewPurchase)
             } else {
                 callbacks.onBillingError(billingResult.debugMessage)
             }
@@ -193,8 +193,8 @@ class PlayBillingManager(
 
     interface Callbacks {
         fun onProductLoaded(formattedPrice: String)
-        fun onPurchaseCompleted(purchaseToken: String, orderId: String?)
-        fun onPurchasePending()
+        fun onPurchaseCompleted(purchaseToken: String, orderId: String?, isNewPurchase: Boolean)
+        fun onPurchasePending(isNewPurchase: Boolean)
         fun onPurchaseCancelled()
         fun onNoActivePremiumPurchase()
         fun onBillingError(message: String)

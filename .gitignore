@@ -10,6 +10,8 @@
 .DS_Store
 /build
 /app/build
+/.kotlin/
+/BUNDLE-METADATA/
 /captures
 /app/debug
 *.apk

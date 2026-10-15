@@ -36,6 +36,53 @@ class PremiumAccessManager(context: Context) {
         return getSnapshot().canUsePremiumFeatures
     }
 
+    fun getTrialRemainingMillis(nowMillis: Long = System.currentTimeMillis()): Long {
+        val trialStartedAt = preferences.ensureTrialStarted(nowMillis)
+        return (trialStartedAt + TRIAL_DURATION_MILLIS - nowMillis).coerceAtLeast(0L)
+    }
+
+    fun shouldShowTrialExpiryNotice(nowMillis: Long = System.currentTimeMillis()): Boolean {
+        val trialStartedAt = preferences.ensureTrialStarted(nowMillis)
+        return !preferences.isPlayPremiumPurchased &&
+            nowMillis >= trialStartedAt + TRIAL_DURATION_MILLIS &&
+            !preferences.wasTrialExpiryNoticeShown(trialStartedAt)
+    }
+
+    fun markTrialExpiryNoticeShown() {
+        preferences.markTrialExpiryNoticeShown(preferences.trialStartedAtMillis)
+    }
+
+    fun trialStartedAtMillis(nowMillis: Long = System.currentTimeMillis()): Long {
+        return preferences.ensureTrialStarted(nowMillis)
+    }
+
+    fun wasTrialReminderHandled(reminder: TrialReminder): Boolean {
+        return preferences.wasTrialReminderHandled(reminder, preferences.trialStartedAtMillis)
+    }
+
+    fun shouldSendTrialReminder(
+        reminder: TrialReminder,
+        nowMillis: Long = System.currentTimeMillis()
+    ): Boolean {
+        val trialStartedAt = preferences.ensureTrialStarted(nowMillis)
+        return !preferences.isPlayPremiumPurchased &&
+            nowMillis >= reminder.dueAtMillis(trialStartedAt) &&
+            !preferences.wasTrialReminderHandled(reminder, trialStartedAt)
+    }
+
+    fun markTrialReminderHandled(reminder: TrialReminder) {
+        preferences.markTrialReminderHandled(reminder, preferences.trialStartedAtMillis)
+    }
+
+    fun shouldRequestNotificationPermission(): Boolean {
+        return !preferences.wasNotificationPermissionRequested &&
+            !preferences.isPlayPremiumPurchased
+    }
+
+    fun markNotificationPermissionRequested() {
+        preferences.markNotificationPermissionRequested()
+    }
+
     fun savePlayPrice(price: String) {
         preferences.savePlayPrice(price)
     }
