@@ -25,7 +25,7 @@ android {
         applicationId "com.safecallkids.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 18
+        versionCode = 19
         versionName = "5.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -135,6 +135,8 @@ dependencies {
     implementation 'androidx.work:work-runtime:2.12.0'
     implementation platform('com.google.firebase:firebase-bom:34.15.0')
     implementation 'com.google.firebase:firebase-crashlytics'
+    // Firebase Sessions brings DataStore transitively; 1.2.1 retains native symbols for Play.
+    implementation 'androidx.datastore:datastore-core-android:1.2.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
